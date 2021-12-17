@@ -9,7 +9,8 @@ export default function LessVerboseRecorder() {
       <label>Record Audio</label>
       <br/>
       {audioUrl.map((track, i) => {
-        return <audio key={i} src={track} controls></audio>;
+        console.log('track',track)
+        return <audio key={i} src={track} type='audio/mp3' controls></audio>;
       })}
       <button onClick={startRecording} disabled={isRecording === 'start'}>
         start recording
