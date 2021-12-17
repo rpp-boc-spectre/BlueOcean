@@ -2,25 +2,24 @@ import { useEffect, useState } from 'react';
 
 const RecordState = () => {
   const [audioURL, setAudioURL] = useState([]);
-  const [isRecording, setIsRecording] = useState(false);
+  const [isRecording, setIsRecording] = useState('');
   const [recorder, setRecorder] = useState(null);
 
   useEffect(() => {
     if (!recorder) {
-      if (isRecording) {
+      if (isRecording === 'start') {
         getRecorder().then(setRecorder, console.error);
       }
       return;
     }
-
-    if (isRecording) {
-      recorder.start();
-    } else {
-      recorder.stop();
-    }
+    isRecording === 'start' && recorder.state === 'paused'
+      ? recorder.resume()
+      : isRecording === 'start'
+      ? recorder.start()
+      : isRecording ==='stop'? recorder.stop(): recorder.pause()
 
     const handleData = (e) => {
-      setAudioURL((prevUrls)=>[...prevUrls,URL.createObjectURL(e.data)]);
+      setAudioURL((prevUrls) => [...prevUrls, URL.createObjectURL(e.data)]);
     };
 
     recorder.addEventListener('dataavailable', handleData);
@@ -28,19 +27,42 @@ const RecordState = () => {
   }, [recorder, isRecording]);
 
   const startRecording = () => {
-    setIsRecording(true);
+    setIsRecording('start');
   };
 
   const stopRecording = () => {
-    setIsRecording(false);
+    setIsRecording('stop');
   };
 
-  return [audioURL,isRecording,startRecording,stopRecording]
+  const pauseRecording = () => {
+    setIsRecording('pause');
+  };
+
+  return [audioURL, isRecording, startRecording, stopRecording, pauseRecording];
 };
 
-const getRecorder = async  function (){
-    const stream = await navigator.mediaDevices.getUserMedia({audio:true})
-    return new MediaRecorder(stream)
-}
+const getRecorder = async function () {
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  let mediaRecorder = new MediaRecorder(stream);
 
-export default RecordState
+  return mediaRecorder;
+};
+
+export default RecordState;
+
+
+
+// original if statment replaced by ternary operator
+  // if (isRecording === 'start') {
+    //   if (recorder.state === 'paused') {
+    //     recorder.resume();
+    //   } else {
+    //     recorder.start();
+    //   }
+    // } else if (isRecording === 'stop') {
+    //   recorder.stop();
+    // } else {
+    //   if (isRecording === 'pause') {
+    //     recorder.pause();
+    //   }
+    // }

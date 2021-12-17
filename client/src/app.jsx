@@ -14,6 +14,7 @@ class App extends React.Component {
       <div>
         <h1>I'm rendered from React!</h1>
         <MusicPlayer />
+        <LessVerboseRecorder/>
       </div>
     );
   }
