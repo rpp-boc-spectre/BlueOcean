@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 // import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
+import VerboseRecorder from './components/verboseRecorder';
+import LessVerboseRecorder from './components/lessVerboseRecorder/LessVerboseRecorder';
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -9,9 +10,8 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1>I'm rendered from React!</h1>
-      </div>
+      // <VerboseRecorder/>
+      <LessVerboseRecorder/>
     );
   }
 }
