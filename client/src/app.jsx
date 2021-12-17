@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import MusicPlayer from './components/MusicPlayer';
 // import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import VerboseRecorder from './components/verboseRecorder';
 import LessVerboseRecorder from './components/lessVerboseRecorder/LessVerboseRecorder';
@@ -10,8 +11,10 @@ class App extends React.Component {
 
   render() {
     return (
-      // <VerboseRecorder/>
-      <LessVerboseRecorder/>
+      <div>
+        <h1>I'm rendered from React!</h1>
+        <MusicPlayer />
+      </div>
     );
   }
 }
