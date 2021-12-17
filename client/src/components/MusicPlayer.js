@@ -17,19 +17,11 @@ export default function MusicPlayer() {
   }
 
   const handlePlayClick = async () => {
-    // let elements = document.getElementsByClassName('mp3')
-    // for (var element of elements) {
-    //   element.play()
-    // }
     await Tone.start()
     Tone.Transport.start()
   }
 
   const handleStopClick = () => {
-    // let elements = document.getElementsByClassName('mp3')
-    // for (var element of elements) {
-    //   element.pause()
-    // }
     Tone.Transport.pause()
   }
 
