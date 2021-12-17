@@ -6,6 +6,8 @@ export default function LessVerboseRecorder() {
   //  console.log('audioUrl',audioUrl)
   return (
     <div>
+      <label>Record Audio</label>
+      <br/>
       {audioUrl.map((track, i) => {
         return <audio key={i} src={track} controls></audio>;
       })}
