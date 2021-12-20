@@ -16,6 +16,7 @@ export default function VerboseRecorder() {
 
       mediaRecorder.addEventListener("dataavailable", event => {
         audioChunks.push(event.data);
+        console.log('audioChunks',audioChunks)
       });
 
       const start = () => mediaRecorder.start();
@@ -23,7 +24,9 @@ export default function VerboseRecorder() {
       const stop = () =>
         new Promise(resolve => {
           mediaRecorder.addEventListener("stop", () => {
-            const audioBlob = new Blob(audioChunks);
+            const audioBlob = new Blob(audioChunks,{type:'audio/mpeg-3'});
+
+            console.log('audioBlob',audioBlob)
             const audioUrl = URL.createObjectURL(audioBlob);
             const audio = new Audio(audioUrl);
             const play = () => audio.play();
@@ -32,7 +35,7 @@ export default function VerboseRecorder() {
 
           mediaRecorder.stop();
         });
-        console.log('start',{start,stop})
+
       resolve({ start, stop });
     });
 

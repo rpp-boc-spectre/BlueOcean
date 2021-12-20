@@ -3,46 +3,46 @@ import React, { useEffect, useState } from 'react';
 import * as Tone from 'tone';
 
 export default function Synth(props) {
-    const [notes,setNotes] = useState(['C4', 'E4', 'G4', 'C5', 'E5', 'G5'])
+  const [notes, setNotes] = useState(['C4', 'E4', 'G4', 'C5', 'E5', 'G5']);
   // const [synth,setSynth] = useState(new Tone.Synth())
   //  const [index,setIndex] = useState(0)
-   console.log('notes',notes)
+  console.log('notes', notes);
   var index = 0;
+  console.log('index', index);
+  const synth = new Tone.Synth().toDestination();
+
   const startSynth = async function () {
     // const notes = ['C4', 'E4', 'G4', 'C5', 'E5', 'G5'];
 
-    const synth = await new Tone.Synth();
+    await Tone.start();
 
-    synth.toDestination();
+    // synth.toDestination();
 
     // synth.triggerAttackRelease('C4', '8n');
     Tone.Transport.scheduleRepeat((time) => {
-      console.log('time', time);
       repeat(time);
     }, '8n');
 
     function repeat(time) {
-      let note = notes[index];
+      let note = notes[index % notes.length];
       console.log('note', note);
       synth.triggerAttackRelease(note, '8n', time);
       // setIndex((prevIndex)=> prevIndex++);
-      if (index < notes.length-1) {
-        index++;
-      }else {
-          index = 0
-      }
+    //   if (index < notes.length - 1) {
+    //     index++;
+    //   } else {
+    //     index = 0;
+    //   }
     }
 
-
     Tone.Transport.start();
-
-    setTimeout( () => {
-
+    Tone.Transport.bpm.value = 200;
+    setTimeout(() => {
       Tone.Transport.stop();
 
-        index = 0
-        setNotes(['C4', 'E4', 'G4', 'C5', 'E5', 'G5'])
-    }, 5000);
+      index = 0;
+      setNotes(['C4', 'E4', 'G4', 'C5', 'E5', 'G5']);
+    }, 4000);
   };
 
   return <div onClick={startSynth}>Hey</div>;

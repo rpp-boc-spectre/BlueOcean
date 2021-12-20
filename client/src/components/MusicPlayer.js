@@ -10,7 +10,7 @@ export default function MusicPlayer() {
   const getUrls = async () => {
     try {
       let response = await axios.get('/audio')
-      setUrls(response.data)
+      setUrls([response.data[0],response.data[2]])
     } catch (error) {
       console.log(error)
     }
@@ -35,8 +35,14 @@ export default function MusicPlayer() {
         let player = new Tone.Player({
           url: url
         }).toDestination()
+        Tone.Transport.bpm.rampTo(200,10)
+        // const pitchShift = new Tone.PitchShift(7).toDestination()
+        // player.connect(pitchShift)
+        // const comp = new Tone.Compressor(0, 8).toDestination();
+        // player.connect(comp)
         player.sync().start(0)
       })
+
       Tone.loaded().then(() => {
         console.log('Ready to play')
         setReady(true)

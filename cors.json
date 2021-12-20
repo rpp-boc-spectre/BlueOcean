@@ -4,7 +4,7 @@
       "*"
     ],
     "method": [
-      "GET"
+      "GET","POST"
     ],
     "maxAgeSeconds": 3600
   }
