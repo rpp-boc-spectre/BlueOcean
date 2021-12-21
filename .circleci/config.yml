@@ -17,8 +17,6 @@ jobs:
             - run: npm test
 
   build-and-deploy:
-    requires:
-      - node-test
     executor:
       name: node/default
     steps:
@@ -45,7 +43,9 @@ workflows:
   build-test-deploy:
     jobs:
       - node-test
-      - build-and-test:
+      - build-and-deploy:
+          requires:
+            - node-test
           context: aws
           filters:
             branches:
