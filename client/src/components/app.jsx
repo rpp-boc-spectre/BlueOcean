@@ -1,9 +1,14 @@
 import React from "react";
+import { Routes, Route, Link } from "react-router-dom";
+
+import Home from "./Home.jsx";
 
 export default function App() {
   return (
-    <div>
-      <h1>I'm rendered from React!</h1>
+    <div className="App">
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
     </div>
   );
 }
