@@ -24,7 +24,7 @@ describe('Home Component', function () {
       </Router>
     )
 
-    expect(await app.findByText('I am rendered with React!')).toBeInTheDocument()
+    expect(await app.findByText('I am rendered with React and Material-UI!')).toBeInTheDocument()
   })
 
   test('Should show error when visiting bad page', function () {
