@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import MicRecorder from 'mic-recorder-to-mp3';
+import { getStorage, ref, uploadBytes } from 'firebase/storage'
+import { storage } from '../../../../lib/firebase'
 
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
 
@@ -51,7 +53,7 @@ export default function MP3RecorderEncoder(props) {
       .getMp3()
       .then(([buffer, blob]) => {
         // create a file from the buffer, feed in a name set by openNamingForm function
-        console.log('blobtype', blob,'buffer',buffer);
+        console.log('blobtype', blob, 'buffer', buffer);
         const file = new File(buffer, 'me-at-thevoice.mp3', {
           type: blob.type,
           lastModified: Date.now(),
@@ -70,6 +72,11 @@ export default function MP3RecorderEncoder(props) {
         setFileURL(newFileUrl);
 
         // send the file somewhere
+        const mp3StorageRef = ref(storage, 'audio/HVA5M5IcFWT5IliCKV4212EMw4o1/testAudio.mp3')
+        return uploadBytes(mp3StorageRef, blob)
+      })
+      .then((snapshot) => {
+        console.log('Recording uploaded: ', snapshot)
       })
       .catch((e) => console.log(e));
   };
