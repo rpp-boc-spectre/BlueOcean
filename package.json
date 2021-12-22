@@ -23,6 +23,7 @@
   "dependencies": {
     "@babel/runtime": "^7.16.5",
     "axios": "^0.24.0",
+    "buffer": "^6.0.3",
     "express": "^4.17.1",
     "ffmpeg": "0.0.4",
     "firebase": "^9.6.1",

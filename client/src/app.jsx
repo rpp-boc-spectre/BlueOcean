@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useRef,useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import MusicPlayer from './components/MusicPlayer';
 // import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -7,6 +7,8 @@ import LessVerboseRecorder from './components/lessVerboseRecorder/LessVerboseRec
 import Synth from './components/makeSoundPlayground/synth';
 import RecorderTone from './components/recorderTone/recorderTone';
 import Mp3Recorder from './components/mp3recorder/Mp3Recorder';
+import A1 from '../src/A1MP3.mp3'
+import MP3RecorderEncoder from './components/mp3recorder/MP3RecorderEncoder';
 
 class App extends React.Component {
   constructor(props) {
@@ -17,13 +19,13 @@ class App extends React.Component {
     return (
       <div>
         <h1>I'm rendered from React!</h1>
-        {/* <Mp3Recorder/> */}
-        {/* <MusicPlayer />
-        <LessVerboseRecorder/>
-        <Synth/> */}
+        <MP3RecorderEncoder/>
+         <MusicPlayer />
+        {/* <LessVerboseRecorder/>
+        <Synth/>  */}
         {/* <RecorderTone/> */}
-        <LessVerboseRecorder/>
-        {/* <VerboseRecorder/> */}
+        {/* <LessVerboseRecorder/> */}
+
       </div>
     );
   }
@@ -31,12 +33,10 @@ class App extends React.Component {
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
-// import React, { useState, useRef, useEffect } from "react";
-// import ReactDOM from "react-dom";
-// import { Sampler } from "tone";
-// import A1 from "/Users/josephhaines/Desktop/A1.mp3"
 
-// export const App = () => {
+// import { Sampler } from "tone";
+
+// const App = () => {
 //   const [isLoaded, setLoaded] = useState(false);
 //   const sampler = useRef(null);
 

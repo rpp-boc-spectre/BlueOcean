@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import * as Tone from 'tone'
 import axios from 'axios'
-
+import testMp3 from '../testing.mp3'
 export default function MusicPlayer() {
 
-  const [urls, setUrls] = useState(null)
+  const [urls, setUrls] = useState(true)
   const [ready, setReady] = useState(false)
 
   const getUrls = async () => {
@@ -25,22 +25,30 @@ export default function MusicPlayer() {
     Tone.Transport.pause()
   }
 
-  useEffect(() => {
-    getUrls()
-  }, [])
+  // useEffect(() => {
+  //   getUrls()
+  // }, [])
 
   useEffect(() => {
     if (urls) {
+      const urls = [testMp3]
+      console.log('urls',urls)
       urls.forEach((url, index) => {
+        console.log('url',url)
         let player = new Tone.Player({
           url: url
         }).toDestination()
-        Tone.Transport.bpm.rampTo(200,10)
-        // const pitchShift = new Tone.PitchShift(7).toDestination()
-        // player.connect(pitchShift)
-        // const comp = new Tone.Compressor(0, 8).toDestination();
+        // Tone.Transport.bpm.rampTo(200,10)
+        // const gain = new Tone.Gain(-20,'decibels')
+        // player.connect(gain).toDestination()
+        // const comp = new Tone.Compressor(-3, 18).toDestination();
         // player.connect(comp)
-        player.sync().start(0)
+        const pitchShift = new Tone.PitchShift(4).toDestination()
+        const pitchShift2 = new Tone.PitchShift(7).toDestination()
+        player.connect(pitchShift2)
+        player.connect(pitchShift)
+
+        player.sync().start()
       })
 
       Tone.loaded().then(() => {
