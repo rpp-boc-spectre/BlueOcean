@@ -1,0 +1,9 @@
+branch-defaults:
+  main:
+    environment: Blueocean-env
+global:
+  application_name: BlueOcean
+  default_ec2_keyname: e-ue6uapze7m
+  default_platform: Node.js
+  default_region: us-east-1
+  sc: git
