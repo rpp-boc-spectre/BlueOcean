@@ -1,7 +1,9 @@
 import React from "react";
 
+import { Typography } from '@mui/material'
+
 export default function () {
   return (
-    <h1>Not Found 404</h1>
+    <Typography variant='h1'>Not Found 404</Typography>
   )
 }
