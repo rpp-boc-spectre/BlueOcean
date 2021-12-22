@@ -38,7 +38,11 @@ jobs:
 workflows:
   test-only:
     jobs:
-      - node-test
+      - node-test:
+          filters:
+            branches:
+              only:
+                - /^((?!main).)*$/
   build-test-deploy:
     jobs:
       - node-test:
