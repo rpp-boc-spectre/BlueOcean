@@ -7,7 +7,7 @@ import 'regenerator-runtime/runtime'
 import { render } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { createMemoryHistory } from 'history'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { Router } from 'react-router-dom'
 
 import App from '../../client/src/components/app.jsx'
 
@@ -19,11 +19,25 @@ describe('Home Component', function () {
     history.push(route)
 
     const app = render(
-      <Router history={History}>
+      <Router location={history.location} navigator={history}>
         <App />
       </Router>
     )
 
     expect(await app.findByText('I am rendered with React!')).toBeInTheDocument()
+  })
+
+  test('Should show error when visiting bad page', function () {
+    const history = createMemoryHistory()
+    const route = '/about'
+    history.push(route)
+
+    const app = render(
+      <Router location={history.location} navigator={history}>
+        <App />
+      </Router>
+    )
+
+    expect(app.getByText('Not Found 404')).toBeInTheDocument()
   })
 })
