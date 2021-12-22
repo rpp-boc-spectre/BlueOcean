@@ -24,7 +24,6 @@ jobs:
       - node/with-cache:
           steps:
             - run: npm install
-            - run: npm test
             - run: npm run build
             - run:
                 name: Installing deployment dependencies
@@ -42,7 +41,11 @@ workflows:
       - node-test
   build-test-deploy:
     jobs:
-      - node-test
+      - node-test:
+          filters:
+            branches:
+              only:
+                - main
       - build-and-deploy:
           requires:
             - node-test
