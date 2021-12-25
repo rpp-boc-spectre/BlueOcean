@@ -1,14 +1,21 @@
-import React, { useContext, useState } from "react";
 import 'regenerator-runtime/runtime'
-import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
-import UserContext from "../context/UserContext.js";
-import { auth } from '../lib/firebase.js'
+import React, { useContext, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Typography, Button, Snackbar } from '@mui/material'
+
+import UserContext from "../context/UserContext.js";
+import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { auth } from '../lib/firebase.js'
 
 export default function Entry() {
   const userData = useContext(UserContext)
   const [openStatus, setOpenStatus] = useState(false)
   const [status, setStatus] = useState(null)
+
+  let navigate = useNavigate();
+  let location = useLocation();
+
+  let from = location.state?.from?.pathname || "/dashboard";
 
   const handleSignInWithGoogle = async () => {
     try {
@@ -19,6 +26,7 @@ export default function Entry() {
         option: 'success'
       })
       setOpenStatus(true)
+      navigate(from, { replace: true });
     } catch (error) {
       console.log(error)
       setStatus({
@@ -30,7 +38,6 @@ export default function Entry() {
   }
 
   const handleSignOut = async () => {
-
     try {
       await signOut(auth)
       setStatus({
@@ -38,6 +45,7 @@ export default function Entry() {
         option: 'success'
       })
       setOpenStatus(true)
+      navigate('/');
     } catch (error) {
       console.log(error)
       setStatus({
