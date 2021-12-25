@@ -3,20 +3,19 @@ import React from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import UserContext from '../context/UserContext.js';
 import useUserData from '../hooks/useUserData.js';
-import { SnackBarProvider } from '../context/SnackBarContext.js';
+import { SnackbarProvider } from 'material-ui-snackbar-provider'
 
 import Home from "./Home.jsx";
 import NotFound from './NotFound.jsx'
 import Entry from './Entry.jsx'
 import RequireAuth from "./RequireAuth.jsx";
 import Dashboard from './Dashboard.jsx'
-import { Snackbar } from "@mui/material";
 
 export default function App() {
   const userData = useUserData()
 
   return (
-    <SnackBarProvider>
+    <SnackbarProvider SnackbarProps={{ autoHideDuration: 4000 }}>
       <UserContext.Provider value={userData}>
         <div className="App">
           <Routes>
@@ -31,7 +30,7 @@ export default function App() {
           </Routes>
         </div>
       </UserContext.Provider>
-    </SnackBarProvider>
+      </SnackbarProvider>
 
   );
 }

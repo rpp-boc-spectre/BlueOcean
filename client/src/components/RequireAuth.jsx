@@ -1,12 +1,9 @@
 import React, { useContext } from "react";
 import UserContext from "../context/UserContext";
 import { Navigate, useLocation } from "react-router-dom";
-import useUserData from "../hooks/useUserData";
-
 
 export default function RequireAuth({ children }) {
   let userData = useContext(UserContext)
-  // let userData = useUserData()
   let location = useLocation();
 
   if (!userData.loading && (!userData?.user && !userData?.username)) {
