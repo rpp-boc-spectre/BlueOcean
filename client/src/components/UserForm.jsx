@@ -13,7 +13,7 @@ export default function UserForm({ userId }) {
   const usernameField = useRef()
   const submitBttn = useRef()
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     try {
       await setDoc(doc(db, 'users', userId), { username: usernameField.value })
       navigate('/dashboard', { replace: true })
