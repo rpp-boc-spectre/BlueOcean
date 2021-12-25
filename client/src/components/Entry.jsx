@@ -55,12 +55,12 @@ export default function Entry() {
     return new Promise(async (resolve, reject) => {
       try {
         const ref = doc(db, 'users', userId)
-        let snapshot = getDoc(ref)
-        if (snapshot.exists()) {
-          let doc = snapshot.data()
-          resolve(doc.username)
+        let snapshot = await getDoc(ref)
+        let data = snapshot.data()
+        if (data.username) {
+          resolve(data.username)
         } else {
-          resolve(false)
+          resolve(null)
         }
       } catch(error) {
         reject(error)
