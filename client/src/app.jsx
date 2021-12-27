@@ -9,6 +9,8 @@ import RecorderTone from './components/recorderTone/recorderTone';
 import Mp3Recorder from './components/mp3recorder/Mp3Recorder';
 import A1 from '../src/A1MP3.mp3'
 import MP3RecorderEncoder from './components/mp3recorder/MP3RecorderEncoder';
+import PitchShift from './components/PitchShift/pitchShift';
+import ShiftLayer from './components/PitchShift/ShiftLayer';
 
 class App extends React.Component {
   constructor(props) {
@@ -19,8 +21,9 @@ class App extends React.Component {
     return (
       <div>
         <h1>I'm rendered from React!</h1>
-        <MP3RecorderEncoder/>
-         <MusicPlayer />
+        <ShiftLayer/>
+        {/* <MP3RecorderEncoder/>
+         <MusicPlayer /> */}
         {/* <LessVerboseRecorder/>
         <Synth/>  */}
         {/* <RecorderTone/> */}

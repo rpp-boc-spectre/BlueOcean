@@ -7,10 +7,10 @@ const { Blob, Buffer } = require('buffer');
 const { Console } = require('console');
 const app = express();
 const port = 3000;
-const Mp3Encoder = require('mic-recorder-to-mp3')
+const NodeID3 = require('node-id3')
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+// const mp3Test = require('../client/src/testing.mp3')
 app.use(express.static(path.resolve(__dirname, '../client/dist')));
 
 app.listen(process.env.PORT || port, () => {
@@ -29,15 +29,41 @@ app.get('/audio', async (req, res) => {
 
 app.post('/audioUrls', async (req, res) => {
   // let blob = req.body.blobs;
-  // console.log('blob',req.body.blobs[0])
+  console.log('blob',req.body.blob)
+  const blob = req.body.blob
+  // const tags = req.body.tags
   // console.log('dir',path.join(__dirname,'./audioFiles/blob.txt'));
-  // const content = Buffer.from(blob, 'base64');
+  const filebuffer = Buffer.from([blob]);
+
+//   const tags = {
+//     title: "Tomorrow!!!!!",
+//     artist: "Kevin Penkin",
+//     album: "TVアニメ「メイドインアビス」オリジナルサウンドトラック",
+//     APIC: "./example/mia_cover.jpg",
+//     TRCK: "27",
+//     length:req.body.length.toString()
+// }
+
+const tags = {
+  title:'testing Track',
+  artist:'testyTesterosa',
+  length:req.body.length.toString()
+}
+const success =  NodeID3.write(tags, filebuffer)
 
 
+const taggedFile = NodeID3.read(success)
 
 
-console.log('REQ', req.body)
+console.log('tagged',taggedFile)
+// needs error handling
+// not sending back correct format. need to research how to send blob back.
+res.send({filebuffer})
 
+});
+
+
+//poor attempt at ffmpeg
   // fs.writeFile(
   //   path.join(__dirname, './audioFiles/blob.txt'),
   //   content,
@@ -71,4 +97,3 @@ console.log('REQ', req.body)
   // } catch (error) {
   //   console.log('ERROR', error.code, error.content);
   // }
-});
