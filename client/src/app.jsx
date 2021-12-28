@@ -4,13 +4,13 @@ import MusicPlayer from './components/MusicPlayer';
 // import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import VerboseRecorder from './components/verboseRecorder';
 import LessVerboseRecorder from './components/lessVerboseRecorder/LessVerboseRecorder';
-import Synth from './components/makeSoundPlayground/synth';
+
 import RecorderTone from './components/recorderTone/recorderTone';
 import Mp3Recorder from './components/mp3recorder/Mp3Recorder';
 import A1 from '../src/A1MP3.mp3'
 import MP3RecorderEncoder from './components/mp3recorder/MP3RecorderEncoder';
-import PitchShift from './components/PitchShift/pitchShift';
-import ShiftLayer from './components/PitchShift/ShiftLayer';
+
+
 import LayerPlayer from './components/LayerPlayer/LayerPlayer';
 
 class App extends React.Component {
@@ -27,7 +27,7 @@ class App extends React.Component {
         <h1>I'm rendered from React!</h1>
 
       <LayerPlayer/>
-      {/* <MusicPlayer/> */}
+      <RecorderTone/>
 
       </div>
     );

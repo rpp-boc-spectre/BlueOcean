@@ -57,6 +57,9 @@ export default function LayerPlayer(props) {
       temporaryUserLayer3,
       temporaryUserLayer4,
     ];
+    const userMp3 = [
+        testingMp3,testingMp3,testingMp3,testingMp3
+    ]
 
     let layerEditorComponents = layers.map((layer, index) => {
       var pitchShift = new Tone.PitchShift().toDestination();

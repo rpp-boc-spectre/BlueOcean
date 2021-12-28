@@ -28,6 +28,7 @@
     "ffmpeg": "0.0.4",
     "firebase": "^9.6.1",
     "get-blob-duration": "^1.2.0",
+    "lamejs": "^1.2.1",
     "mic-recorder-to-mp3": "^2.2.2",
     "node-id3": "^0.2.3",
     "react": "^17.0.2",
