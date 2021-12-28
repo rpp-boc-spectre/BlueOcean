@@ -33,7 +33,7 @@ export default function MusicPlayer() {
     if (urls) {
       const urls = [testMp3]
       console.log('urls',urls)
-      urls.forEach((url, index) => {
+      const test = urls.forEach((url, index) => {
         console.log('url',url)
         let player = new Tone.Player({
           url: url
@@ -47,7 +47,7 @@ export default function MusicPlayer() {
         const pitchShift2 = new Tone.PitchShift(7).toDestination()
         player.connect(pitchShift2)
         player.connect(pitchShift)
-
+        console.log('test',test)
         player.sync().start()
       })
 

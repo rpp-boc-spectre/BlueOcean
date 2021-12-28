@@ -10,6 +10,8 @@ const ShiftLayer = function (props) {
   const [layer1Shifter, setLayer1Shifter] = useState(null);
   const layer1 = useRef(0);
   const shift = useRef(null);
+
+
   // this also works, but it takes a while to finish. if you stop and start again before its done, it will increase the volume.
   const temporaryUserLayer =
     'https://tonejs.github.io/audio/berklee/guitar_highEstring.mp3';
@@ -27,7 +29,7 @@ const ShiftLayer = function (props) {
       setLayer1Player(userLayer1);
 
       userLayer1.sync().start();
-      userLayer1.loop = false;
+      // userLayer1.loop = false;
       Tone.Transport.start();
     } else {
       if (shift.current) {
@@ -38,7 +40,7 @@ const ShiftLayer = function (props) {
       shift.current = pitchShift;
       layer1Player.connect(pitchShift);
       layer1Player.sync().start();
-      layer1Player.loop = false;
+      // layer1Player.loop = false;
       Tone.Transport.start();
     }
   };
@@ -58,6 +60,12 @@ const ShiftLayer = function (props) {
     }
   };
 
+
+  const  playAll = (player) =>{
+
+    // passPlayers(player)
+
+  }
   return (
     <div>
       <div>
@@ -87,6 +95,7 @@ const ShiftLayer = function (props) {
             Reset
           </button>
         </div>
+
       </div>
     </div>
   );

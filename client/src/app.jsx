@@ -11,23 +11,23 @@ import A1 from '../src/A1MP3.mp3'
 import MP3RecorderEncoder from './components/mp3recorder/MP3RecorderEncoder';
 import PitchShift from './components/PitchShift/pitchShift';
 import ShiftLayer from './components/PitchShift/ShiftLayer';
+import LayerPlayer from './components/LayerPlayer/LayerPlayer';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
+
+
   }
+
 
   render() {
     return (
       <div>
         <h1>I'm rendered from React!</h1>
-        <ShiftLayer/>
-        {/* <MP3RecorderEncoder/>
-         <MusicPlayer /> */}
-        {/* <LessVerboseRecorder/>
-        <Synth/>  */}
-        {/* <RecorderTone/> */}
-        {/* <LessVerboseRecorder/> */}
+
+      <LayerPlayer/>
+      {/* <MusicPlayer/> */}
 
       </div>
     );
