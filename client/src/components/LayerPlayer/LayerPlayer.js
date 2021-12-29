@@ -16,16 +16,14 @@ export default function LayerPlayer(props) {
   const [allLayers, setAllLayers] = useState([]);
   const allLayersPlayState = useRef('');
 
-
   const playAllLayers = async () => {
     await Tone.start();
     allLayers.forEach((layer, i) => {
       layer.props.layerPlayer.sync().start();
     });
     await Tone.loaded();
-    allLayersPlayState.current ='started';
+    allLayersPlayState.current = 'started';
     Tone.Transport.start();
-
   };
 
   const stopAllLayers = () => {
@@ -47,6 +45,7 @@ export default function LayerPlayer(props) {
 
   useEffect(() => {
     // for right meow, calling this function instead of fetching data
+
     layerMaker();
   }, []);
 
@@ -57,13 +56,13 @@ export default function LayerPlayer(props) {
       temporaryUserLayer3,
       temporaryUserLayer4,
     ];
-    const userMp3 = [
-        testingMp3,testingMp3,testingMp3,testingMp3
-    ]
+    // making sure it works with audio recorded from my mic
+    const userMp3 = [testingMp3, testingMp3, testingMp3, testingMp3];
 
     let layerEditorComponents = layers.map((layer, index) => {
       var pitchShift = new Tone.PitchShift().toDestination();
       var newPlayer = new Tone.Player(layer).connect(pitchShift);
+      // newPlayer.playbackRate
 
       // do not sync players here in order to maintain individual player control
       return (
@@ -82,7 +81,7 @@ export default function LayerPlayer(props) {
 
   return (
     <div>
-      <button  onClick={playAllLayers} >Play All Layers</button>
+      <button onClick={playAllLayers}>Play All Layers</button>
       <button onClick={stopAllLayers}>Stop All Layers</button>
       <button onClick={pauseResumeAllLayers}>Pause/Resume</button>
       {/*alllayersfromstate*/}
@@ -93,11 +92,30 @@ export default function LayerPlayer(props) {
 
 const LayerEditor = (props) => {
   const player = props.layerPlayer;
-  const [layerPlayer, setLayerPlayer] = useState(player);
+  const [duration, setDuration] = useState(false);
   const [sliderValue, setSliderValue] = useState('0');
   const pitchShift = props.pitchShift;
 
 
+  // put page on mousedown listener to get the duration of tracks then immediatly remove it after setting each tracks duration.
+  useEffect(() => {
+
+    const mouse = async () => {
+      await Tone.start();
+      setDuration(player._buffer.duration);
+
+    };
+
+    if (!duration) {
+      document.documentElement.addEventListener('mousedown', mouse);
+
+    }
+    return () => {
+      document.documentElement.removeEventListener('mousedown', mouse);
+
+    };
+
+  }, [duration]);
   const playLayer = async () => {
     try {
       await Tone.start();
@@ -110,19 +128,19 @@ const LayerEditor = (props) => {
     }
   };
 
-
   const changeValue = (e) => {
-    var rangeInputValue = e.target.value
+    var rangeInputValue = e.target.value;
     var output = document.getElementById(props.id);
     output.innerHTML = rangeInputValue;
     setSliderValue(rangeInputValue);
-   // set the pitch to be the number we get from the range input
-    pitchShift.pitch = rangeInputValue
+    // set the pitch to be the number we get from the range input
+    pitchShift.pitch = rangeInputValue;
   };
 
   return (
-    <div>
+    <div className='layerEditor' id={props.id + 'layer'}>
       <button onClick={playLayer}>Play Layer {props.id}</button>
+
       <div className='slidecontainer'>
         <input
           type='range'
@@ -134,9 +152,13 @@ const LayerEditor = (props) => {
           id='myRange'
         />
         <p>
-          Value: <span id={props.id} value={sliderValue}>{sliderValue}</span>
+          Value:{' '}
+          <span id={props.id} value={sliderValue}>
+            {sliderValue}
+          </span>
         </p>
       </div>
     </div>
   );
 };
+
