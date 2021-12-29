@@ -5,6 +5,8 @@ import DisplayList from './editorComponents/DisplayList.jsx';
 import LayerList from './editorComponents/LayerList.jsx';
 import Timebox from './editorComponents/Timebox.jsx';
 import TimeControlBox from './editorComponents/TimeControlBox.jsx';
+import SettingsList from './editorComponents/SettingsList.jsx';
+import AudioEditList from './editorComponents/AudioEditList.jsx';
 
 import { AppBar, Box, Button, Container, CssBaseline, Menu, MenuItem, Toolbar, Typography } from '@mui/material'
 import { OfflineBolt } from '@mui/icons-material';
@@ -66,6 +68,8 @@ export default function Editor() {
           <DisplayList layers={layers} />
           <Timebox />
           <TimeControlBox />
+          <AudioEditList />
+          <SettingsList />
         </Container>
       </main>
     </>
