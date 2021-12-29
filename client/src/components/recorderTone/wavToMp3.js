@@ -1,5 +1,5 @@
 
-import  lamejs from 'lamejs';
+// import  lamejs from 'node-lame';
 
 export default function wavToMp3(channels, sampleRate, samples) {
     var buffer = [];

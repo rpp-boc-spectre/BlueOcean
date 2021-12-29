@@ -1,10 +1,10 @@
 import React,{useState,useRef,useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import MusicPlayer from './components/MusicPlayer';
-// import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import VerboseRecorder from './components/verboseRecorder';
 import LessVerboseRecorder from './components/lessVerboseRecorder/LessVerboseRecorder';
-
+// import lamejs from 'node-lame'
 import RecorderTone from './components/recorderTone/recorderTone';
 import Mp3Recorder from './components/mp3recorder/Mp3Recorder';
 import A1 from '../src/A1MP3.mp3'
@@ -27,7 +27,8 @@ class App extends React.Component {
         <h1>I'm rendered from React!</h1>
 
       <LayerPlayer/>
-      <RecorderTone/>
+      {/* <RecorderTone/> */}
+      <LessVerboseRecorder/>
 
       </div>
     );

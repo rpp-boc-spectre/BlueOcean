@@ -8,9 +8,12 @@ const { Console } = require('console');
 const app = express();
 const port = 3000;
 const NodeID3 = require('node-id3')
+const Lame = require("node-lame").Lame;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // const mp3Test = require('../client/src/testing.mp3')
+
+
 app.use(express.static(path.resolve(__dirname, '../client/dist')));
 
 app.listen(process.env.PORT || port, () => {

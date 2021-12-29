@@ -1,5 +1,5 @@
 
-import  lamejs from 'lamejs';
+// import  lamejs from 'node-lame';
 import wavToMp3 from './wavToMp3';
  function audioBufferToWav(aBuffer) {
     let numOfChan = aBuffer.numberOfChannels,
