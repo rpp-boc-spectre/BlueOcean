@@ -1,7 +1,6 @@
 import React, { useState, useContext} from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import UserContext from '../context/UserContext.js';
-
 import { auth } from '../lib/firebase.js';
 import { signOut } from "firebase/auth";
 
@@ -65,7 +64,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 
-const ResponsiveHeader = (props) =>{
+const ResponsiveHeader = () =>{
   /*
   LOGIC FOR WHAT OPTIONS TO OFFER BASED ON USER STATUS AND CURRENT PAGE
   */

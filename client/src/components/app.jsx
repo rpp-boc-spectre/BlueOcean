@@ -19,7 +19,7 @@ export default function App() {
     <SnackbarProvider SnackbarProps={{ autoHideDuration: 4000 }}>
       <UserContext.Provider value={userData}>
         <div className="App">
-        <ResponsiveHeader loggedIn='false' page='home' />
+        <ResponsiveHeader />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path='login' element={<Entry />} />
