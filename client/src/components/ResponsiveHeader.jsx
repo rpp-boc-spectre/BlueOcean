@@ -1,5 +1,8 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useContext} from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import UserContext from '../context/UserContext.js';
+import { auth } from '../lib/firebase.js';
+import { signOut } from "firebase/auth";
 
 
 import { OfflineBolt } from '@mui/icons-material';
@@ -61,31 +64,34 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 
-const ResponsiveHeader = (props) =>{
+const ResponsiveHeader = () =>{
   /*
   LOGIC FOR WHAT OPTIONS TO OFFER BASED ON USER STATUS AND CURRENT PAGE
   */
+  const { user, username } = useContext(UserContext);
+  const { pathname } = useLocation();
+
   let settings, pages;
-  if (props.loggedIn === 'true') {
+  if (user) {
     settings = ['Log Out'];
   } else {
     settings = ['Log In'];
   }
-  if (props.page === 'editor') {
+  if (pathname === '/dashboard') {
     pages = ['Home', 'Your Tracks'];
-  } else if (props.page === 'home' && props.loggedIn === 'true') {
+  } else if (pathname === '/' && user) {
     pages = ['Your Tracks', 'Editor'];
-  } else if (props.page === 'home') {
+  } else if (pathname === '/') {
     pages = [];
-  } else if (props.page === 'tracks' && props.loggedIn === 'true') {
+  } else if (pathname === '/tracks' && user) {
     pages = ['Home', 'Editor'];
   } else {
     pages = ['Home'];
   }
 
   // anchors for menu
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
 
   let navigate = useNavigate();
@@ -115,6 +121,10 @@ const ResponsiveHeader = (props) =>{
     setAnchorElUser(null);
     if (target === 'Log In') {
       navigate("/login")
+    }
+
+    if (target === 'Log Out') {
+      signOut(auth)
     }
   };
 

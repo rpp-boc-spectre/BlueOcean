@@ -10,6 +10,7 @@ import NotFound from './NotFound.jsx'
 import Entry from './Entry.jsx'
 import RequireAuth from "./RequireAuth.jsx";
 import Dashboard from './Dashboard.jsx'
+import ResponsiveHeader from './ResponsiveHeader.jsx';
 
 export default function App() {
   const userData = useUserData()
@@ -18,6 +19,7 @@ export default function App() {
     <SnackbarProvider SnackbarProps={{ autoHideDuration: 4000 }}>
       <UserContext.Provider value={userData}>
         <div className="App">
+        <ResponsiveHeader />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path='login' element={<Entry />} />
