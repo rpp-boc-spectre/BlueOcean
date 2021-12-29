@@ -42,7 +42,6 @@ const editSettings = [
 export default function Editor() {
   return (
     <>
-      <ResponsiveHeader loggedIn='true' page='editor' />
       <main>
         {/* Temp Text for Testing */}
         <Box
