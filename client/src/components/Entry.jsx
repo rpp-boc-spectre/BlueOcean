@@ -12,10 +12,12 @@ import { useSnackbar } from 'material-ui-snackbar-provider';
 import { db } from '../lib/firebase.js';
 import { doc, getDoc} from 'firebase/firestore'
 import UserForm from './UserForm.jsx';
+import SignUp from './SignUp.jsx';
 
 export default function Entry() {
   const userData = useContext(UserContext)
   const [showUserForm, setShowUserForm] = useState(false)
+  const [signIn, setSignIn] = useState(true)
 
   let navigate = useNavigate();
   let location = useLocation();
@@ -68,19 +70,35 @@ export default function Entry() {
     })
   }
 
+  const entryType = () => {
+    if (signIn) {
+      return (
+        <>
+          {(userData?.user && userData?.username) ?
+          <Button variant="outlined" color="error" onClick={handleSignOut}>
+            Signout
+          </Button>
+          :
+          showUserForm ?
+          <UserForm userId={userData.user.uid}/>
+          :
+          <>
+            <Button variant="contained" onClick={handleSignInWithGoogle}>Sign In with Google</Button>
+            <Button variant="outlined" onClick={() => {setSignIn(false)}}>Sign Up</Button>
+          </>
+        }
+        </>
+      )
+    } else {
+      return (<SignUp navigate={navigate} />)
+    }
+  }
+
   return (
     <>
       <Typography variant='h3'>Login Component</Typography>
-      {(userData?.user && userData?.username) ?
-        <Button variant="outlined" color="error" onClick={handleSignOut}>
-          Signout
-        </Button>
-        :
-        userData?.user ?
-        <UserForm userId={userData.user.uid}/>
-        :
-        <Button variant="contained" onClick={handleSignInWithGoogle}>Sign In with Google</Button>
-      }
+
+      {entryType()}
     </>
   )
 }
