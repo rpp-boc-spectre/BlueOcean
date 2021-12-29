@@ -12,7 +12,7 @@ import { useSnackbar } from 'material-ui-snackbar-provider';
 import { db } from '../lib/firebase.js';
 import { doc, getDoc} from 'firebase/firestore'
 import UserForm from './UserForm.jsx';
-import SignUp from './Signup.jsx';
+import SignUp from './SignUp.jsx';
 
 export default function Entry() {
   const userData = useContext(UserContext)
