@@ -9,12 +9,17 @@ const app = express();
 const port = 3000;
 const NodeID3 = require('node-id3')
 const Lame = require("node-lame").Lame;
+const multer = require('multer')
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+
 // const mp3Test = require('../client/src/testing.mp3')
 
 
 app.use(express.static(path.resolve(__dirname, '../client/dist')));
+var upload = multer({ dest: __dirname + '/public/uploads/' });
+var type = upload.single('upl');
 
 app.listen(process.env.PORT || port, () => {
   console.log(`Listening on port ${process.env.PORT || port}`);
@@ -32,11 +37,11 @@ app.get('/audio', async (req, res) => {
 
 app.post('/audioUrls', async (req, res) => {
   // let blob = req.body.blobs;
-  console.log('blob',req.body.blob)
+  console.log('blob',req.body)
   const blob = req.body.blob
   // const tags = req.body.tags
   // console.log('dir',path.join(__dirname,'./audioFiles/blob.txt'));
-  const filebuffer = Buffer.from([blob]);
+  // const filebuffer = Buffer.from([blob]);
 
 //   const tags = {
 //     title: "Tomorrow!!!!!",
@@ -47,21 +52,21 @@ app.post('/audioUrls', async (req, res) => {
 //     length:req.body.length.toString()
 // }
 
-const tags = {
-  title:'testing Track',
-  artist:'testyTesterosa',
-  length:req.body.length.toString()
-}
-const success =  NodeID3.write(tags, filebuffer)
+// const tags = {
+//   title:'testing Track',
+//   artist:'testyTesterosa',
+//   length:req.body.length.toString()
+// }
+// const success =  NodeID3.write(tags, filebuffer)
 
 
-const taggedFile = NodeID3.read(success)
+// const taggedFile = NodeID3.read(success)
 
 
-console.log('tagged',taggedFile)
+// console.log('tagged',taggedFile)
 // needs error handling
 // not sending back correct format. need to research how to send blob back.
-res.send({filebuffer})
+// res.send({filebuffer})
 
 });
 

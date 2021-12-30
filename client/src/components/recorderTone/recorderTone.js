@@ -1,10 +1,10 @@
-import React, { Component, useState, useEffect, useRef } from 'react';
-// import lamejs from 'node-lame'
-import audioBufferToWav from 'audiobuffer-to-wav'
+import React, { useState } from 'react';
+import axios from 'axios'
+import audioBufferToWav from './audioBufferToWav';
 import * as Tone from 'tone';
-import getBlobDuration from 'get-blob-duration';
-// import wavToMp3 from './wavToMp3';
-// import audioBufferToWav from './audioBufferToWav';
+import { getStorage, ref, uploadBytes } from 'firebase/storage';
+import { storage } from '../../../../lib/firebase';
+import testingMp3 from '../../testing.mp3';
 export default function RecorderTone(props) {
   const [url, setUrl] = useState(null);
   const [micRecorder, setMicRecorder] = useState();
@@ -14,67 +14,58 @@ export default function RecorderTone(props) {
   const startRecorder = async function () {
     await Tone.start();
     const recorder = new Tone.Recorder();
-    // recorder.ondataavailable = evt => chunks.push(evt.data);
-
-    // recorder.onstop = evt => {
-    //   // let blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' });
-    //   // audio.src = URL.createObjectURL(blob);
-    //   console.log('chunks',chunks)
-    // };
 
     const mic = new Tone.UserMedia().connect(recorder);
     setMicRecorder(recorder);
     setUserMic(mic);
 
     await mic.open();
-
     recorder.start();
     console.log('recording');
   };
 
-
-
-
   const stopRecorder = async function () {
-
     const recording = await micRecorder.stop();
-   await  userMic.close();
-    // console.log('MICRECORDER', chunks);
-    // console.log('recording!!!!', recording);
+    await userMic.close();
 
-    // const length =  await getBlobDuration(recording)
+    const audioContext = new AudioContext();
 
-    // console.log('len',length)
-    const audioContext = new AudioContext()
-
-    // let last;
-
-     let arraybuff= await recording.arrayBuffer()
-      audioContext.decodeAudioData(arraybuff,function(audioBuffer){
-        console.log(audioBuffer,'======')
-      let  last = audioBufferToWav(audioBuffer)
-      console.log('last',last)
-      setUrl(last)
-      })
-
-
-    // recording.arrayBuffer().then((arrayBuffer )=>{
-    //   audioContext.decodeAudioData(arrayBuffer,(audioBuffer)=>{
-    //     console.log(audioBuffer,'======')
-    //     // let sixteen = new Blob([audioBuffer],{type:'audio/mp3'})
-    //     // console.log("16",sixteen)
-    //     // setUrl(sixteen);
-    //     // audioBufferToWav(audioBuffer)
-    //   })
-    // })
+    let blobArrayBuffer = await recording.arrayBuffer();
+    let audioBuffer = await audioContext.decodeAudioData(blobArrayBuffer);
+    let audioBufferToWavJS = audioBufferToWav(audioBuffer);
+    let newBlob = new Blob([audioBufferToWavJS], { type: 'audio/wav' });
+    console.log('REcording',recording.size,'Blob',newBlob.size)
+    let newBlobURL = URL.createObjectURL(newBlob);
 
 
 
+   try {
+    const mp3StorageRef = ref(storage, 'audio/HVA5M5IcFWT5IliCKV4212EMw4o1/testAudio.wav')
+    const testing =  await  uploadBytes(mp3StorageRef, newBlob)
+    console.log("SNAPSHOT",testing)
+   } catch (error) {
+    console.log('ERROR',error)
+
+   }
 
 
-
+    // setUrl(newBlobURL);
+    // send(recording);
   };
-
+  const send = (blob) => {
+    axios
+      .post('/audioUrls', blob)
+      .then((results) => {
+        console.log('results', results);
+        // let fileBuffer = Buffer.from(JSON.parse(results.data.blob))
+        // console.log('fileBuffer',fileBuffer)
+        // let responseBlob = URL.createObjectURL(results.data.blob)
+        setBlobURL(responseBlob);
+      })
+      .catch((error) => {
+        console.log('error', error);
+      });
+  };
 
   return (
     <div>
@@ -88,7 +79,6 @@ export default function RecorderTone(props) {
     </div>
   );
 }
-
 
 //   function audioBufferToWav(aBuffer) {
 //     let numOfChan = 1,
@@ -144,7 +134,6 @@ export default function RecorderTone(props) {
 //     }
 //   }
 
-
 //   function wavToMp3(channels, sampleRate, samples) {
 //     var buffer = [];
 //     var mp3enc = new lamejs.Mp3Encoder(channels, sampleRate, 128);
@@ -171,20 +160,6 @@ export default function RecorderTone(props) {
 //     return bUrl
 
 //   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*
 

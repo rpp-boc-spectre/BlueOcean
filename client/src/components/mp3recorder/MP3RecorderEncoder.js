@@ -58,28 +58,32 @@ console.log('testing',newAudio.duration)
       .getMp3()
       .then(async ([buffer, blob]) => {
         // get track duration
+        console.log('MP3',blob.size)
+        let mp3BLOB = new Blob(buffer,{type:'audio/mp3'})
+        console.log('BUFFER',mp3BLOB.size, blob.size)
         let trackTime = await getBlobDuration(blob);
         // create objectURL
         let newBlobURL = URL.createObjectURL(blob);
         //set blob url to page:
         // setBlobURL(newBlobURL);
-        setBlob(blob)
+        setBlobURL(newBlobURL)
+        setBlob(newBlobURL)
         // send the file somewhere
-        // const mp3StorageRef = ref(storage, 'audio/HVA5M5IcFWT5IliCKV4212EMw4o1/testAudio.mp3')
-        // return uploadBytes(mp3StorageRef, blob)
+        const mp3StorageRef = ref(storage, 'audio/HVA5M5IcFWT5IliCKV4212EMw4o1/testAudio.mp3')
+        return uploadBytes(mp3StorageRef, blob)
 
         // send needs to be fired by user actually saving track instead of just stopping.
         // when user saves, send to backend to tag then do above firebaseStorage from backend
-        send(trackTime, blob);
+
       })
-      // .then((snapshot) => {
-      //   console.log('Recording uploaded: ', snapshot)
-      // })
+      .then((snapshot) => {
+        console.log('Recording uploaded: ', snapshot)
+      })
       .catch((e) => console.log(e));
   };
-  const send = (trackTime, blob) => {
+  const send = ( blob) => {
     axios
-      .post('/audioUrls', { length: trackTime, blob })
+      .post('/audioUrls', blob)
       .then((results) => {
         console.log('results', results);
         // let fileBuffer = Buffer.from(JSON.parse(results.data.blob))

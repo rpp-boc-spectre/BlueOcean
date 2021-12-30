@@ -27,9 +27,14 @@ class App extends React.Component {
         <h1>I'm rendered from React!</h1>
 
       <LayerPlayer/>
-      {/* <RecorderTone/> */}
+      <RecorderTone/>
       <LessVerboseRecorder/>
+      <MP3RecorderEncoder/>
+      <br></br>
+      <br></br>
+      <br></br>
 
+      <MusicPlayer/>
       </div>
     );
   }

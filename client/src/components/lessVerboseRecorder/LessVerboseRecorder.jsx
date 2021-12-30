@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import RecorderHook from './recorderHook.js';
 import * as Tone from 'tone';
 import axios from 'axios';
+import { getStorage, ref, uploadBytes } from 'firebase/storage';
+import { storage } from '../../../../lib/firebase';
+import testingMp3 from '../../testing.mp3';
 export default function LessVerboseRecorder() {
   let [
     audioUrl,

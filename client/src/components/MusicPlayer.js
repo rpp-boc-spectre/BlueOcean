@@ -4,13 +4,14 @@ import axios from 'axios'
 import testMp3 from '../testing.mp3'
 export default function MusicPlayer() {
 
-  const [urls, setUrls] = useState(true)
+  const [urls, setUrls] = useState(false)
   const [ready, setReady] = useState(false)
 
   const getUrls = async () => {
     try {
       let response = await axios.get('/audio')
-      setUrls([response.data[0],response.data[2]])
+      console.log('resoponse',response.data)
+      setUrls(response.data)
     } catch (error) {
       console.log(error)
     }
@@ -25,14 +26,14 @@ export default function MusicPlayer() {
     Tone.Transport.pause()
   }
 
-  // useEffect(() => {
-  //   getUrls()
-  // }, [])
+  useEffect(() => {
+    getUrls()
+  }, [])
 
   useEffect(() => {
     if (urls) {
-      const urls = [testMp3]
-      console.log('urls',urls)
+      // const urls = [testMp3]
+
       const test = urls.forEach((url, index) => {
         console.log('url',url)
         let player = new Tone.Player({
@@ -43,11 +44,11 @@ export default function MusicPlayer() {
         // player.connect(gain).toDestination()
         // const comp = new Tone.Compressor(-3, 18).toDestination();
         // player.connect(comp)
-        const pitchShift = new Tone.PitchShift(4).toDestination()
-        const pitchShift2 = new Tone.PitchShift(7).toDestination()
-        player.connect(pitchShift2)
-        player.connect(pitchShift)
-        console.log('test',test)
+        // const pitchShift = new Tone.PitchShift(4).toDestination()
+        // const pitchShift2 = new Tone.PitchShift(7).toDestination()
+        // player.connect(pitchShift2)
+        // player.connect(pitchShift)
+        // console.log('test',test)
         player.sync().start()
       })
 
