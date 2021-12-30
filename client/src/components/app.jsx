@@ -12,6 +12,7 @@ import RequireAuth from "./RequireAuth.jsx";
 import Dashboard from './Dashboard.jsx'
 import ResponsiveHeader from './ResponsiveHeader.jsx';
 import Recorder from "./Recorder.jsx";
+import Editor from "./Editor.jsx";
 
 export default function App() {
   const userData = useUserData()
@@ -29,7 +30,8 @@ export default function App() {
                 <Dashboard />
               </RequireAuth>
             } />
-            <Route path='/recorder' element={<Recorder />}></Route>
+            <Route path='/editor' element={<Editor />} />
+            <Route path='/recorder' element={<Recorder />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
         </div>
