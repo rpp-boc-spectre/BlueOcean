@@ -3,9 +3,11 @@ import React, { useState, useContext } from 'react';
 import * as Tone from 'tone';
 import { ref, uploadBytes } from 'firebase/storage';
 import { storage } from '../lib/firebase';
+
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import Typography from '@mui/material/Typography';
 import UserContext from '../context/UserContext';
-import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert'
 import { useSnackbar } from 'material-ui-snackbar-provider';
 
@@ -77,9 +79,17 @@ export default function RecorderTone(props) {
     <Typography variant='h3'>Recorder Component</Typography>
     <button onClick={startRecorder}>Click to record</button>
     <button onClick={stopRecorder}>Click to stop</button>
-
-    <button onClick={handleUploadClick} disabled={!isFinished}>Upload</button>
-    <TextField variant='outlined' onChange={(e) => {setRecordingName(e.target.value)}}/>
+    <ValidatorForm onSubmit={handleUploadClick}>
+      <TextValidator
+        label="Layer Name"
+        onChange={e => {setRecordingName(e.target.value)}}
+        name="layer name"
+        value={recordingName}
+        validators={['required']}
+        errorMessages={['this field is required']}
+      />
+      <Button variant="contained" type="submit" disabled={!isFinished}>Upload</Button>
+    </ValidatorForm>
     <br />
     <br />
     <br />
