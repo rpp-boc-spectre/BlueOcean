@@ -9,6 +9,8 @@ import Typography from '@mui/material/Typography';
 import UserContext from '../context/UserContext';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert'
+import MicIcon from '@mui/icons-material/Mic';
+import StopCircleIcon from '@mui/icons-material/StopCircle';
 import { useSnackbar } from 'material-ui-snackbar-provider';
 
 export default function RecorderTone(props) {
@@ -77,8 +79,8 @@ export default function RecorderTone(props) {
   return (
     <>
     <Typography variant='h3'>Recorder Component</Typography>
-    <button onClick={startRecorder}>Click to record</button>
-    <button onClick={stopRecorder}>Click to stop</button>
+    <Button variant='outlined' onClick={startRecorder} startIcon={<MicIcon />} disabled={isFinished === false && micRecorder}>Click to record</Button>
+    <Button variant='outlined' onClick={stopRecorder} endIcon={<StopCircleIcon />} disabled={isFinished === true || !micRecorder}>Click to stop</Button>
     <ValidatorForm onSubmit={handleUploadClick}>
       <TextValidator
         label="Layer Name"
