@@ -1,14 +1,17 @@
 import React from 'react';
 
 
-import { Box, Typography } from '@mui/material';
+import { Box, Checkbox, FormControlLabel, Typography } from '@mui/material';
 
 
 const LayerEntry = (props) => {
   // console.log('ENTRY PROPS', props);
   return (
     <>
-      <Typography variant='subtitle1'>Layer {props.number}</Typography>
+    <FormControlLabel
+      label={'Layer' + props.number}
+      control={<Checkbox />}
+    />
     </>
   );
 };

@@ -1,7 +1,6 @@
 import React from 'react';
-import SettingsButton from './SettingsButton.jsx';
 
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Drawer, Typography } from '@mui/material';
 
 /*
 Actual settings and their respective functions subject to change, and their
@@ -29,13 +28,54 @@ const settingsArray = [
   {name: 'Upload', handler: uploadHandler}
 ];
 
-const SettingsList = () => {
+
+
+const SettingsList = (props) => {
+  const { window } = props;
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const container = window !== undefined ? () => window().document.body : undefined;
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
   return (
     <>
-      <Box sx={{ border: 1}}>
+      <Button onClick={handleDrawerToggle} sx={{
+        display: {xs: 'block', md: 'none'},
+        border: 1,
+        gridColumn: {xs: '3', md: '3'},
+        gridRow: {xs: '4', md: '2 / 4'}
+      }}>
+        <Typography>Settings</Typography>
+      </Button>
+      <Drawer  container={container}
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: {xs: 'block', md: 'none'},
+            border: 1,
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: '100%', maxHeight: '80%' }
+          }}>
         <Typography variant='subtitle1'>Settings List</Typography>
         {settingsArray.map((setting, index) => {
-          return (<SettingsButton key={index} setting={setting} />);
+          return (<Button variant='outlined' key={index} onClick={setting.handler}>{setting.name}</Button>);
+        })}
+      </Drawer>
+      <Box
+      sx={{
+        display: {xs: 'none', md: 'block'},
+        border: 1,
+        gridColumn: {xs: '3', md: '3'},
+        gridRow: {xs: '4', md: '2 / 4'}
+      }}>
+        {settingsArray.map((setting, index) => {
+          return (<Button variant='outlined' key={index} onClick={setting.handler}>{setting.name}</Button>);
         })}
       </Box>
     </>

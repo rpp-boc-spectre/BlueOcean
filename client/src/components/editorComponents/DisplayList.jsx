@@ -14,14 +14,17 @@ const DisplayList = (props) => {
         sx={{
           bgcolor: 'background.paper',
           p: 1,
-          border: 1
+          border: 1,
+          gridColumn: {xs: '1 / 4', md:'2 / 4'},
+          gridRow: {xs: '1', md: '1'}
         }}
       >
         <Box
           sx={{
             bgcolor: 'background.paper',
             p: 1,
-            border: 1
+            border: 1,
+            overflow: 'auto',
           }}>
           <Typography variant='subtitle1'>Display List Box</Typography>
           {/* Would we need a display entry for all of the layers at once,

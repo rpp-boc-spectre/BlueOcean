@@ -46,7 +46,11 @@ const buttons = [
 const TimeControlBox = () => {
   return (
     <>
-      <Box sx={{ border: 1}}>
+      <Box sx={{
+        border: 1,
+        gridColumn: {xs: '1', md: '1'},
+        gridRow: {xs: '3 / 5', md: '3'}
+      }}>
         {buttons.map((button, index) => {
           return <TimeControlButton key={index} button={button} />
         })}

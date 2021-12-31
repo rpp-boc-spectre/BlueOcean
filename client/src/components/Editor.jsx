@@ -43,10 +43,10 @@ export default function Editor() {
   return (
     <>
       <main>
-        {/* Temp Text for Testing */}
+        {/* Temp Text for Testing
         <Box
           sx={{
-            bgcolor: 'background.paper',
+            bgcolor: '#cfe8fc',
             p: 5
           }}>
           <Typography
@@ -58,11 +58,16 @@ export default function Editor() {
           >
               I am the page to edit audio tracks!
           </Typography>
-        </Box>
+        </Box> */}
         {/* Main Component */}
-        <Container sx={{border: 1}} maxWidth='md'>
-          {/* Box for testing width of container */}
-          {/* <Box sx={{ bgcolor: '#cfe8fc', height: '100vh' }} /> */}
+        <Container sx={{
+          border: 1,
+          maxHeight: '80vh',
+          width: {xs: '100%', md: '70%'},
+          display: 'grid',
+          gridTemplateColumns: {xs: '2fr 1fr 1fr', md: '2fr 3fr 1fr'},
+          gridTemplateRows: {xs: '6fr 2fr 1fr 1fr', md: '4fr 1fr 2fr'}
+        }}>
           <LayerList layers={layers} />
           <DisplayList layers={layers} />
           <Timebox />

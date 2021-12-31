@@ -11,6 +11,7 @@ import Entry from './Entry.jsx'
 import RequireAuth from "./RequireAuth.jsx";
 import Dashboard from './Dashboard.jsx'
 import ResponsiveHeader from './ResponsiveHeader.jsx';
+import Editor from './Editor.jsx';
 
 export default function App() {
   const userData = useUserData()
@@ -23,6 +24,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path='login' element={<Entry />} />
+            <Route path='edit' element={<Editor />} />
             <Route path='dashboard' element={
               <RequireAuth>
                 <Dashboard />

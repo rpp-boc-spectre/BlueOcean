@@ -1,8 +1,7 @@
 import React from 'react';
 import AudioEditBox from './AudioEditBox.jsx';
-import AudioEditButton from './AudioEditButton.jsx';
 
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
 
 /*
 Actual editing options and their respective functions subject to change, and their
@@ -54,14 +53,17 @@ class AudioEditList extends React.Component {
       options = this.freeOptions;
     }
     let active = this.state.activeOption;
-    console.log('ACTIVE', active);
     return (
       <>
-        <Box sx={{ border: 1}}>
+        <Box sx={{
+          border: 1,
+          gridColumn: {xs: '1 / 4', md: '2'},
+          gridRow: {xs: '2', md: '2 / 4'}
+        }}>
           <Typography variant='subtitle1'>Editing Options</Typography>
           <AudioEditBox active={this.state.activeOption}/>
           {options.map((option, index) => {
-            return (<AudioEditButton key={index} option={option} />);
+            return (<Button variant='outlined' key={index} onClick={option.handler}>{option.name}</Button>);
           })}
         </Box>
       </>
