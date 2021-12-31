@@ -1,31 +1,28 @@
-import React, { useState, useEffect } from "react";
-import * as Tone from 'tone'
+import React, { useState, useEffect } from 'react';
+import * as Tone from 'tone';
 
-export default function LayerEditor (props) {
+export default function LayerEditor(props) {
   const player = props.layerPlayer;
   const [duration, setDuration] = useState(false);
-  const [sliderValue, setSliderValue] = useState(props.pitch);
+  const [pitchSliderValue, setPitchSliderValue] = useState(props.pitch);
+  const [volumeSlider,setVolumeSlider] = useState(props.layerVolume)
   const pitchShift = props.pitchShift;
-
+  const layerVolume = props.layerVolume
+  console.log('layervol',layerVolume)
 
   // put page on mousedown listener to get the duration of tracks then immediatly remove it after setting each tracks duration.
   useEffect(() => {
-
     const mouse = async () => {
       await Tone.start();
       setDuration(player._buffer.duration);
-
     };
 
     if (!duration) {
       document.documentElement.addEventListener('mousedown', mouse);
-
     }
     return () => {
       document.documentElement.removeEventListener('mousedown', mouse);
-
     };
-
   }, [duration]);
   const playLayer = async () => {
     try {
@@ -43,7 +40,7 @@ export default function LayerEditor (props) {
     var rangeInputValue = e.target.value;
     var output = document.getElementById(props.id);
     output.innerHTML = rangeInputValue;
-    setSliderValue(rangeInputValue);
+    setPitchSliderValue(rangeInputValue);
     // set the pitch to be the number we get from the range input
     pitchShift.pitch = rangeInputValue;
   };
@@ -58,18 +55,35 @@ export default function LayerEditor (props) {
           type='range'
           min='0'
           max='12'
-          value={sliderValue}
+          value={pitchSliderValue}
           onInput={changeValue}
           className='slider'
           id='myRange'
         />
         <p>
           Value:{' '}
-          <span id={props.id} value={sliderValue}>
-            {sliderValue}
+          <span id={props.id} value={pitchSliderValue}>
+            {pitchSliderValue}
+          </span>
+        </p>
+      </div>
+      <div>
+        <input
+          type='range'
+          min='0'
+          max='12'
+          value={pitchSliderValue}
+          onInput={changeValue}
+          className='slider'
+          id='myRange'
+        />
+        <p>
+          Value:{' '}
+          <span id={props.id} value={pitchSliderValue}>
+            {pitchSliderValue}
           </span>
         </p>
       </div>
     </div>
   );
-};
+}

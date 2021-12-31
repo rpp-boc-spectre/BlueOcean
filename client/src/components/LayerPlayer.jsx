@@ -114,6 +114,7 @@ export default function LayerPlayer(props) {
             pitchShift={pitchShift}
             pitch={layer.pitch}
             layerVolume={volume}
+            volume= {layer.volume}
           />
       );
     });
