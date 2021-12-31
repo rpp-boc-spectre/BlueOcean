@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import * as Tone from 'tone'
 import axios from 'axios'
-// import Visualizer from './Visualizer.jsx';
 
 export default function MusicPlayer() {
 
   const [urls, setUrls] = useState(null)
   const [ready, setReady] = useState(false)
+  const [players, setPlayers] = useState({})
 
   const getUrls = async () => {
     try {
@@ -19,52 +19,40 @@ export default function MusicPlayer() {
 
   const handlePlayClick = async () => {
     await Tone.start()
+    Tone.Transport.schedule((time) => {
+      Tone.Draw.schedule(() => {
+        // console.log('TONE DRAW TIME', time);
+        renderWaveform(players);
+      }, time);
+    }, "+0.005");
     Tone.Transport.start()
-    renderWaveform();
+
   }
 
   const handleStopClick = () => {
     Tone.Transport.pause()
   }
 
-  const renderWaveform = () => {
+  const renderWaveform = (players) => {
     if (urls.length > 0) {
-      let files = {};
-      let audioCtx = {};
-      let sources = {};
       let analysers = {};
       let bufferLengths = {};
       let dataArrays = {};
-      let averageBL, barWidth, barHeight, x;
+      let averageBL;
       const canvas = document.querySelector('.visualizer');
       const canvasCtx = canvas.getContext('2d');
 
-      for (let i = 0; i < urls.length; i++) {
-        files[i] = document.createElement('audio');
-        files[i].setAttribute('src', urls[i]);
-        audioCtx[i] = new (window.AudioContext || window.webkitAudioContext)();
-        // CREATE CONTEXT WRAPPER WITH TONE.CONTEXT()
-      }
-
-      for (let audio in audioCtx) {
-        // USE TONE.CONTEXT.createAnalyser()
-        analysers[audio] = audioCtx[audio].createAnalyser();
-        // USE Tone.Context.createMediaElementSource()
-        sources[audio] = audioCtx[audio].createMediaElementSource(files[audio]);
-        sources[audio].connect(analysers[audio]);
-        analysers[audio].connect(audioCtx[audio].destination);
+      for (let waveform in players) {
+        analysers[waveform] = players[waveform]._analyser._analysers[0];
       }
 
       for (let audio in analysers) {
         analysers[audio].fftSize = 2048;
         bufferLengths[audio] = analysers[audio].frequencyBinCount;
         dataArrays[audio] = new Uint8Array(bufferLengths[audio]);
-        analysers[audio].getByteTimeDomainData(dataArrays[audio]);
       }
 
       averageBL = (Object.values(bufferLengths).reduce((a, b) => a + b)) / Object.keys(bufferLengths).length;
-      barWidth = canvas.width/averageBL;
-      x = 0;
       canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
       const draw = () => {
@@ -80,23 +68,30 @@ export default function MusicPlayer() {
 
         let sliceWidth = canvas.width * 1.0 / averageBL;
         let x = 0;
-        let avg = 0;
+        const length = Object.keys(dataArrays).length;
 
         for (let i = 0; i < averageBL; i++) {
+          let counter = 0;
+          let avgDA = 0;
+          let v, y, average;
           for (let arr in dataArrays) {
             let currentArr = dataArrays[arr];
-            avg += currentArr[i];
+            avgDA += currentArr[i];
+            counter++;
+            if (counter === length) {
+              average = avgDA / length;
+              v = average/128.0;
+              y = v * canvas.height/2;
+              counter = 0;
+              average = 0;
+              if (i === 0) {
+                canvasCtx.moveTo(x, y);
+              } else {
+                canvasCtx.lineTo(x, y);
+              }
+              x += sliceWidth;
+            }
           }
-          avg = avg / Object.keys(dataArrays).length;
-          let v = avg/128.0;
-          let y = v + (canvas.height/2);
-
-          if (i === 0) {
-            canvasCtx.moveTo(x, y);
-          } else {
-            canvasCtx.lineTo(x, y);
-          }
-          x += sliceWidth;
         }
         canvasCtx.lineTo(canvas.width, canvas.height/2);
         canvasCtx.stroke();
@@ -111,17 +106,21 @@ export default function MusicPlayer() {
   }, [])
 
   useEffect(() => {
+    let playersObj = {};
     if (urls) {
       urls.forEach((url, index) => {
         let player = new Tone.Player({
           url: url
         }).toDestination()
+        const toneWaveform = new Tone.Waveform();
+        player.connect(toneWaveform)
+        playersObj[index] = toneWaveform;
         player.sync().start(0)
       })
       Tone.loaded().then(() => {
         console.log('Ready to play')
         setReady(true)
-
+        setPlayers(playersObj);
       })
     }
 
@@ -129,7 +128,6 @@ export default function MusicPlayer() {
 
   return (
     <div>
-      {/* <Visualizer urls={urls} play={handlePlayClick} /> */}
       <canvas className='visualizer' width='1000' height='300' />
       <h3>Music Player</h3>
       {
