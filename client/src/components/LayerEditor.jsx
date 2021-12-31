@@ -1,3 +1,4 @@
+import { PlaylistRemoveTwoTone } from '@mui/icons-material';
 import React, { useState, useEffect } from 'react';
 import * as Tone from 'tone';
 
@@ -27,12 +28,20 @@ export default function LayerEditor(props) {
     try {
       await Tone.start();
       await Tone.loaded();
-
-      player.start();
+      // player.stop()
+      player.sync().start();
       Tone.Transport.start();
     } catch (error) {
       console.log('Error Playing Layer', error);
     }
+  };
+  const stopLayer = async () => {
+  await  player.unsync().stop()
+  //  NOTE: Do not call Tone.Transport.stop() or ALL audio will stop
+
+  //may or may not be useful , gets the current players position on
+  // tranport timeline
+   console.log("player!",player._state._timeline)
   };
 
   const changePitchValue = (e) => {
@@ -58,6 +67,7 @@ export default function LayerEditor(props) {
     <div className='layerEditor' id={props.id + 'layer'}>
       <h3>Layer Editor Component</h3>
       <button onClick={playLayer}>Play Layer {props.id}</button>
+      <button onClick={stopLayer}>Stop Layer {props.id}</button>
 
       <div className='slidecontainer'>
         <input
