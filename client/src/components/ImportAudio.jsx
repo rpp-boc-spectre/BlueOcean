@@ -10,6 +10,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 import { useSnackbar } from 'material-ui-snackbar-provider';
+import { getLayerUrl } from '../utils/storage.js';
 
 export default function ImportAduio({ userId, currentList, setParentLayers, close }) {
 
@@ -24,13 +25,22 @@ export default function ImportAduio({ userId, currentList, setParentLayers, clos
       .then((res) => {
         let items = res.items.map((itemRef, index) => {
           // All the items under listRef.
-          let layerName = itemRef.name.split('.webm')[0]
+          let layer = {}
+          layer.layerName = itemRef.name.split('.webm')[0]
           for (var currentLayer of currentList) {
-            if (currentLayer.layerName === layerName) {
+            if (currentLayer.layerName === layer.layerName) {
               setChecked((prev) => [...prev, index])
             }
           }
-          return { layerName, ref: itemRef}
+          getLayerUrl(itemRef)
+            .then(url => {
+              layer.url = url
+            })
+
+            layer.pitch = 0
+            layer.volume = 0
+
+          return layer
         });
         setAudioLayerList(items)
         setLoading(false)
@@ -55,6 +65,7 @@ export default function ImportAduio({ userId, currentList, setParentLayers, clos
 
   const handleSubmit = () => {
     let submitList = []
+
     checked.forEach((value) => {
       submitList.push(audioLayerList[value])
     })

@@ -13,7 +13,7 @@ import MicIcon from '@mui/icons-material/Mic';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import { useSnackbar } from 'material-ui-snackbar-provider';
 
-export default function RecorderTone(props) {
+export default function RecorderTone({ currentList, setAudioLayers }) {
   const {user, username} = useContext(UserContext);
   const snackbar = useSnackbar();
   const [url, setUrl] = useState(null);
@@ -70,6 +70,9 @@ export default function RecorderTone(props) {
       const mp3StorageRef = ref(storage, `audio/${user.uid}/${recordingName}.webm`)
       await  uploadBytes(mp3StorageRef, micRecorder)
       snackbar.showMessage(<Alert severity="success" sx={{ width: '100%' }}>{`Layer Uploaded :)`}</Alert>)
+      setAudioLayers((prevLayers) => {
+        return [...prevLayers, {layerName: recordingName, ref: mp3StorageRef}]
+      })
     } catch (error) {
       console.log('upload ', error)
       snackbar.showMessage(<Alert severity="error" sx={{ width: '100%' }}>{`There was an error uploading your layer :(`}</Alert>)

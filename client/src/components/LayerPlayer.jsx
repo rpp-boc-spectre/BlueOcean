@@ -1,16 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { db, storage } from '../lib/firebase'
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { ref, getDownloadURL } from "firebase/storage";
 import * as Tone from 'tone';
 
 import LayerEditor from './LayerEditor.jsx';
 
 
-export default function LayerPlayer(props) {
+export default function LayerPlayer({ layers }) {
   const [allLayers, setAllLayers] = useState([]);
   const allLayersPlayState = useRef('');
-  const [trackId, setTrackId] = useState('UtEWidzvugKK1I6CRFVU')
+
 
   const playAllLayers = async () => {
     await Tone.start();
@@ -62,48 +59,18 @@ export default function LayerPlayer(props) {
 
   useEffect(() => {
     // for right meow, calling this function instead of fetching data
-
     layerMaker();
-  }, []);
+  }, [layers]);
 
   const layerMaker = async() => {
-    // const layers = [
-    //   temporaryUserLayer1,
-    //   temporaryUserLayer2,
-    //   temporaryUserLayer3,
-    //   temporaryUserLayer4,
-    // ];
-    // making sure it works with audio recorded from my mic
-    // const userMp3 = [testingMp3, testingMp3, testingMp3, testingMp3];
 
-    let docRef = doc(db, 'tracks', trackId)
-    const docSnap = await getDoc(docRef)
-    const docData = docSnap.data()
-
-    let urls = []
-    for (var track in docData.layers) {
-      let url = await getDownloadURL(ref(storage, `audio/${docData.layers[track].parent}/${docData.layers[track].filename}`))
-      docData.layers[track].url = url
-    }
-
-
-
-    // let layers = Object.keys(docData.tracks).map((track, index) => {
-    //   return {...docData[track], url: urls[index]}
-    // })
-
-    let layerEditorComponents = Object.keys(docData.layers).map((layerKey, index) => {
-      let layer = docData.layers[layerKey]
-      // var pitchShift = new Tone.PitchShift(layer.pitch).toDestination();
-      // var newPlayer = new Tone.Player(layer.url).connect(pitchShift);
-      // newPlayer.volume.value = layer.volume
-
-      var newPlayer = new Tone.Player(layer)
+    let layerEditorComponents = layers.map((layer, index) => {
+      console.log(layer)
+      var newPlayer = new Tone.Player(layer.url)
       const pitchShift = new Tone.PitchShift(layer?.pitch || 0).toDestination();
       const volume = new Tone.Volume(layer?.volume || -5)
       volume.connect(pitchShift)
       newPlayer.connect(volume)
-
 
       // do not sync players here in order to maintain individual player control
       return (
