@@ -46,12 +46,12 @@ export default function Editor() {
       <Button variant="outlined" onClick={() => {setRecordingModalState(true)}}>Record New Layer</Button>
       <LayerPlayer layers={audioLayers}/>
       <Modal open={importModalState} onClose={handleImportClose}>
-        <Box sx={{ width: 500, height: 300, backgroundColor: 'white'}}>
+        <Box sx={{ backgroundColor: 'white', top: 50}}>
           <ImportAduio userId={'gqEkSDrIsMhrP9HJIjqg7VcMpQ93'} currentList={audioLayers} setParentLayers={setAudioLayers} close={handleImportClose}/>
         </Box>
       </Modal>
       <Modal open={recordingModalState} onClose={handleRecorderClose} >
-        <Box sx={{ backgroundColor: 'white', margin: 'auto' }}>
+        <Box sx={{ backgroundColor: 'white', margin: 'auto', top: 50,  }}>
           <Recorder currentList={audioLayers} setAudioLayers={setAudioLayers}/>
         </Box>
       </Modal>
