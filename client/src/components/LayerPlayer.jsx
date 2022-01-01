@@ -97,6 +97,7 @@ export default function LayerPlayer({ layers, trackId, userId }) {
             pitchShift={pitchShift}
             pitch={layer.pitch}
             layerVolume={volume}
+            volume={layer.volume}
             layerData={layer}
           />
       );
