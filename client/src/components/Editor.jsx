@@ -15,10 +15,10 @@ import { OfflineBolt } from '@mui/icons-material';
    to the people who actually understand this. these would also
    probably be recieved through props or something */
 const layers = [
-  {id: 12345, url: 'http://location.com/details', meta: {start: 0, end: 30, tempo: 0, pitch: 0, volume: 1}},
-  {id: 12346, url: 'http://location.com/details', meta: {start: 0, end: 30, tempo: 0, pitch: 0, volume: 1}},
-  {id: 12347, url: 'http://location.com/details', meta: {start: 0, end: 30, tempo: 0, pitch: 0, volume: 1}},
-  {id: 12348, url: 'http://location.com/details', meta: {start: 0, end: 30, tempo: 0, pitch: 0, volume: 1}}
+  {id: 12345, name: 'Test1', url: 'http://location.com/details', meta: {start: 0, end: 30, tempo: 50, pitch: 50, volume: 50}},
+  {id: 12346, name: 'Test2', url: 'http://location.com/details', meta: {start: 0, end: 30, tempo: 50, pitch: 50, volume: 50}},
+  {id: 12347, name: 'Test3', url: 'http://location.com/details', meta: {start: 0, end: 30, tempo: 50, pitch: 50, volume: 50}},
+  {id: 12348, name: 'Test4', url: 'http://location.com/details', meta: {start: 0, end: 30, tempo: 50, pitch: 50, volume: 50}}
 ];
 
 /* temp example array of available editing settings and their handlers
@@ -62,17 +62,18 @@ export default function Editor() {
         {/* Main Component */}
         <Container sx={{
           border: 1,
-          maxHeight: '80vh',
+          maxHeight: '90vh',
+          minHeight: {xs: '100%', md: '70%'},
           width: {xs: '100%', md: '70%'},
           display: 'grid',
-          gridTemplateColumns: {xs: '2fr 1fr 1fr', md: '2fr 3fr 1fr'},
-          gridTemplateRows: {xs: '6fr 2fr 1fr 1fr', md: '4fr 1fr 2fr'}
+          gridTemplateColumns: {xs: '3fr 2fr', md: '1fr 6fr'},
+          gridTemplateRows: {xs: '5fr 1fr', md: '6fr 1fr'}
         }}>
-          <LayerList layers={layers} />
+          {/* <LayerList layers={layers} /> */}
           <DisplayList layers={layers} />
-          <Timebox />
+          {/* <Timebox /> */}
           <TimeControlBox />
-          <AudioEditList />
+          {/* <AudioEditList /> */}
           <SettingsList />
         </Container>
       </main>

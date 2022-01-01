@@ -43,10 +43,9 @@ const SettingsList = (props) => {
   return (
     <>
       <Button onClick={handleDrawerToggle} sx={{
-        display: {xs: 'block', md: 'none'},
         border: 1,
-        gridColumn: {xs: '3', md: '3'},
-        gridRow: {xs: '4', md: '2 / 4'}
+        gridColumn: {xs: '2', md: '1'},
+        gridRow: {xs: '2', md: '1'}
       }}>
         <Typography>Settings</Typography>
       </Button>
@@ -58,7 +57,6 @@ const SettingsList = (props) => {
             keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
-            display: {xs: 'block', md: 'none'},
             border: 1,
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: '100%', maxHeight: '80%' }
           }}>
@@ -67,7 +65,7 @@ const SettingsList = (props) => {
           return (<Button variant='outlined' key={index} onClick={setting.handler}>{setting.name}</Button>);
         })}
       </Drawer>
-      <Box
+      {/* <Box
       sx={{
         display: {xs: 'none', md: 'block'},
         border: 1,
@@ -77,7 +75,7 @@ const SettingsList = (props) => {
         {settingsArray.map((setting, index) => {
           return (<Button variant='outlined' key={index} onClick={setting.handler}>{setting.name}</Button>);
         })}
-      </Box>
+      </Box> */}
     </>
   );
 };

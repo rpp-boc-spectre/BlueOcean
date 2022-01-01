@@ -9,6 +9,8 @@ import FastForwardIcon from '@mui/icons-material/FastForward';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import LastPageIcon from '@mui/icons-material/LastPage';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 /* attempted to use an object and have the code look up each button name and
@@ -39,6 +41,12 @@ const TimeControlButton = (props) => {
   }
   if (target === 'FastForward') {
     button = <Button variant='outlined' onClick={props.button.handler}><FastForwardIcon /></Button>
+  }
+  if (target === 'Edit') {
+    button = <Button variant='outlined' onClick={props.button.handler}><EditIcon /></Button>
+  }
+  if (target === 'Delete') {
+    button = <Button variant='outlined' onClick={props.button.handler}><DeleteIcon /></Button>
   }
   return (
     <>

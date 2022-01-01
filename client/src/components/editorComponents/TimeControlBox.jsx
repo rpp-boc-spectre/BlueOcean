@@ -37,10 +37,10 @@ const buttons = [
   {name: 'Play', handler: handlePlay},
   {name: 'Pause', handler: handlePause},
   {name: 'Record', handler: handleRecord},
-  {name: 'Beginning', handler: handleBeginning},
-  {name: 'Rewind', handler: handleRewind},
-  {name: 'FastForward', handler: handleFastForward},
-  {name: 'End', handler: handleEnd}
+  // {name: 'Beginning', handler: handleBeginning},
+  // {name: 'Rewind', handler: handleRewind},
+  // {name: 'FastForward', handler: handleFastForward},
+  // {name: 'End', handler: handleEnd}
 ];
 
 const TimeControlBox = () => {
@@ -49,7 +49,7 @@ const TimeControlBox = () => {
       <Box sx={{
         border: 1,
         gridColumn: {xs: '1', md: '1'},
-        gridRow: {xs: '3 / 5', md: '3'}
+        gridRow: {xs: '2', md: '2'}
       }}>
         {buttons.map((button, index) => {
           return <TimeControlButton key={index} button={button} />
