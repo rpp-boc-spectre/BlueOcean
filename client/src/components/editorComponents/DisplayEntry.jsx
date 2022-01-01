@@ -70,7 +70,7 @@ const DisplayEntry = (props) => {
           label={props.layer.name}
           control={<Checkbox defaultChecked />}
         />
-        <Box sx={{gridRow: '1', gridColumn: '2', maxWidth: '20vh'}}>
+        <Box sx={{gridRow: '1', gridColumn: '2', maxWidth: '25vh'}}>
           <TimeControlButton button={{name: 'Play', handler: layerPlayHandler}}/>
           <TimeControlButton button={{name: 'Stop', handler: layerStopHandler}}/>
           <TimeControlButton button={{name: 'Edit', handler: layerEditorOpen}} />
