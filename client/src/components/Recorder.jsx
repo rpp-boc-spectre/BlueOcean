@@ -12,6 +12,7 @@ import Alert from '@mui/material/Alert'
 import MicIcon from '@mui/icons-material/Mic';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import { useSnackbar } from 'material-ui-snackbar-provider';
+import { getLayerUrl } from '../utils/storage';
 
 export default function RecorderTone({ currentList, setAudioLayers }) {
   const {user, username} = useContext(UserContext);
@@ -70,8 +71,17 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
       const mp3StorageRef = ref(storage, `audio/${user.uid}/${recordingName}.webm`)
       await  uploadBytes(mp3StorageRef, micRecorder)
       snackbar.showMessage(<Alert severity="success" sx={{ width: '100%' }}>{`Layer Uploaded :)`}</Alert>)
+      let url = await getLayerUrl(mp3StorageRef)
+      let data = {
+        pitch: 0,
+        volume: 0,
+        parent: user.uid,
+        fileName: `${recordingName}.webm`,
+        layerName: recordingName,
+        url: url
+      }
       setAudioLayers((prevLayers) => {
-        return [...prevLayers, {layerName: recordingName, ref: mp3StorageRef}]
+        return [...prevLayers, data]
       })
     } catch (error) {
       console.log('upload ', error)
