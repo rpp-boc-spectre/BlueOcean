@@ -1,12 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react';
 import * as Tone from 'tone';
+import { UserMedia } from 'tone';
+import { saveTrackData } from '../utils/database.js';
+import { useSnackbar } from 'material-ui-snackbar-provider';
 
 import LayerEditor from './LayerEditor.jsx';
+import { Alert } from '@mui/material';
 
 
-export default function LayerPlayer({ layers }) {
+export default function LayerPlayer({ layers, trackId, userId }) {
   const [allLayers, setAllLayers] = useState([]);
   const allLayersPlayState = useRef('');
+  const snackbar = useSnackbar()
 
 
   const playAllLayers = async () => {
@@ -40,21 +45,31 @@ export default function LayerPlayer({ layers }) {
 
   const handleSaveClick = async () => {
     console.log('click')
-    // for (let i = 0; i < allLayers.length; i++) {
-    //   let layer = allLayers[i]
-    //   let data = {}
-    //   data.pitch = layer.props.pitchShift._pitch
-    //   data.volume = layer.props.layerPlayer.volume.value
-    //   let layerName =
+    let trackData = {
+      user: userId,
+      layers: []
+    }
 
-    //   let docRef = doc(db, 'tracks', trackId)
-    //   await updateDoc(docRef, {
+    for (var layer of allLayers) {
+      let data = {
+        start: 0,
+        end: 0,
+        duration: 0,
+        pitch: layer.props.pitchShift._pitch,
+        volume: layer.props.layerPlayer.volume.value,
+        fileName: layer.props.layerData.fileName,
+        parent: layer.props.layerData.parent
+      }
+      trackData.layers.push(data)
+    }
 
-    //   })
-    // }
-    // allLayers.forEach((layer, index) => {
-
-    // });
+    try {
+      await saveTrackData(trackData, trackId)
+      snackbar.showMessage(<Alert variant='success'>Track saved</Alert>)
+    } catch (error) {
+      console.log(error)
+      snackbar.showMessage(<Alert variant='error'>Track failed to save</Alert>)
+    }
   }
 
   useEffect(() => {
@@ -81,6 +96,7 @@ export default function LayerPlayer({ layers }) {
             pitchShift={pitchShift}
             pitch={layer.pitch}
             layerVolume={volume}
+            layerData={layer}
           />
       );
     });
@@ -96,7 +112,6 @@ export default function LayerPlayer({ layers }) {
       <button onClick={stopAllLayers}>Stop All Layers</button>
       <button onClick={pauseResumeAllLayers}>Pause/Resume</button>
       <button onClick={handleSaveClick}>Save Changes</button>
-      {/*alllayersfromstate*/}
       {allLayers}
     </div>
   );

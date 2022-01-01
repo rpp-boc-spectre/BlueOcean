@@ -51,7 +51,7 @@ export default function LayerEditor (props) {
   return (
     <div className='layerEditor' id={props.id + 'layer'}>
       <h3>Layer Editor Component</h3>
-      <button onClick={playLayer}>Play Layer {props.id}</button>
+      <button onClick={playLayer}>Play Layer {props.layerData.layerName}</button>
 
       <div className='slidecontainer'>
         <input

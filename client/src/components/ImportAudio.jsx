@@ -39,6 +39,8 @@ export default function ImportAduio({ userId, currentList, setParentLayers, clos
 
             layer.pitch = 0
             layer.volume = 0
+            layer.parent = userId
+            layer.fileName = itemRef.name
 
           return layer
         });

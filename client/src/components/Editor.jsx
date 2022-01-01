@@ -12,10 +12,11 @@ import { getTrackUrls  } from "../utils/storage";
 
 export default function Editor() {
 
-  const [importModalState, setImportModalState ] = useState();
-  const [recordingModalState, setRecordingModalState] = useState();
+  const [importModalState, setImportModalState ] = useState(false);
+  const [recordingModalState, setRecordingModalState] = useState(false);
   const [audioLayers, setAudioLayers] = useState([])
-  const [trackId, setTrackId] = useState('UtEWidzvugKK1I6CRFVU')
+  const [trackId, setTrackId] = useState('ArtNIYCmtxFDhi5Dnyp9')
+  // const [trackId, setTrackId] = useState(null)
 
   const handleImportClose = () => {
     setImportModalState(false)
@@ -28,6 +29,7 @@ export default function Editor() {
   useEffect(() => {
     getTrackData(trackId)
       .then(data => {
+        console.log('Track Data', data)
         return getTrackUrls(data)
       })
       .then(trackWithUrls => {
@@ -37,6 +39,9 @@ export default function Editor() {
         }
         setAudioLayers(layers)
       })
+      .catch(error => {
+        console.log(error)
+      })
   }, [])
 
   return (
@@ -44,7 +49,7 @@ export default function Editor() {
       <Typography variant="h3">Editor Component</Typography>
       <Button variant="outlined" onClick={() => {setImportModalState(true)}}>Import Audio Layers</Button>
       <Button variant="outlined" onClick={() => {setRecordingModalState(true)}}>Record New Layer</Button>
-      <LayerPlayer layers={audioLayers}/>
+      <LayerPlayer layers={audioLayers} userId={'gqEkSDrIsMhrP9HJIjqg7VcMpQ93'} trackId={trackId}/>
       <Modal open={importModalState} onClose={handleImportClose}>
         <Box sx={{ backgroundColor: 'white', top: 50}}>
           <ImportAduio userId={'gqEkSDrIsMhrP9HJIjqg7VcMpQ93'} currentList={audioLayers} setParentLayers={setAudioLayers} close={handleImportClose}/>
