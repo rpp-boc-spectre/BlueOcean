@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Alert from '@mui/material/Alert';
 import Typography from "@mui/material/Typography";
 import LayerPlayer from "./LayerPlayer";
 import Box from '@mui/material/Box';
@@ -6,6 +7,7 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import ImportAduio from "./ImportAudio";
 import Recorder from './Recorder'
+import { useSnackbar } from "material-ui-snackbar-provider";
 
 import { getTrackData } from "../utils/database";
 import { getTrackUrls  } from "../utils/storage";
@@ -16,6 +18,7 @@ export default function Editor() {
   const [recordingModalState, setRecordingModalState] = useState(false);
   const [audioLayers, setAudioLayers] = useState([])
   const [trackId, setTrackId] = useState('ArtNIYCmtxFDhi5Dnyp9')
+  const snackbar = useSnackbar();
   // const [trackId, setTrackId] = useState(null)
 
   const handleImportClose = () => {
@@ -33,6 +36,7 @@ export default function Editor() {
         return getTrackUrls(data)
       })
       .then(trackWithUrls => {
+        console.log('', trackWithUrls)
         let layers =[]
         for (var layer in trackWithUrls.layers) {
           layers.push(trackWithUrls.layers[layer])
@@ -40,7 +44,7 @@ export default function Editor() {
         setAudioLayers(layers)
       })
       .catch(error => {
-        console.log(error)
+        snackbar.showMessage(<Alert variant='error'>There was an error getting your track</Alert>)
       })
   }, [])
 
