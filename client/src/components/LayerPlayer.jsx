@@ -105,7 +105,7 @@ export default function LayerPlayer(props) {
         const pitchShift = new Tone.PitchShift(
           layer?.pitch || 0
         ).toDestination();
-        const volume = new Tone.Volume(layer?.volume || -5);
+        const volume = new Tone.Volume(layer?.volume || 0);
         volume.connect(pitchShift);
         newPlayer.connect(volume);
 
