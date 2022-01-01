@@ -36,7 +36,6 @@ export default function Editor() {
         return getTrackUrls(data)
       })
       .then(trackWithUrls => {
-        console.log('', trackWithUrls)
         let layers =[]
         for (var layer in trackWithUrls.layers) {
           layers.push(trackWithUrls.layers[layer])

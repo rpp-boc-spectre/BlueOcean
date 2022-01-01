@@ -58,7 +58,8 @@ export default function LayerPlayer({ layers, trackId, userId }) {
         pitch: layer.props.pitchShift._pitch,
         volume: layer.props.layerPlayer.volume.value,
         fileName: layer.props.layerData.fileName,
-        parent: layer.props.layerData.parent
+        parent: layer.props.layerData.parent,
+        layerName: layer.props.layerData.layerName || layer.props.layerData.fileName.split('.webm')[0]
       }
       trackData.layers.push(data)
     }

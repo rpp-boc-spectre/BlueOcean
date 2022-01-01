@@ -5,7 +5,7 @@ export function listUserLayers(userId) {
   return new Promise(async (resolve, reject) => {
     const listRef = ref(storage, `audio/${userId}`);
     try {
-      let response = await listAll(listRef)
+      let res = await listAll(listRef)
       resolve(res.items)
     } catch(error) {
       reject(error)
