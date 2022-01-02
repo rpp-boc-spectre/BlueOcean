@@ -36,8 +36,8 @@ export function getTrackUrls(track) {
         let layerRef = ref(storage, `audio/${track.layers[layer].parent}/${track.layers[layer].fileName}`)
         let url = await getDownloadURL(layerRef)
         track.layers[layer].url = url
-        resolve(track)
       }
+      resolve(track)
     } catch (error) {
       reject(error)
     }
