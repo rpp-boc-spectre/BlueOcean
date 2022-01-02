@@ -67,12 +67,6 @@ export default function LayerEditorCopy(props) {
     };
 
   const muteLayer = () => {
-    var muted = document.getElementById('mute' + props.id);
-
-    isMuted
-      ? (muted.innerHTML = 'Mute Layer')
-      : (muted.innerHTML = 'Unmute Layer');
-
     setIsMuted(!isMuted);
     player.mute = !isMuted;
   };
@@ -105,7 +99,7 @@ export default function LayerEditorCopy(props) {
       <Box sx={{gridRow: '1', gridColumn: '2', maxWidth: '25vh'}}>
         <TimeControlButton button={{name: 'Play', handler: playLayer}}/>
         <TimeControlButton button={{name: 'Stop', handler: stopLayer}}/>
-        <TimeControlButton button={{name: 'Mute', handler: muteLayer}}/>
+        <TimeControlButton button={{name: 'Mute', handler: muteLayer, value: isMuted}}/>
         <TimeControlButton button={{name: 'Edit', handler: layerEditorOpen}}/>
       </Box>
     </Box>
@@ -136,6 +130,7 @@ export default function LayerEditorCopy(props) {
           value={volumeSliderValue}
           onChange={changeVolumeValue}
           aria-label='Volume Slider'
+          valueLabelDisplay='auto'
         />
         <Typography>Pitch</Typography>
         <Slider
@@ -144,6 +139,7 @@ export default function LayerEditorCopy(props) {
           value={pitchSliderValue}
           onChange={changePitchValue}
           aria-label='Pitch Slider'
+          valueLabelDisplay='auto'
         />
       </Box>
     </Modal>

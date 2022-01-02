@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button } from '@mui/material';
+import { Button, ToggleButton } from '@mui/material';
 import StopIcon from '@mui/icons-material/Stop';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -12,6 +12,7 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 
 
 /* attempted to use an object and have the code look up each button name and
@@ -49,9 +50,13 @@ const TimeControlButton = (props) => {
   if (target === 'Delete') {
     button = <Button variant='outlined' onClick={props.button.handler}><DeleteIcon /></Button>
   }
-  if (target === 'Mute') {
-    button = <Button variant='outlined' onClick={props.button.handler}><VolumeOffIcon /></Button>
+  if (target === 'Mute' && props.button.value === true) {
+    button = <ToggleButton value={props.button.value} onChange={props.button.handler}><VolumeOffIcon /></ToggleButton>
   }
+  if (target === 'Mute' && props.button.value === false) {
+    button = <ToggleButton value={props.button.value} onChange={props.button.handler}><VolumeUpIcon /></ToggleButton>
+  }
+
   return (
     <>
       {button}
