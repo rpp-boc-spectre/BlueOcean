@@ -11,6 +11,7 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 
 
 /* attempted to use an object and have the code look up each button name and
@@ -47,6 +48,9 @@ const TimeControlButton = (props) => {
   }
   if (target === 'Delete') {
     button = <Button variant='outlined' onClick={props.button.handler}><DeleteIcon /></Button>
+  }
+  if (target === 'Mute') {
+    button = <Button variant='outlined' onClick={props.button.handler}><VolumeOffIcon /></Button>
   }
   return (
     <>

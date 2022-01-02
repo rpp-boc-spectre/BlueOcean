@@ -13,6 +13,7 @@ const saveHandler = () => {
 }
 const newLayerHandler = () => {
   console.log('CLICKED NEW LAYER');
+
 }
 const newAudioHandler = () => {
   console.log('CLICKED NEW AUDIO');
@@ -21,12 +22,6 @@ const uploadHandler = () => {
   console.log('CLICKED UPLOAD');
 }
 
-const settingsArray = [
-  {name: 'Save', handler: saveHandler},
-  {name: 'New Layer', handler: newLayerHandler},
-  {name: 'New Audio', handler: newAudioHandler},
-  {name: 'Upload', handler: uploadHandler}
-];
 
 
 
@@ -39,6 +34,13 @@ const SettingsList = (props) => {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const settingsArray = [
+    {name: 'Save', handler: props.saveHandler},
+    {name: 'New Layer', handler: props.importHandler},
+    {name: 'New Audio', handler: newAudioHandler},
+    {name: 'Upload', handler: uploadHandler}
+  ];
 
   return (
     <>

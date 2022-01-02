@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
 
 import Alert from '@mui/material/Alert';
-import Typography from "@mui/material/Typography";
-import LayerPlayer from "./LayerPlayer";
 import Box from '@mui/material/Box';
 import Button from "@mui/material/Button";
+import Container from '@mui/material/Container';
 import Modal from "@mui/material/Modal";
-import ImportAduio from "./ImportAudio";
-import Recorder from './Recorder'
+import Typography from "@mui/material/Typography";
 import { useSnackbar } from "material-ui-snackbar-provider";
+
+import LayerPlayer from "./LayerPlayer";
+import ImportAduio from "./ImportAudio";
+import Recorder from './Recorder';
 
 import { getTrackData } from "../utils/database";
 import { getTrackUrls  } from "../utils/storage";
 
 export default function Editor() {
 
-  const [importModalState, setImportModalState ] = useState(false);
+  const [importModalState, setImportModalState] = useState(false);
   const [recordingModalState, setRecordingModalState] = useState(false);
   const [audioLayers, setAudioLayers] = useState([])
   const [trackId, setTrackId] = useState('ArtNIYCmtxFDhi5Dnyp9')
@@ -48,22 +50,41 @@ export default function Editor() {
       })
   }, [])
 
+  const importHandler = () => {
+    setImportModalState(true);
+  };
+  const recordingHandler = () => {
+    setRecordingModalState(true);
+  };
+
   return (
     <>
-      <Typography variant="h3">Editor Component</Typography>
-      <Button variant="outlined" onClick={() => {setImportModalState(true)}}>Import Audio Layers</Button>
-      <Button variant="outlined" onClick={() => {setRecordingModalState(true)}}>Record New Layer</Button>
-      <LayerPlayer layers={audioLayers} userId={'gqEkSDrIsMhrP9HJIjqg7VcMpQ93'} trackId={trackId}/>
-      <Modal open={importModalState} onClose={handleImportClose}>
-        <Box sx={{ backgroundColor: 'white', top: 50}}>
-          <ImportAduio userId={'gqEkSDrIsMhrP9HJIjqg7VcMpQ93'} currentList={audioLayers} setParentLayers={setAudioLayers} close={handleImportClose}/>
-        </Box>
-      </Modal>
-      <Modal open={recordingModalState} onClose={handleRecorderClose} >
-        <Box sx={{ backgroundColor: 'white', margin: 'auto', top: 50,  }}>
-          <Recorder currentList={audioLayers} setAudioLayers={setAudioLayers}/>
-        </Box>
-      </Modal>
+    <Container sx={{
+          border: 1,
+          maxHeight: '90vh',
+          minHeight: {xs: '100%', md: '70%'},
+          width: {xs: '100%', md: '70%'},
+          display: 'grid',
+          gridTemplateColumns: {xs: '3fr 2fr', md: '1fr 6fr'},
+          gridTemplateRows: {xs: '5fr 1fr', md: '6fr 1fr'}
+        }}>
+
+        <LayerPlayer layers={audioLayers} userId={'gqEkSDrIsMhrP9HJIjqg7VcMpQ93'} trackId={trackId} recordingHandler={recordingHandler} importHandler={importHandler} />
+
+        <Modal open={importModalState} onClose={handleImportClose}>
+          <Box sx={{ backgroundColor: 'white', top: 50, maxHeight: '100vh', overflow: 'auto'}}>
+            <ImportAduio userId={'gqEkSDrIsMhrP9HJIjqg7VcMpQ93'} currentList={audioLayers} setParentLayers={setAudioLayers} close={handleImportClose}/>
+          </Box>
+        </Modal>
+        <Modal open={recordingModalState} onClose={handleRecorderClose} >
+          <Box sx={{ backgroundColor: 'white', margin: 'auto', top: 50,  }}>
+            <Recorder currentList={audioLayers} setAudioLayers={setAudioLayers}/>
+          </Box>
+        </Modal>
+      </Container>
     </>
   )
 }
+
+/* <Button variant="outlined" onClick={() => {setRecordingModalState(true)}}>Record New Layer</Button> */
+/* <Button variant="outlined" onClick={() => {setImportModalState(true)}}>Import Audio Layers</Button> */
