@@ -32,12 +32,13 @@ export function getTrackUrls(track) {
   return new Promise(async (resolve, reject) => {
     try {
       for (var layer in track.layers) {
-        console.log(layer)
+        console.log(layer, JSON.stringify(track.layers[layer]))
         let layerRef = ref(storage, `audio/${track.layers[layer].parent}/${track.layers[layer].fileName}`)
         let url = await getDownloadURL(layerRef)
-        track.layers[layer].url = url
-        resolve(track)
+        track.layers[layer]['url'] = url
+        console.log(layer, JSON.stringify(track.layers[layer]))
       }
+      resolve(track)
     } catch (error) {
       reject(error)
     }
