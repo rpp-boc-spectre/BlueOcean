@@ -1,11 +1,35 @@
+import React, { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
-import React from "react";
+import Box from '@mui/material/Box';
+import List from '@mui/material/List'
+import { getAllTracks } from "../utils/database";
 
-export default function TrackList() {
+export default function TrackList({ userId }) {
+
+  const [tracks, setTracks] = useState([])
+
+
+  useEffect(() => {
+    getAllTracks(userId)
+      .then(data => {
+        console.log(data)
+        setTracks(data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }, [])
 
   return (
     <>
       <Typography>Track List Component</Typography>
+      <Box sx={{ width: '100%', height: 400, maxWidth: 360, bgcolor: 'background.paper' }}>
+      <List>
+        {tracks.map((track) => {
+          return <p>{track.id}</p>
+        })}
+      </List>
+    </Box>
     </>
   )
 }
