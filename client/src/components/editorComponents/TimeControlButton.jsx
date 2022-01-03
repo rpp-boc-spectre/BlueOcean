@@ -13,7 +13,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
-
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import MusicOffIcon from '@mui/icons-material/MusicOff';
 
 /* attempted to use an object and have the code look up each button name and
    pick the right icon, but it wasn't working. so I just brute forced it, sorry */
@@ -55,6 +56,12 @@ const TimeControlButton = (props) => {
   }
   if (target === 'Mute' && props.button.value === false) {
     button = <ToggleButton value={props.button.value} onChange={props.button.handler}><VolumeUpIcon /></ToggleButton>
+  }
+  if (target === 'Solo' && props.button.value === true) {
+    button = <ToggleButton value={props.button.value} onChange={props.button.handler}><MusicNoteIcon /></ToggleButton>
+  }
+  if (target === 'Solo' && props.button.value === false) {
+    button = <ToggleButton value={props.button.value} onChange={props.button.handler}><MusicOffIcon /></ToggleButton>
   }
 
   return (

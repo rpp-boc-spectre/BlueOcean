@@ -14,13 +14,14 @@ import TimeControlButton from './editorComponents/TimeControlButton.jsx';
 
 export default function LayerEditorCopy(props) {
   const player = props.layerPlayer;
-
+  const [isSolo,setIsSolo] = useState(props.solo.solo)
   const [isMuted, setIsMuted] = useState(props.layerPlayer.mute);
   const [duration, setDuration] = useState(false);
   const [pitchSliderValue, setPitchSliderValue] = useState(props.pitch);
   const [volumeSliderValue, setVolumeSliderValue] = useState(props.volume);
   const pitchShift = props.pitchShift;
   const layerVolume = props.layerVolume;
+  const solo = props.solo
 
   // put page on mousedown listener to get the duration of tracks then immediatly remove it after setting each tracks duration.
   useEffect(() => {
@@ -70,6 +71,10 @@ export default function LayerEditorCopy(props) {
     setIsMuted(!isMuted);
     player.mute = !isMuted;
   };
+  const soloLayer = () => {
+    setIsSolo(!isSolo);
+ solo.solo = !isSolo
+  };
 
   // editor modal handlers
   const [editOpen, setEditOpen] = React.useState(false);
@@ -100,6 +105,7 @@ export default function LayerEditorCopy(props) {
         <TimeControlButton button={{name: 'Play', handler: playLayer}}/>
         <TimeControlButton button={{name: 'Stop', handler: stopLayer}}/>
         <TimeControlButton button={{name: 'Mute', handler: muteLayer, value: isMuted}}/>
+        <TimeControlButton button={{name: 'Solo', handler: soloLayer, value: isSolo}}/>
         <TimeControlButton button={{name: 'Edit', handler: layerEditorOpen}}/>
       </Box>
     </Box>

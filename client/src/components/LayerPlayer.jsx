@@ -89,10 +89,14 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
     let layerEditorComponents = layers.map((layer, index) => {
       console.log(layer)
       var newPlayer = new Tone.Player(layer.url)
-      const pitchShift = new Tone.PitchShift(layer?.pitch || 0).toDestination();
       const volume = new Tone.Volume(layer?.volume || -5)
-      volume.connect(pitchShift)
+      const pitchShift = new Tone.PitchShift(layer?.pitch || 0)
+      var solo = new Tone.Solo().toDestination()
+
+//   player => volume => pitchShift =>solo=> speakers
       newPlayer.connect(volume)
+      volume.connect(pitchShift)
+      pitchShift.connect(solo)
 
       // do not sync players here in order to maintain individual player control
       return (
@@ -105,6 +109,7 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
             layerVolume={volume}
             volume={layer.volume}
             layerData={layer}
+            solo={solo}
           />
       );
     });
