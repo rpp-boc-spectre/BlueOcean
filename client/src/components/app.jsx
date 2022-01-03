@@ -26,6 +26,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path='login' element={<Entry />} />
             <Route path='edit/:trackId' element={<Editor />} />
+            <Route path='edit' element={<Editor />} />
             <Route path='dashboard' element={
               <RequireAuth>
                 <Dashboard />
@@ -37,6 +38,5 @@ export default function App() {
         </div>
       </UserContext.Provider>
     </SnackbarProvider>
-
   );
 }

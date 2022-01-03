@@ -78,13 +78,13 @@ const ResponsiveHeader = () => {
     settings = ['Log In'];
   }
   if (pathname === '/dashboard') {
-    pages = ['Home'];
+    pages = ['Home', 'New Track'];
   } else if (pathname === '/' && user) {
-    pages = ['Your Tracks', 'Editor'];
+    pages = ['Your Tracks', 'New Track'];
   } else if (pathname === '/') {
     pages = [];
-  } else if (pathname === '/tracks' && user) {
-    pages = ['Home', 'Editor'];
+  } else if (pathname.includes('/edit') && user) {
+    pages = ['Home', 'New Track', 'Your Tracks'];
   } else {
     pages = ['Home'];
   }
@@ -112,7 +112,7 @@ const ResponsiveHeader = () => {
     if (target === 'Your Tracks') {
       navigate("/dashboard")
     }
-    if (target === 'Editor') {
+    if (target === 'New Track') {
       navigate("/edit")
     }
   };

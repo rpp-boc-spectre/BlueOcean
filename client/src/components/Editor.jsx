@@ -33,21 +33,23 @@ export default function Editor() {
   }
 
   useEffect(() => {
-    getTrackData(trackId)
-      .then(data => {
-        console.log('Track Data', data)
-        return getTrackUrls(data)
-      })
-      .then(trackWithUrls => {
-        let layers = []
-        for (var layer in trackWithUrls.layers) {
-          layers.push(trackWithUrls.layers[layer])
-        }
-        setAudioLayers(layers)
-      })
-      .catch(error => {
-        snackbar.showMessage(<Alert variant='error'>There was an error getting your track</Alert>)
-      })
+    if (trackId) { // if trackID is undefined, this will just open a blank editor (for a new track)
+      getTrackData(trackId)
+        .then(data => {
+          console.log('Track Data', data)
+          return getTrackUrls(data)
+        })
+        .then(trackWithUrls => {
+          let layers = []
+          for (var layer in trackWithUrls.layers) {
+            layers.push(trackWithUrls.layers[layer])
+          }
+          setAudioLayers(layers)
+        })
+        .catch(error => {
+          snackbar.showMessage(<Alert variant='error'>There was an error getting your track</Alert>)
+        })
+    }
   }, [])
 
   const importHandler = () => {
