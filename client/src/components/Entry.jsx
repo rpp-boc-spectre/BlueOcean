@@ -59,7 +59,7 @@ export default function Entry() {
         const ref = doc(db, 'users', userId)
         let snapshot = await getDoc(ref)
         let data = snapshot.data()
-        if (data.username) {
+        if (data && data.username) {
           resolve(data.username)
         } else {
           resolve(null)
