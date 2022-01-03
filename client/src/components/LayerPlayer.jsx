@@ -1,14 +1,20 @@
 import React, { useEffect, useState, useRef } from 'react';
+
 import * as Tone from 'tone';
 import { UserMedia } from 'tone';
+
 import { saveTrackData } from '../utils/database.js';
+
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
 import { useSnackbar } from 'material-ui-snackbar-provider';
 
 import LayerEditor from './LayerEditor.jsx';
-import { Alert } from '@mui/material';
+import TimeControlBox from './editorComponents/TimeControlBox.jsx';
+import SettingsList from './editorComponents/SettingsList.jsx';
 
 
-export default function LayerPlayer({ layers, trackId, userId }) {
+export default function LayerPlayer({ layers, trackId, userId, recordingHandler, importHandler }) {
   const [allLayers, setAllLayers] = useState([]);
   const allLayersPlayState = useRef('');
   const snackbar = useSnackbar()
@@ -108,14 +114,28 @@ export default function LayerPlayer({ layers, trackId, userId }) {
   };
 
   return (
-    <div>
-      <h3>Layer Player Component</h3>
-      <button onClick={playAllLayers}>Play All Layers</button>
-      <button onClick={stopAllLayers}>Stop All Layers</button>
-      <button onClick={pauseResumeAllLayers}>Pause/Resume</button>
-      <button onClick={handleSaveClick}>Save Changes</button>
+    <>
+      <SettingsList importHandler={importHandler} saveHandler={handleSaveClick}/>
+      <TimeControlBox recordingHandler={recordingHandler} playAllHandler={playAllLayers} stopAllHandler={stopAllLayers} pauseResumeHandler={pauseResumeAllLayers} />
+      <Box
+        sx={{
+          bgcolor: 'background.paper',
+          gridColumn: {xs: '1 / 3', md:'2'},
+          gridRow: {xs: '1', md: '1 / 3'},
+          minHeight: '60vh',
+          maxHeight: '80vh',
+          padding: {xs: '0', md: '10px'},
+        }}
+      >
       {allLayers}
-    </div>
+      </Box>
+    </>
   );
 }
 
+
+/* <button onClick={playAllLayers}>Play All Layers</button>
+<button onClick={stopAllLayers}>Stop All Layers</button>
+<button onClick={pauseResumeAllLayers}>Pause/Resume</button>
+<button onClick={handleSaveClick}>Save Changes</button>
+ */

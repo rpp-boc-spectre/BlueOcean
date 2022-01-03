@@ -25,6 +25,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path='login' element={<Entry />} />
+            <Route path='edit' element={<Editor />} />
             <Route path='dashboard' element={
               <RequireAuth>
                 <Dashboard />
