@@ -18,6 +18,11 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
   const [allLayers, setAllLayers] = useState([]);
   const allLayersPlayState = useRef('');
   const snackbar = useSnackbar()
+  const layersRef = useRef()
+
+  useEffect(() => {
+    layersRef.current = allLayers
+  }, [allLayers])
 
 
   const playAllLayers = async () => {
@@ -43,6 +48,7 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
     Tone.Transport.stop();
     allLayers.forEach((layer, i) => {
       layer.props.layerPlayer.unsync();
+      layer.props.layerPlayer.stop()
     });
   };
 
@@ -113,7 +119,7 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
 
         for (let i = 0; i < bufferLength; i++) {
           let v = dataArray[i] / 128.0;
-          let y = v * canvas.height/2;
+          let y = v * canvas.height / 2;
 
           if (i === 0) {
             canvasCtx.moveTo(x, y);
@@ -122,7 +128,7 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
           }
           x += sliceWidth;
         }
-        canvasCtx.lineTo(canvas.width, canvas.height/2);
+        canvasCtx.lineTo(canvas.width, canvas.height / 2);
         canvasCtx.stroke();
         window.requestAnimationFrame(draw);
       }
@@ -135,24 +141,28 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
     layerMaker();
   }, [layers]);
 
-  const layerMaker = async() => {
+  useEffect(() => {
+    return () => {
+      if (layersRef.current.length > 0) {
+        layersRef.current.forEach((layer, index) => {
+          console.log('Closing layer', index)
+          layer.props.layerPlayer.dispose()
+        })
+      }
+    }
+  }, [])
+
+  const layerMaker = async () => {
 
     let layerEditorComponents = layers.map((layer, index) => {
       console.log(layer)
-
-
-
-
-
-
-
       var newPlayer = new Tone.Player(layer.url)
       const volume = new Tone.Volume(layer?.volume || -5)
       const pitchShift = new Tone.PitchShift(layer?.pitch || 0)
       const toneWaveform = new Tone.Waveform();
       var solo = new Tone.Solo().toDestination()
 
-//   player => volume => pitchShift =>solo=> speakers
+      //   player => volume => pitchShift =>solo=> speakers
       newPlayer.connect(volume)
       newPlayer.connect(toneWaveform)
       volume.connect(pitchShift)
@@ -170,18 +180,18 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
 
       // do not sync players here in order to maintain individual player control
       return (
-          <LayerEditor
-            key={index}
-            id={index}
-            layerPlayer={newPlayer}
-            pitchShift={pitchShift}
-            pitch={layer.pitch}
-            layerVolume={volume}
-            volume={layer.volume}
-            layerData={layer}
-            solo={solo}
-            waveform={toneWaveform}
-          />
+        <LayerEditor
+          key={index}
+          id={index}
+          layerPlayer={newPlayer}
+          pitchShift={pitchShift}
+          pitch={layer.pitch}
+          layerVolume={volume}
+          volume={layer.volume}
+          layerData={layer}
+          solo={solo}
+          waveform={toneWaveform}
+        />
       );
     });
 
@@ -191,19 +201,19 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
 
   return (
     <>
-      <SettingsList importHandler={importHandler} saveHandler={handleSaveClick}/>
+      <SettingsList importHandler={importHandler} saveHandler={handleSaveClick} />
       <TimeControlBox recordingHandler={recordingHandler} playAllHandler={playAllLayers} stopAllHandler={stopAllLayers} pauseResumeHandler={pauseResumeAllLayers} />
       <Box
         sx={{
           bgcolor: 'background.paper',
-          gridColumn: {xs: '1 / 3', md:'2'},
-          gridRow: {xs: '1', md: '1 / 3'},
+          gridColumn: { xs: '1 / 3', md: '2' },
+          gridRow: { xs: '1', md: '1 / 3' },
           minHeight: '60vh',
           maxHeight: '80vh',
-          padding: {xs: '0', md: '10px'},
+          padding: { xs: '0', md: '10px' },
         }}
       >
-      {allLayers}
+        {allLayers}
       </Box>
     </>
   );
