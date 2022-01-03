@@ -10,7 +10,6 @@ export default function TrackList({ userId }) {
 
   const [tracks, setTracks] = useState([])
 
-
   useEffect(() => {
     getAllTracks(userId)
       .then(data => {

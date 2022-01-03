@@ -36,6 +36,7 @@ export default function LayerEditorCopy(props) {
       document.documentElement.removeEventListener('mousedown', mouse);
     };
   }, [duration]);
+
   const playLayer = async () => {
     try {
       await Tone.start();
@@ -48,6 +49,7 @@ export default function LayerEditorCopy(props) {
       console.log('Error Playing Layer', error);
     }
   };
+
   const stopLayer = async () => {
     //may or may not be useful , gets the current players position on
 
@@ -55,16 +57,16 @@ export default function LayerEditorCopy(props) {
     //  NOTE: Do not call Tone.Transport.stop() or ALL audio will stop
   };
 
-    const changeVolumeValue = (event, newValue) => {
-      setVolumeSliderValue(newValue);
-      layerVolume.volume.value = newValue;
+  const changeVolumeValue = (event, newValue) => {
+    setVolumeSliderValue(newValue);
+    layerVolume.volume.value = newValue;
 
-    };
+  };
 
-    const changePitchValue = (event, newValue) => {
-      setPitchSliderValue(newValue);
-      pitchShift.pitch = newValue;
-    };
+  const changePitchValue = (event, newValue) => {
+    setPitchSliderValue(newValue);
+    pitchShift.pitch = newValue;
+  };
 
   const muteLayer = () => {
     setIsMuted(!isMuted);
@@ -82,68 +84,68 @@ export default function LayerEditorCopy(props) {
 
   return (
     <>
-    <Box
-      sx={{
-        minHeight: {xs: '13vh', md: '16vh'},
-        maxHeight: {xs: '13vh', md: '16vh'},
-        border: '1px, solid, black',
-        display: 'grid',
-        gridTemplateColumns: '1fr 2fr 4fr',
-      }}
-    >
-      <FormControlLabel
-        sx={{gridRow: '1', gridColumn: '1'}}
-        label={props.layerData.layerName}
-        control={<Checkbox defaultChecked />}
-      />
-      <Box sx={{gridRow: '1', gridColumn: '2', maxWidth: '25vh'}}>
-        <TimeControlButton button={{name: 'Play', handler: playLayer}}/>
-        <TimeControlButton button={{name: 'Stop', handler: stopLayer}}/>
-        <TimeControlButton button={{name: 'Mute', handler: muteLayer, value: isMuted}}/>
-        <TimeControlButton button={{name: 'Edit', handler: layerEditorOpen}}/>
-      </Box>
-    </Box>
-
-    <Modal
-      open={editOpen}
-      onClose={layerEditClose}
-      aria-label='modal-edit-title'
-    >
       <Box
         sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: {xs: '95%', md: 400},
-          bgcolor: 'background.paper',
-          border: '2px solid #000',
-          boxShadow: 24,
-          p: 4,
+          minHeight: { xs: '13vh', md: '16vh' },
+          maxHeight: { xs: '13vh', md: '16vh' },
+          border: '1px, solid, black',
+          display: 'grid',
+          gridTemplateColumns: '1fr 2fr 4fr',
         }}
       >
-        <Typography variant='subtitle2' id='modal-edit-title'>Edit Layer: {props.layerData.layerName}</Typography>
-        <Typography>Volume</Typography>
-        <Slider
-          min={-20}
-          max={20}
-          value={volumeSliderValue}
-          onChange={changeVolumeValue}
-          aria-label='Volume Slider'
-          valueLabelDisplay='auto'
+        <FormControlLabel
+          sx={{ gridRow: '1', gridColumn: '1' }}
+          label={props.layerData.layerName}
+          control={<Checkbox defaultChecked />}
         />
-        <Typography>Pitch</Typography>
-        <Slider
-          min={0}
-          max={12}
-          value={pitchSliderValue}
-          onChange={changePitchValue}
-          aria-label='Pitch Slider'
-          valueLabelDisplay='auto'
-        />
+        <Box sx={{ gridRow: '1', gridColumn: '2', maxWidth: '25vh' }}>
+          <TimeControlButton button={{ name: 'Play', handler: playLayer }} />
+          <TimeControlButton button={{ name: 'Stop', handler: stopLayer }} />
+          <TimeControlButton button={{ name: 'Mute', handler: muteLayer, value: isMuted }} />
+          <TimeControlButton button={{ name: 'Edit', handler: layerEditorOpen }} />
+        </Box>
       </Box>
-    </Modal>
-  </>
+
+      <Modal
+        open={editOpen}
+        onClose={layerEditClose}
+        aria-label='modal-edit-title'
+      >
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: { xs: '95%', md: 400 },
+            bgcolor: 'background.paper',
+            border: '2px solid #000',
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Typography variant='subtitle2' id='modal-edit-title'>Edit Layer: {props.layerData.layerName}</Typography>
+          <Typography>Volume</Typography>
+          <Slider
+            min={-20}
+            max={20}
+            value={volumeSliderValue}
+            onChange={changeVolumeValue}
+            aria-label='Volume Slider'
+            valueLabelDisplay='auto'
+          />
+          <Typography>Pitch</Typography>
+          <Slider
+            min={0}
+            max={12}
+            value={pitchSliderValue}
+            onChange={changePitchValue}
+            aria-label='Pitch Slider'
+            valueLabelDisplay='auto'
+          />
+        </Box>
+      </Modal>
+    </>
 
     // const changePitchValue = (e) => {
     //   var rangeInputValue = e.target.value;
