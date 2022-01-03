@@ -15,14 +15,14 @@ import TimeControlButton from './editorComponents/TimeControlButton.jsx';
 export default function LayerEditorCopy(props) {
   const player = props.layerPlayer;
   const waveform = props.waveform;
-
+  const [isSolo,setIsSolo] = useState(props.solo.solo)
   const [isMuted, setIsMuted] = useState(props.layerPlayer.mute);
   const [duration, setDuration] = useState(false);
   const [pitchSliderValue, setPitchSliderValue] = useState(props.pitch);
   const [volumeSliderValue, setVolumeSliderValue] = useState(props.volume);
   const pitchShift = props.pitchShift;
   const layerVolume = props.layerVolume;
-
+  const solo = props.solo
   // put page on mousedown listener to get the duration of tracks then immediatly remove it after setting each tracks duration.
   useEffect(() => {
     const mouse = async () => {
@@ -38,75 +38,6 @@ export default function LayerEditorCopy(props) {
     };
   }, [duration]);
 
-  const renderWaveform = (wave) => {
-    if (wave) {
-      let analyser, bufferLength, dataArray;
-      const canvas = document.querySelector('.visual-layer' + props.id);
-      const canvasCtx = canvas.getContext('2d');
-
-      analyser = wave._analyser._analysers[0];
-      analyser.fftSize = 2048;
-      bufferLength = analyser.frequencyBinCount;
-      dataArray = new Uint8Array(bufferLength);
-
-      canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-
-      const draw = () => {
-        analyser.getByteTimeDomainData(dataArray);
-
-        canvasCtx.fillStyle = '#FFFFFF';
-        canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
-        canvasCtx.lineWidth = 2;
-        canvasCtx.strokeStyle = '#000000';
-        canvasCtx.beginPath();
-
-        let sliceWidth = canvas.width * 1.0 / bufferLength;
-        let x = 0;
-
-        for (let i = 0; i < bufferLength; i++) {
-          let v = dataArray[i] / 128.0;
-          let y = v * canvas.height/2;
-
-          if (i === 0) {
-            canvasCtx.moveTo(x, y);
-          } else {
-            canvasCtx.lineTo(x, y);
-          }
-          x += sliceWidth;
-        }
-        canvasCtx.lineTo(canvas.width, canvas.height/2);
-        canvasCtx.stroke();
-        window.requestAnimationFrame(draw);
-      }
-      draw();
-    }
-  };
-
-  const playLayer = async () => {
-    try {
-      await Tone.start();
-      Tone.Transport.schedule((time) => {
-        Tone.Draw.schedule(() => {
-          // console.log('TONE DRAW TIME', time);
-          renderWaveform(waveform);
-        }, time);
-      }, "+0.005");
-      await Tone.loaded();
-      // stop player if you dont want multiple instances playing
-      player.sync().stop();
-      player.sync().start();
-      Tone.Transport.start();
-    } catch (error) {
-      console.log('Error Playing Layer', error);
-    }
-  };
-
-  const stopLayer = async () => {
-    //may or may not be useful , gets the current players position on
-
-    await player.unsync().stop();
-    //  NOTE: Do not call Tone.Transport.stop() or ALL audio will stop
-  };
 
     const changeVolumeValue = (event, newValue) => {
       setVolumeSliderValue(newValue);
@@ -122,6 +53,10 @@ export default function LayerEditorCopy(props) {
   const muteLayer = () => {
     setIsMuted(!isMuted);
     player.mute = !isMuted;
+  };
+  const soloLayer = () => {
+    setIsSolo(!isSolo);
+ solo.solo = !isSolo
   };
 
   // editor modal handlers
@@ -150,9 +85,8 @@ export default function LayerEditorCopy(props) {
         control={<Checkbox defaultChecked />}
       />
       <Box sx={{gridRow: '1', gridColumn: '2', maxWidth: '25vh'}}>
-        <TimeControlButton button={{name: 'Play', handler: playLayer}}/>
-        <TimeControlButton button={{name: 'Stop', handler: stopLayer}}/>
         <TimeControlButton button={{name: 'Mute', handler: muteLayer, value: isMuted}}/>
+        <TimeControlButton button={{name: 'Solo', handler: soloLayer, value: isSolo}}/>
         <TimeControlButton button={{name: 'Edit', handler: layerEditorOpen}}/>
       </Box>
     </Box>
