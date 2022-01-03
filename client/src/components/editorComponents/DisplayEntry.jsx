@@ -125,7 +125,7 @@ const DisplayEntry = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onCLick={layerDeleteClose}>Keep Layer</Button>
+          <Button onClick={layerDeleteClose}>Keep Layer</Button>
           <Button onClick={layerDeleteHandler} autoFocus >Delete Layer</Button>
         </DialogActions>
       </Dialog>

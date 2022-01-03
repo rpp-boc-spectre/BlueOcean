@@ -1,82 +1,90 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useParams } from 'react-router-dom';
 
-import ResponsiveHeader from './ResponsiveHeader.jsx';
-import DisplayList from './editorComponents/DisplayList.jsx';
-import LayerList from './editorComponents/LayerList.jsx';
-import Timebox from './editorComponents/Timebox.jsx';
-import TimeControlBox from './editorComponents/TimeControlBox.jsx';
-import SettingsList from './editorComponents/SettingsList.jsx';
-import AudioEditList from './editorComponents/AudioEditList.jsx';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Modal from "@mui/material/Modal";
+import { useSnackbar } from "material-ui-snackbar-provider";
 
-import { AppBar, Box, Button, Container, CssBaseline, Menu, MenuItem, Toolbar, Typography } from '@mui/material'
-import { OfflineBolt } from '@mui/icons-material';
+import LayerPlayer from "./LayerPlayer";
+import ImportAduio from "./ImportAudio";
+import Recorder from './Recorder';
 
-/* temp example array of layers in track. actual format is up
-   to the people who actually understand this. these would also
-   probably be recieved through props or something */
-const layers = [
-  {id: 12345, name: 'Test1', url: 'http://location.com/details', meta: {start: 0, end: 30, tempo: 50, pitch: 50, volume: 50}},
-  {id: 12346, name: 'Test2', url: 'http://location.com/details', meta: {start: 0, end: 30, tempo: 50, pitch: 50, volume: 50}},
-  {id: 12347, name: 'Test3', url: 'http://location.com/details', meta: {start: 0, end: 30, tempo: 50, pitch: 50, volume: 50}},
-  {id: 12348, name: 'Test4', url: 'http://location.com/details', meta: {start: 0, end: 30, tempo: 50, pitch: 50, volume: 50}}
-];
-
-/* temp example array of available editing settings and their handlers
-   actual settings and functionality are still WIP, and they definitely
-   would not be stored like this in the finished build.  */
-const fakeVolumeHandler = () => {
-  console.log('CLICKED VOLUME EDITOR')
-}
-const fakePitchHandler = () => {
-  console.log('CLICKED PITCH EDITOR')
-}
-const fakeTempoHandler = () => {
-  console.log('CLICKED TEMPO EDITOR')
-}
-const editSettings = [
-  {name: 'Volume', component: 'VolumeEdit.jsx', handler: fakeVolumeHandler},
-  {name: 'Pitch', component: 'PitchEdit.jsx', handler: fakePitchHandler},
-  {name: 'Tempo', component: 'TempoEdit.jsx', handler: fakeTempoHandler}
-];
+import { getTrackData } from "../utils/database";
+import { getTrackUrls } from "../utils/storage";
+import UserContext from "../context/UserContext";
 
 export default function Editor() {
+
+  const [importModalState, setImportModalState] = useState(false);
+  const [recordingModalState, setRecordingModalState] = useState(false);
+  const [audioLayers, setAudioLayers] = useState([])
+  const userData = useContext(UserContext);
+  const snackbar = useSnackbar();
+  const { trackId } = useParams();
+
+  const handleImportClose = () => {
+    setImportModalState(false)
+  }
+
+  const handleRecorderClose = () => {
+    setRecordingModalState(false)
+  }
+
+  useEffect(() => {
+    getTrackData(trackId)
+      .then(data => {
+        console.log('Track Data', data)
+        return getTrackUrls(data)
+      })
+      .then(trackWithUrls => {
+        let layers = []
+        for (var layer in trackWithUrls.layers) {
+          layers.push(trackWithUrls.layers[layer])
+        }
+        setAudioLayers(layers)
+      })
+      .catch(error => {
+        snackbar.showMessage(<Alert variant='error'>There was an error getting your track</Alert>)
+      })
+  }, [])
+
+  const importHandler = () => {
+    setImportModalState(true);
+  };
+  const recordingHandler = () => {
+    setRecordingModalState(true);
+  };
+
   return (
     <>
-      <main>
-        {/* Temp Text for Testing
-        <Box
-          sx={{
-            bgcolor: '#cfe8fc',
-            p: 5
-          }}>
-          <Typography
-            component='h1'
-            variant='h6'
-            align='center'
-            color='text.primary'
-            gutterBottom
-          >
-              I am the page to edit audio tracks!
-          </Typography>
-        </Box> */}
-        {/* Main Component */}
-        <Container sx={{
-          border: 1,
-          maxHeight: '90vh',
-          minHeight: {xs: '100%', md: '70%'},
-          width: {xs: '100%', md: '70%'},
-          display: 'grid',
-          gridTemplateColumns: {xs: '3fr 2fr', md: '1fr 6fr'},
-          gridTemplateRows: {xs: '5fr 1fr', md: '6fr 1fr'}
-        }}>
-          {/* <LayerList layers={layers} /> */}
-          <DisplayList layers={layers} />
-          {/* <Timebox /> */}
-          <TimeControlBox />
-          {/* <AudioEditList /> */}
-          <SettingsList />
-        </Container>
-      </main>
+      <Container sx={{
+        border: 1,
+        maxHeight: '90vh',
+        minHeight: { xs: '100%', md: '70%' },
+        width: { xs: '100%', md: '70%' },
+        display: 'grid',
+        gridTemplateColumns: { xs: '3fr 2fr', md: '1fr 6fr' },
+        gridTemplateRows: { xs: '5fr 1fr', md: '6fr 1fr' }
+      }}>
+
+        <LayerPlayer layers={audioLayers} userId={userData?.user?.uid} trackId={trackId} recordingHandler={recordingHandler} importHandler={importHandler} />
+
+        <Modal open={importModalState} onClose={handleImportClose}>
+          <Box sx={{ backgroundColor: 'white', top: 50, maxHeight: '100vh', overflow: 'auto' }}>
+            <ImportAduio userId={userData?.user?.uid} currentList={audioLayers} setParentLayers={setAudioLayers} close={handleImportClose} />
+          </Box>
+        </Modal>
+        <Modal open={recordingModalState} onClose={handleRecorderClose} >
+          <Box sx={{ backgroundColor: 'white', margin: 'auto', top: 50, }}>
+            <Recorder currentList={audioLayers} setAudioLayers={setAudioLayers} />
+          </Box>
+        </Modal>
+      </Container>
     </>
   )
 }
+
+/* <Button variant="outlined" onClick={() => {setRecordingModalState(true)}}>Record New Layer</Button> */
+/* <Button variant="outlined" onClick={() => {setImportModalState(true)}}>Import Audio Layers</Button> */

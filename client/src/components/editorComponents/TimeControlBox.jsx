@@ -32,18 +32,19 @@ const handleFastForward = () => {
   console.log('CLICKED FAST FORWARD BUTTON')
 };
 
-const buttons = [
-  {name: 'Stop', handler: handleStop},
-  {name: 'Play', handler: handlePlay},
-  {name: 'Pause', handler: handlePause},
-  {name: 'Record', handler: handleRecord},
-  // {name: 'Beginning', handler: handleBeginning},
-  // {name: 'Rewind', handler: handleRewind},
-  // {name: 'FastForward', handler: handleFastForward},
-  // {name: 'End', handler: handleEnd}
-];
 
-const TimeControlBox = () => {
+const TimeControlBox = (props) => {
+
+  const buttons = [
+    {name: 'Stop', handler: props.stopAllHandler},
+    {name: 'Play', handler: props.playAllHandler},
+    {name: 'Pause', handler: props.pauseResumeHandler},
+    {name: 'Record', handler: props.recordingHandler},
+    // {name: 'Beginning', handler: handleBeginning},
+    // {name: 'Rewind', handler: handleRewind},
+    // {name: 'FastForward', handler: handleFastForward},
+    // {name: 'End', handler: handleEnd}
+  ];
   return (
     <>
       <Box sx={{

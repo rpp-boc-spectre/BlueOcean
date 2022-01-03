@@ -1,11 +1,11 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Typography, Button, Alert } from '@mui/material'
+import Typography from '@mui/material/Typography';
+import Alert from '@mui/material/Alert';
 import UserContext from "../context/UserContext.js";
 import { useSnackbar } from 'material-ui-snackbar-provider'
 
-import { signOut } from "firebase/auth";
-import { auth } from '../lib/firebase.js'
+import TrackList from "./TrackList.jsx";
 
 export default function Dashboard() {
 
@@ -28,9 +28,7 @@ export default function Dashboard() {
     <>
     <Typography variant='h1'>Dashboard</Typography>
     <Typography variant='h3'>Welcome {userData.username}</Typography>
-    <Button variant="outlined" color="error" onClick={handleSignOut}>
-          SignOut
-    </Button>
+    { userData.user && <TrackList userId={userData.user.uid}/> }
     </>
   )
 }
