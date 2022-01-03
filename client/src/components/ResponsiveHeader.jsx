@@ -1,4 +1,4 @@
-import React, { useState, useContext} from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import UserContext from '../context/UserContext.js';
 import { auth } from '../lib/firebase.js';
@@ -64,7 +64,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 
-const ResponsiveHeader = () =>{
+const ResponsiveHeader = () => {
   /*
   LOGIC FOR WHAT OPTIONS TO OFFER BASED ON USER STATUS AND CURRENT PAGE
   */
@@ -78,13 +78,13 @@ const ResponsiveHeader = () =>{
     settings = ['Log In'];
   }
   if (pathname === '/dashboard') {
-    pages = ['Home', 'Your Tracks'];
+    pages = ['Home', 'New Track'];
   } else if (pathname === '/' && user) {
     pages = ['Your Tracks', 'New Track'];
   } else if (pathname === '/') {
     pages = [];
-  } else if (pathname === '/tracks' && user) {
-    pages = ['Home', 'New Track'];
+  } else if (pathname.includes('/edit') && user) {
+    pages = ['Home', 'New Track', 'Your Tracks'];
   } else {
     pages = ['Home'];
   }
@@ -197,7 +197,7 @@ const ResponsiveHeader = () =>{
               <StyledInputBase
                 placeholder="Search…"
                 inputProps={{ 'aria-label': 'search' }}
-                />
+              />
             </Search>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
