@@ -12,21 +12,19 @@ import Typography from '@mui/material/Box';
 import TimeControlButton from './editorComponents/TimeControlButton.jsx';
 
 
-export default function LayerEditorCopy(props) {
-  const player = props.layerPlayer;
+export default function LayerEditorCopy({ layerPlayer, pitchShift, layerVolume, pitch, volume, layerData }) {
 
-  const [isMuted, setIsMuted] = useState(props.layerPlayer.mute);
+
+  const [isMuted, setIsMuted] = useState(layerPlayer.mute);
   const [duration, setDuration] = useState(false);
-  const [pitchSliderValue, setPitchSliderValue] = useState(props.pitch);
-  const [volumeSliderValue, setVolumeSliderValue] = useState(props.volume);
-  const pitchShift = props.pitchShift;
-  const layerVolume = props.layerVolume;
+  const [pitchSliderValue, setPitchSliderValue] = useState(pitch);
+  const [volumeSliderValue, setVolumeSliderValue] = useState(volume);
 
   // put page on mousedown listener to get the duration of tracks then immediatly remove it after setting each tracks duration.
   useEffect(() => {
     const mouse = async () => {
       await Tone.start();
-      setDuration(player._buffer.duration);
+      setDuration(layerPlayer._buffer.duration);
     };
 
     if (!duration) {
@@ -41,9 +39,9 @@ export default function LayerEditorCopy(props) {
     try {
       await Tone.start();
       await Tone.loaded();
-      // stop player if you dont want multiple instances playing
-      player.sync().stop();
-      player.sync().start();
+      // stop layerPlayer if you dont want multiple instances playing
+      layerPlayer.sync().stop();
+      layerPlayer.sync().start();
       Tone.Transport.start();
     } catch (error) {
       console.log('Error Playing Layer', error);
@@ -53,7 +51,7 @@ export default function LayerEditorCopy(props) {
   const stopLayer = async () => {
     //may or may not be useful , gets the current players position on
 
-    await player.unsync().stop();
+    await layerPlayer.unsync().stop();
     //  NOTE: Do not call Tone.Transport.stop() or ALL audio will stop
   };
 
@@ -70,7 +68,7 @@ export default function LayerEditorCopy(props) {
 
   const muteLayer = () => {
     setIsMuted(!isMuted);
-    player.mute = !isMuted;
+    layerPlayer.mute = !isMuted;
   };
 
   // editor modal handlers
@@ -95,7 +93,7 @@ export default function LayerEditorCopy(props) {
       >
         <FormControlLabel
           sx={{ gridRow: '1', gridColumn: '1' }}
-          label={props.layerData.layerName}
+          label={layerData.layerName}
           control={<Checkbox defaultChecked />}
         />
         <Box sx={{ gridRow: '1', gridColumn: '2', maxWidth: '25vh' }}>
@@ -124,7 +122,7 @@ export default function LayerEditorCopy(props) {
             p: 4,
           }}
         >
-          <Typography variant='subtitle2' id='modal-edit-title'>Edit Layer: {props.layerData.layerName}</Typography>
+          <Typography variant='subtitle2' id='modal-edit-title'>Edit Layer: {layerData.layerName}</Typography>
           <Typography>Volume</Typography>
           <Slider
             min={-20}
