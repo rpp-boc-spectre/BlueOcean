@@ -14,6 +14,7 @@ import TimeControlButton from './editorComponents/TimeControlButton.jsx';
 
 export default function LayerEditorCopy(props) {
   const player = props.layerPlayer;
+  const waveform = props.waveform;
 
   const [isMuted, setIsMuted] = useState(props.layerPlayer.mute);
   const [duration, setDuration] = useState(false);
@@ -36,9 +37,60 @@ export default function LayerEditorCopy(props) {
       document.documentElement.removeEventListener('mousedown', mouse);
     };
   }, [duration]);
+
+  const renderWaveform = (wave) => {
+    if (wave) {
+      let analyser, bufferLength, dataArray;
+      const canvas = document.querySelector('.visual-layer' + props.id);
+      const canvasCtx = canvas.getContext('2d');
+
+      analyser = wave._analyser._analysers[0];
+      analyser.fftSize = 2048;
+      bufferLength = analyser.frequencyBinCount;
+      dataArray = new Uint8Array(bufferLength);
+
+      canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const draw = () => {
+        analyser.getByteTimeDomainData(dataArray);
+
+        canvasCtx.fillStyle = '#FFFFFF';
+        canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+        canvasCtx.lineWidth = 2;
+        canvasCtx.strokeStyle = '#000000';
+        canvasCtx.beginPath();
+
+        let sliceWidth = canvas.width * 1.0 / bufferLength;
+        let x = 0;
+
+        for (let i = 0; i < bufferLength; i++) {
+          let v = dataArray[i] / 128.0;
+          let y = v * canvas.height/2;
+
+          if (i === 0) {
+            canvasCtx.moveTo(x, y);
+          } else {
+            canvasCtx.lineTo(x, y);
+          }
+          x += sliceWidth;
+        }
+        canvasCtx.lineTo(canvas.width, canvas.height/2);
+        canvasCtx.stroke();
+        window.requestAnimationFrame(draw);
+      }
+      draw();
+    }
+  };
+
   const playLayer = async () => {
     try {
       await Tone.start();
+      Tone.Transport.schedule((time) => {
+        Tone.Draw.schedule(() => {
+          // console.log('TONE DRAW TIME', time);
+          renderWaveform(waveform);
+        }, time);
+      }, "+0.005");
       await Tone.loaded();
       // stop player if you dont want multiple instances playing
       player.sync().stop();
@@ -48,6 +100,7 @@ export default function LayerEditorCopy(props) {
       console.log('Error Playing Layer', error);
     }
   };
+
   const stopLayer = async () => {
     //may or may not be useful , gets the current players position on
 
@@ -102,6 +155,9 @@ export default function LayerEditorCopy(props) {
         <TimeControlButton button={{name: 'Mute', handler: muteLayer, value: isMuted}}/>
         <TimeControlButton button={{name: 'Edit', handler: layerEditorOpen}}/>
       </Box>
+    </Box>
+    <Box sx={{gridRow: '1', gridColumn: '3', maxWidth: '40vh'}}>
+      <canvas className={'visual-layer' + props.id} width='350' height='75'></canvas>
     </Box>
 
     <Modal

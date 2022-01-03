@@ -25,6 +25,13 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
     allLayers.forEach((layer, i) => {
       console.log('play all: ', layer)
       layer.props.layerPlayer.sync().stop();
+      console.log('CHECKING PROPS', document.querySelector('.visual-layer' + layer.props.id));
+      Tone.Transport.schedule((time) => {
+        Tone.Draw.schedule(() => {
+          // console.log('TONE DRAW TIME', time);
+          renderWaveform(layer.props.waveform, layer.props.id);
+        }, time);
+      }, "+0.005");
       layer.props.layerPlayer.sync().start();
     });
     await Tone.loaded();
@@ -79,6 +86,50 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
     }
   }
 
+  const renderWaveform = (wave, id) => {
+    if (wave) {
+      let analyser, bufferLength, dataArray;
+      const canvas = document.querySelector('.visual-layer' + id);
+      const canvasCtx = canvas.getContext('2d');
+
+      analyser = wave._analyser._analysers[0];
+      analyser.fftSize = 2048;
+      bufferLength = analyser.frequencyBinCount;
+      dataArray = new Uint8Array(bufferLength);
+
+      canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const draw = () => {
+        analyser.getByteTimeDomainData(dataArray);
+
+        canvasCtx.fillStyle = '#FFFFFF';
+        canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+        canvasCtx.lineWidth = 2;
+        canvasCtx.strokeStyle = '#000000';
+        canvasCtx.beginPath();
+
+        let sliceWidth = canvas.width * 1.0 / bufferLength;
+        let x = 0;
+
+        for (let i = 0; i < bufferLength; i++) {
+          let v = dataArray[i] / 128.0;
+          let y = v * canvas.height/2;
+
+          if (i === 0) {
+            canvasCtx.moveTo(x, y);
+          } else {
+            canvasCtx.lineTo(x, y);
+          }
+          x += sliceWidth;
+        }
+        canvasCtx.lineTo(canvas.width, canvas.height/2);
+        canvasCtx.stroke();
+        window.requestAnimationFrame(draw);
+      }
+      draw();
+    }
+  };
+
   useEffect(() => {
     // for right meow, calling this function instead of fetching data
     layerMaker();
@@ -93,6 +144,8 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
       const volume = new Tone.Volume(layer?.volume || -5)
       volume.connect(pitchShift)
       newPlayer.connect(volume)
+      const toneWaveform = new Tone.Waveform();
+      newPlayer.connect(toneWaveform);
 
       // do not sync players here in order to maintain individual player control
       return (
@@ -105,6 +158,7 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
             layerVolume={volume}
             volume={layer.volume}
             layerData={layer}
+            waveform={toneWaveform}
           />
       );
     });
