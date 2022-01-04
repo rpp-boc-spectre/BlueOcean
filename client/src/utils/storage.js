@@ -7,13 +7,13 @@ export function listUserLayers(userId) {
     try {
       let res = await listAll(listRef)
       resolve(res.items)
-    } catch(error) {
+    } catch (error) {
       reject(error)
     }
   })
 }
 
-export function getLayerUrl(storageRef){
+export function getLayerUrl(storageRef) {
   let ref = storageRef
   if (typeof storageRef === 'string') {
     ref = ref(storage, storageRef)
@@ -38,6 +38,18 @@ export function getTrackUrls(track) {
         track.layers[layer].url = url
       }
       resolve(track)
+    } catch (error) {
+      reject(error)
+    }
+  })
+}
+
+export function uploadFile(file, userId) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const storageRef = ref(storage, `audio/${userId}/${file.name}`)
+      await uploadBytes(ref)
+      resolve(storageRef)
     } catch (error) {
       reject(error)
     }
