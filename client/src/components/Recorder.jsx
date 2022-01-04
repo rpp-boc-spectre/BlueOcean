@@ -26,6 +26,7 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
   const [timeRemaining, setTimeRemaining] = useState(10)
   const micRecorderRef = useRef(micRecorder)
   const userMicRef = useRef(userMic)
+  const recordingLimit = useRef(30)
 
   const startRecorder = async function () {
     try {
@@ -62,7 +63,7 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
   };
 
   const startTimer = () => {
-    setTimeRemaining(10)
+    setTimeRemaining(recordingLimit.current)
     let recorderTimeout = new Timer(async () => {
       try {
         stopRecorder()
@@ -71,12 +72,12 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
       } catch (error) {
         console.log(error)
       }
-    }, 11000)
+    }, (recordingLimit.current * 1000) + 400)
 
     let updateTimer = setInterval(function () {
       let time = recorderTimeout.getTimeLeft();
-      setTimeRemaining(Math.ceil(time / 1000) - 1);
-    }, 200);
+      setTimeRemaining((time / 1000).toFixed(1));
+    }, 90);
   }
 
   const handleUploadClick = async () => {
@@ -94,9 +95,13 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
         layerName: recordingName,
         url: url
       }
-      setAudioLayers((prevLayers) => {
-        return [...prevLayers, data]
-      })
+
+      // make sure we are not already capped on layers before adding them to the editor
+      if ((currentList?.length || 0) < 4) {
+        setAudioLayers((prevLayers) => {
+          return [...prevLayers, data]
+        })
+      }
     } catch (error) {
       console.log('upload ', error)
       snackbar.showMessage(<Alert severity="error" sx={{ width: '100%' }}>{`There was an error uploading your layer :(`}</Alert>)
@@ -115,7 +120,7 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
     <>
       <Typography variant='h3'>Recorder Component</Typography>
       {(micRecorder && !isFinished) && <Typography>{timeRemaining}</Typography>}
-      <Button variant='outlined' onClick={startRecorder} startIcon={<MicIcon />} disabled={isFinished === false && micRecorder}>Click to record</Button>
+      <Button variant='outlined' onClick={startRecorder} startIcon={<MicIcon />} disabled={isFinished === false && !!micRecorder}>Click to record</Button>
       <Button variant='outlined' onClick={stopRecorder} endIcon={<StopCircleIcon />} disabled={isFinished === true || !micRecorder}>Click to stop</Button>
       <ValidatorForm onSubmit={handleUploadClick}>
         <TextValidator
