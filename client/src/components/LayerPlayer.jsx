@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, createContext, useReducer } from 'react';
 
 import * as Tone from 'tone';
 import { UserMedia } from 'tone';
@@ -12,9 +12,12 @@ import { useSnackbar } from 'material-ui-snackbar-provider';
 import LayerEditor from './LayerEditor.jsx';
 import TimeControlBox from './editorComponents/TimeControlBox.jsx';
 import SettingsList from './editorComponents/SettingsList.jsx';
+import { usePlayerStore } from '../context/PlayerContext.js'
+import { addPlayer, addPlayers } from '../lib/playerTableReducer.js';
 
 
 export default function LayerPlayer({ layers, trackId, userId, recordingHandler, importHandler }) {
+  const [playerStore, dispatch] = usePlayerStore()
   const [allLayers, setAllLayers] = useState([]);
   const allLayersPlayState = useRef('');
   const snackbar = useSnackbar()
@@ -27,17 +30,21 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
 
   const playAllLayers = async () => {
     await Tone.start();
-    allLayers.forEach((layer, i) => {
+    let keys = Object.keys(playerStore.allPlayers)
+    keys.forEach((layerKey, i) => {
+      let layer = playerStore.allPlayers[layerKey]
       console.log('play all: ', layer)
-      layer.props.layerPlayer.sync().stop();
-      console.log('CHECKING PROPS', document.querySelector('.visual-layer' + layer.props.id));
+      // layer.props.layerPlayer.sync().stop();
+      layer.player.sync().stop()
+      console.log('CHECKING PROPS', document.querySelector('.visual-layer' + layerKey));
       Tone.Transport.schedule((time) => {
         Tone.Draw.schedule(() => {
           // console.log('TONE DRAW TIME', time);
-          renderWaveform(layer.props.waveform, layer.props.id);
+          renderWaveform(layer.waveform, layerKey);
         }, time);
       }, "+0.005");
-      layer.props.layerPlayer.sync().start();
+      // layer.props.layerPlayer.sync().start();
+      layer.player.sync().start()
     });
     await Tone.loaded();
     allLayersPlayState.current = 'started';
@@ -168,15 +175,20 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
       volume.connect(pitchShift)
       pitchShift.connect(solo)
 
+      let player = {
+        id: index,
+        player: newPlayer,
+        pitchShift: pitchShift,
+        pitch: layer.pitch,
+        layerVolume: volume,
+        volume: layer.volume,
+        layerData: layer,
+        solo: solo,
+        waveform: toneWaveform
 
+      }
+      dispatch(addPlayer(player))
 
-      // var newPlayer = new Tone.Player(layer.url)
-      // const pitchShift = new Tone.PitchShift(layer?.pitch || 0).toDestination();
-      // const volume = new Tone.Volume(layer?.volume || -5)
-      // volume.connect(pitchShift)
-      // newPlayer.connect(volume)
-      // const toneWaveform = new Tone.Waveform();
-      // newPlayer.connect(toneWaveform);
 
       // do not sync players here in order to maintain individual player control
       return (

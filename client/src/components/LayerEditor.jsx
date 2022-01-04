@@ -8,20 +8,23 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Modal from '@mui/material/Modal';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Box';
+import { usePlayerStore } from '../context/PlayerContext.js'
+import { updatePlayerProperty } from '../lib/playerTableReducer.js';
 
 import TimeControlButton from './editorComponents/TimeControlButton.jsx';
 
 export default function LayerEditorCopy(props) {
-  const player = props.layerPlayer;
-  const waveform = props.waveform;
-  const [isSolo, setIsSolo] = useState(props.solo.solo);
+  const [playerStore, dispatch] = usePlayerStore()
+  const { player, waveform, pitch, volume, solo, pitchShift, layerVolume } = playerStore.allPlayers[props.id]
+  // const waveform = props.waveform;
+  const [isSolo, setIsSolo] = useState(solo.solo);
   const [isMuted, setIsMuted] = useState(props.layerPlayer.mute);
   const [duration, setDuration] = useState(false);
-  const [pitchSliderValue, setPitchSliderValue] = useState(props.pitch);
-  const [volumeSliderValue, setVolumeSliderValue] = useState(props.volume);
-  const pitchShift = props.pitchShift;
-  const layerVolume = props.layerVolume;
-  const solo = props.solo;
+  // const [pitchSliderValue, setPitchSliderValue] = useState(pitch);
+  // const [volumeSliderValue, setVolumeSliderValue] = useState(volume);
+  // const pitchShift = props.pitchShift;
+  // const layerVolume = props.layerVolume;
+  // const solo = props.solo;
   // put page on mousedown listener to get the duration of tracks then immediatly remove it after setting each tracks duration.
   useEffect(() => {
     const mouse = async () => {
@@ -37,13 +40,18 @@ export default function LayerEditorCopy(props) {
     };
   }, [duration]);
 
+  useEffect(() => {
+    console.log('playerer', playerStore.allPlayers[props.id])
+  }, [])
+
   const changeVolumeValue = (event, newValue) => {
-    setVolumeSliderValue(newValue);
+    dispatch(updatePlayerProperty(props.id, 'volume', newValue))
     layerVolume.volume.value = newValue;
   };
 
   const changePitchValue = (event, newValue) => {
-    setPitchSliderValue(newValue);
+    // setPitchSliderValue(newValue);
+    dispatch(updatePlayerProperty(props.id, 'pitch', newValue))
     pitchShift.pitch = newValue;
   };
 
@@ -122,7 +130,7 @@ export default function LayerEditorCopy(props) {
           <Slider
             min={-20}
             max={20}
-            value={volumeSliderValue}
+            value={volume}
             onChange={changeVolumeValue}
             aria-label='Volume Slider'
             valueLabelDisplay='auto'
@@ -131,7 +139,7 @@ export default function LayerEditorCopy(props) {
           <Slider
             min={0}
             max={12}
-            value={pitchSliderValue}
+            value={pitch}
             onChange={changePitchValue}
             aria-label='Pitch Slider'
             valueLabelDisplay='auto'
