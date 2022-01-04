@@ -43,7 +43,6 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
       await mic.open();
       recorder.start();
       startTimer();
-      console.log('recording');
     } catch (error) {
       console.log('Start Recorder', error)
     }
@@ -59,6 +58,7 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
       setUrl(newBlobURL)
       setMicRecorder(recording)
       setIsFinished(true)
+      recorderTimeoutRef.current.pause()
     } catch (error) {
       console.log('ERROR', error)
     }
@@ -140,7 +140,7 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
         clearInterval(updateTimerRef.current)
       }
 
-      if (micRecorderRef.current !== null) {
+      if ((micRecorderRef.current !== null) && !(micRecorderRef.current instanceof Blob)) {
         micRecorderRef.current.dispose();
       }
       // close mic on stop.
