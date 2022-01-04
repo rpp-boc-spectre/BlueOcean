@@ -43,15 +43,3 @@ export function getTrackUrls(track) {
     }
   })
 }
-
-export function uploadFile(file, userId) {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const storageRef = ref(storage, `audio/${userId}/${file.name}`)
-      await uploadBytes(ref)
-      resolve(storageRef)
-    } catch (error) {
-      reject(error)
-    }
-  })
-}

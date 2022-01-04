@@ -35,7 +35,6 @@ export default function App() {
             } />
             <Route path='/recorder' element={<Recorder />} />
             <Route path='*' element={<NotFound />} />
-            <Route path='/upload' element={<UploadFile />} />
           </Routes>
         </div>
       </UserContext.Provider>
