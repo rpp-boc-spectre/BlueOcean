@@ -141,7 +141,6 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
       }
 
       if (micRecorderRef.current !== null) {
-        console.log(micRecorderRef.current)
         micRecorderRef.current.dispose();
       }
       // close mic on stop.
