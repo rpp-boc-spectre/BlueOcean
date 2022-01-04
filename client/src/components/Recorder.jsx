@@ -23,7 +23,7 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
   const [userMic, setUserMic] = useState();
   const [recordingName, setRecordingName] = useState('');
   const [isFinished, setIsFinished] = useState(false)
-  const [timeRemaining, setTimeRemaining] = useState(30)
+  const [timeRemaining, setTimeRemaining] = useState(10)
   const micRecorderRef = useRef(micRecorder)
   const userMicRef = useRef(userMic)
 
@@ -37,12 +37,10 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
       setMicRecorder(recorder);
       setUserMic(mic);
 
-
-
       await mic.open();
       recorder.start();
-      console.log('recording');
       startTimer();
+      console.log('recording');
     } catch (error) {
       console.log('Start Recorder', error)
     }
@@ -54,15 +52,6 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
       // close mic on stop.
       await userMicRef.current.close();
 
-      // WAV stuff------------------------------------
-      // const audioContext = new AudioContext();
-      // let blobArrayBuffer = await recording.arrayBuffer();
-      // let audioBuffer = await audioContext.decodeAudioData(blobArrayBuffer);
-      // let audioBufferToWavJS = audioBufferToWav(audioBuffer);
-      // let newBlob = new Blob([audioBufferToWavJS], { type: 'audio/wav' });
-      // console.log('REcording',recording.size,'Blob',newBlob.size)
-      // ----------------------------------------------
-
       let newBlobURL = URL.createObjectURL(recording);
       setUrl(newBlobURL)
       setMicRecorder(recording)
@@ -73,6 +62,7 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
   };
 
   const startTimer = () => {
+    setTimeRemaining(10)
     let recorderTimeout = new Timer(async () => {
       try {
         stopRecorder()
@@ -81,11 +71,11 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
       } catch (error) {
         console.log(error)
       }
-    }, 30000)
+    }, 11000)
 
     let updateTimer = setInterval(function () {
       let time = recorderTimeout.getTimeLeft();
-      setTimeRemaining(Math.ceil(time / 1000));
+      setTimeRemaining(Math.ceil(time / 1000) - 1);
     }, 200);
   }
 
