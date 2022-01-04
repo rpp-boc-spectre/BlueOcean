@@ -13,6 +13,8 @@ import Dashboard from './Dashboard.jsx'
 import ResponsiveHeader from './ResponsiveHeader.jsx';
 import Recorder from "./Recorder.jsx";
 import Editor from "./Editor.jsx";
+import { PlayerStoreProvider } from "../context/PlayerContext.js";
+import { initialState, playerTableReducer } from "../lib/playerTableReducer.js";
 
 export default function App() {
   const userData = useUserData()
@@ -20,22 +22,24 @@ export default function App() {
   return (
     <SnackbarProvider SnackbarProps={{ autoHideDuration: 4000 }}>
       <UserContext.Provider value={userData}>
-        <div className="App">
-          <ResponsiveHeader />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path='login' element={<Entry />} />
-            <Route path='edit/:trackId' element={<Editor />} />
-            <Route path='edit' element={<Editor />} />
-            <Route path='dashboard' element={
-              <RequireAuth>
-                <Dashboard />
-              </RequireAuth>
-            } />
-            <Route path='/recorder' element={<Recorder />} />
-            <Route path='*' element={<NotFound />} />
-          </Routes>
-        </div>
+        <PlayerStoreProvider initialState={initialState} reducer={playerTableReducer}>
+          <div className="App">
+            <ResponsiveHeader />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path='login' element={<Entry />} />
+              <Route path='edit/:trackId' element={<Editor />} />
+              <Route path='edit' element={<Editor />} />
+              <Route path='dashboard' element={
+                <RequireAuth>
+                  <Dashboard />
+                </RequireAuth>
+              } />
+              <Route path='/recorder' element={<Recorder />} />
+              <Route path='*' element={<NotFound />} />
+            </Routes>
+          </div>
+        </PlayerStoreProvider>
       </UserContext.Provider>
     </SnackbarProvider>
   );
