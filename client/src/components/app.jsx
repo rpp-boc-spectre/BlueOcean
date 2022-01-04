@@ -13,6 +13,7 @@ import Dashboard from './Dashboard.jsx'
 import ResponsiveHeader from './ResponsiveHeader.jsx';
 import Recorder from "./Recorder.jsx";
 import Editor from "./Editor.jsx";
+import UploadFile from "./UploadFile.jsx";
 
 export default function App() {
   const userData = useUserData()
@@ -34,6 +35,7 @@ export default function App() {
             } />
             <Route path='/recorder' element={<Recorder />} />
             <Route path='*' element={<NotFound />} />
+            <Route path='/upload' element={<UploadFile />} />
           </Routes>
         </div>
       </UserContext.Provider>
