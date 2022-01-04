@@ -23,10 +23,12 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
   const [userMic, setUserMic] = useState();
   const [recordingName, setRecordingName] = useState('');
   const [isFinished, setIsFinished] = useState(false)
-  const [timeRemaining, setTimeRemaining] = useState(10)
-  const micRecorderRef = useRef(micRecorder)
-  const userMicRef = useRef(userMic)
   const recordingLimit = useRef(30)
+  const [timeRemaining, setTimeRemaining] = useState(recordingLimit.current)
+  const micRecorderRef = useRef()
+  const userMicRef = useRef()
+  const updateTimerRef = useRef()
+  const recorderTimeoutRef = useRef()
 
   const startRecorder = async function () {
     try {
@@ -67,8 +69,8 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
     let recorderTimeout = new Timer(async () => {
       try {
         stopRecorder()
-        clearInterval(updateTimer)
-        setTimeRemaining(0)
+        clearInterval(updateTimerRef.current)
+        setTimeRemaining(recordingLimit.current)
       } catch (error) {
         console.log(error)
       }
@@ -76,8 +78,12 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
 
     let updateTimer = setInterval(function () {
       let time = recorderTimeout.getTimeLeft();
-      setTimeRemaining((time / 1000).toFixed(1));
+      setTimeRemaining((time / 1000));
     }, 90);
+
+    updateTimerRef.current = updateTimer
+    recorderTimeoutRef.current = recorderTimeout
+
   }
 
   const handleUploadClick = async () => {
@@ -109,17 +115,46 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
   }
 
   useEffect(() => {
-    micRecorderRef.current = micRecorder;
+    if (userMic instanceof Blob) {
+      micRecorderRef.current = null
+    } else {
+      micRecorderRef.current = micRecorder;
+    }
   }, [micRecorder])
 
   useEffect(() => {
-    userMicRef.current = userMic;
+    if (userMic instanceof Blob) {
+      userMicRef.current = null;
+    } else {
+      userMicRef.current = userMic;
+    }
   }, [userMic])
+
+  useEffect(() => {
+    return () => {
+      if (recorderTimeoutRef.current) {
+        recorderTimeoutRef.current.pause()
+      }
+
+      if (updateTimerRef.current) {
+        clearInterval(updateTimerRef.current)
+      }
+
+      if (micRecorderRef.current !== null) {
+        console.log(micRecorderRef.current)
+        micRecorderRef.current.dispose();
+      }
+      // close mic on stop.
+      if (userMicRef.current !== null) {
+        userMicRef.current.close();
+      }
+    }
+  }, [])
 
   return (
     <>
       <Typography variant='h3'>Recorder Component</Typography>
-      {(micRecorder && !isFinished) && <Typography>{timeRemaining}</Typography>}
+      {(!!micRecorder && !isFinished) && <Typography>{`${Math.abs(timeRemaining - recordingLimit.current).toFixed(2)} / ${recordingLimit.current}:00`}</Typography>}
       <Button variant='outlined' onClick={startRecorder} startIcon={<MicIcon />} disabled={isFinished === false && !!micRecorder}>Click to record</Button>
       <Button variant='outlined' onClick={stopRecorder} endIcon={<StopCircleIcon />} disabled={isFinished === true || !micRecorder}>Click to stop</Button>
       <ValidatorForm onSubmit={handleUploadClick}>
