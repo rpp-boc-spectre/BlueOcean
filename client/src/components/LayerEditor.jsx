@@ -8,27 +8,23 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Modal from '@mui/material/Modal';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Box';
-import { usePlayerStore } from '../context/PlayerContext.js';
-import { updatePlayerProperty } from '../lib/playerTableReducer.js';
+
+import { useLayerStore } from '../context/LayerContext.js';
 
 import TimeControlButton from './editorComponents/TimeControlButton.jsx';
 
 export default function LayerEditorCopy({ id }) {
-  const [playerStore, dispatch] = usePlayerStore();
-  // const { player, waveform, pitch, volume, solo, pitchShift, layerVolume, layerData } = playerStore.allPlayers[props.id]
-  const player = playerStore.allPlayers[id];
-  // const waveform = props.waveform;
+  const [layerStore, dispatch] = useLayerStore();
+  const player = layerStore.allLayers[id];
   const [isSolo, setIsSolo] = useState(player._solo);
   const [isMuted, setIsMuted] = useState(player._mute);
   const [duration, setDuration] = useState(false);
   const [pitchSliderValue, setPitchSliderValue] = useState(player._pitch);
   const [volumeSliderValue, setVolumeSliderValue] = useState(player._volume);
   const [trimFromStart, setTrimFromStart] = useState(player.trimFromStart);
-  // const pitchShift = props.pitchShift;
-  // const layerVolume = props.layerVolume;
-  // const solo = props.solo;
-  // put page on mousedown listener to get the duration of tracks then immediatly remove it after setting each tracks duration.
 
+
+  // put page on mousedown listener to get the duration of tracks then immediatly remove it after setting each tracks duration.
   useEffect(() => {
     const mouse = async () => {
       await Tone.start();
@@ -60,15 +56,6 @@ export default function LayerEditorCopy({ id }) {
     setIsMuted(player._mute);
   };
 
-  // const muteLayer = () => {
-  //   console.log('click')
-  //   player.toggleMute()
-  // };
-  // const soloLayer = () => {
-  //   setIsSolo(!isSolo);
-  //   solo.solo = !isSolo;
-  // };
-
   const soloLayer = () => {
     player.toggleSolo();
     setIsSolo(player._solo);
@@ -76,12 +63,12 @@ export default function LayerEditorCopy({ id }) {
   const trimFromStartTime = (event, newValue) => {
     setTrimFromStart(newValue);
     player.changeTrimFromStart(newValue);
-    // props.start = newValue
   };
   const testing = () => {
 
     player.start()
   };
+
   // editor modal handlers
   const [editOpen, setEditOpen] = React.useState(false);
   const layerEditorOpen = () => {

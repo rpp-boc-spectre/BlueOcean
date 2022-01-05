@@ -1,4 +1,3 @@
-import { duration } from '@mui/material';
 import * as Tone from 'tone';
 
 export class Layer {

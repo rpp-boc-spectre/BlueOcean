@@ -1,27 +1,25 @@
-import React, { useEffect, useState, useRef, createContext, useReducer } from 'react';
-
+import React, { useEffect, useRef } from 'react';
 import * as Tone from 'tone';
-import { UserMedia } from 'tone';
 
-import { saveTrackData } from '../utils/database.js';
+import { useSnackbar } from 'material-ui-snackbar-provider';
+import { useLayerStore } from '../context/LayerContext.js'
 
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
-import { useSnackbar } from 'material-ui-snackbar-provider';
+
+import { addLayer, removeLayer } from '../lib/layerTableReducer.js';
+import { saveTrackData } from '../utils/database.js';
+import { Layer } from '../lib/layer.js'
 
 import LayerEditor from './LayerEditor.jsx';
 import TimeControlBox from './editorComponents/TimeControlBox.jsx';
 import SettingsList from './editorComponents/SettingsList.jsx';
-import { usePlayerStore } from '../context/PlayerContext.js'
-import { addPlayer, addPlayers, removePlayer } from '../lib/playerTableReducer.js';
-import { Layer } from '../lib/player.js'
 
 
 export default function LayerPlayer({ layers, trackId, userId, recordingHandler, importHandler }) {
-  const [playerStore, dispatch] = usePlayerStore()
-  const [allLayers, setAllLayers] = useState([]);
+  const [layerStore, dispatch] = useLayerStore()
   const allLayersPlayState = useRef('');
-  const allPlayersRef = useRef(playerStore.allPlayers)
+  const allLayersRef = useRef(layerStore.allLayers)
   const snackbar = useSnackbar()
 
   const playAllLayers = async () => {
@@ -29,17 +27,17 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
       await Tone.start();
       await Tone.loaded();
 
-      let keys = Object.keys(playerStore.allPlayers)
+      let keys = Object.keys(layerStore.allLayers)
       keys.forEach((layerKey, i) => {
-        let layer = playerStore.allPlayers[layerKey]
+        let layer = layerStore.allLayers[layerKey]
         Tone.Transport.schedule((time) => {
           Tone.Draw.schedule(() => {
             renderWaveform(layer.waveform, layerKey);
           }, time);
         }, "+0.005");
 
-        console.log('LAYER',layer.trimFromStart)
-        layer.start((layer.trimFromStart),layer.trimFromStart,layer.duration())
+        console.log('LAYER', layer.trimFromStart)
+        layer.start((layer.trimFromStart), layer.trimFromStart, layer.duration())
         // layer.player.sync().start()
       });
 
@@ -49,19 +47,18 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
       // this prevents us from having timing errors + fixes bug where
       // if you pressed play again after the track was over it would throw an error,
       // because it can't actually play from the time you want it to as its passed.
-      Tone.Transport.seconds=0
+      Tone.Transport.seconds = 0
       Tone.Transport.start();
     } catch (error) {
-      console.log('ERROR',error)
+      console.log('ERROR', error)
       snackbar.showMessage(<Alert severity='error'>Error playing all audio</Alert>)
     }
   };
 
   const stopAllLayers = () => {
-
-    let keys = Object.keys(playerStore.allPlayers)
+    let keys = Object.keys(layerStore.allLayers)
     keys.forEach((layerKey, i) => {
-      let layer = playerStore.allPlayers[layerKey]
+      let layer = layerStore.allLayers[layerKey]
       layer.stop()
     });
     Tone.Transport.stop();
@@ -79,7 +76,7 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
 
   const handleSaveClick = async () => {
     try {
-      await saveTrackData(playerStore.allPlayers, userId, trackId)
+      await saveTrackData(layerStore.allLayers, userId, trackId)
       snackbar.showMessage(<Alert variant='success'>Track saved</Alert>)
     } catch (error) {
       console.log(error)
@@ -131,64 +128,30 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
     }
   };
 
+  // create refs to be used during cleanup
   useEffect(() => {
-    allPlayersRef.current = playerStore.allPlayers
-  }, [playerStore.allPlayers]);
+    allLayersRef.current = layerStore.allLayers
+  }, [layerStore.allLayers]);
 
+  // create audio layers
   useEffect(() => {
-    layerMaker();
+    layers.forEach((layer, index) => {
+      const newPlayer = new Layer({ ...layer, id: index, layerData: layer })
+      newPlayer.connect()
+      dispatch(addLayer(newPlayer))
+    });
   }, [layers]);
 
+  //cleanup on unmount
   useEffect(() => {
     return () => {
-
-      for (let key of Object.keys(allPlayersRef.current)) {
-        let player = allPlayersRef.current[key].player
+      for (let key of Object.keys(allLayersRef.current)) {
+        let player = allLayersRef.current[key].player
         player.dispose()
-        dispatch(removePlayer(key))
+        dispatch(removeLayer(key))
       }
     }
   }, [])
-
-  const layerMaker = async () => {
-
-    let layerEditorComponents = layers.map((layer, index) => {
-
-
-      const newPlayer = new Layer({...layer, id: index, layerData: layer})
-      newPlayer.connect()
-      console.log(newPlayer)
-      // const volume = new Tone.Volume(layer?.volume || -5)
-      // const pitchShift = new Tone.PitchShift(layer?.pitch || 0)
-      // const toneWaveform = new Tone.Waveform();
-      // var solo = new Tone.Solo().toDestination()
-
-      // //   player => volume => pitchShift =>solo=> speakers
-      // newPlayer.connect(volume)
-      // newPlayer.connect(toneWaveform)
-      // volume.connect(pitchShift)
-      // pitchShift.connect(solo)
-
-      // let player = {
-      //   id: index,
-      //   player: newPlayer,
-      //   pitchShift: pitchShift,
-      //   pitch: layer.pitch,
-      //   layerVolume: volume,
-      //   volume: layer.volume,
-      //   layerData: layer,
-      //   solo: solo,
-      //   waveform: toneWaveform
-      // }
-      dispatch(addPlayer(newPlayer))
-
-
-      // do not sync players here in order to maintain individual player control
-    });
-
-    // save created layers in state so that we can sync them to play all together in playAllLayers()
-    // setAllLayers((prevLayers) => layerEditorComponents);
-  };
 
   return (
     <>
@@ -204,7 +167,7 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
           padding: { xs: '0', md: '10px' },
         }}
       >
-        {Object.keys(playerStore.allPlayers).map((player, index) => <LayerEditor key={index} id={index}/>)}
+        {Object.keys(layerStore.allLayers).map((player, index) => <LayerEditor key={index} id={index} />)}
       </Box>
     </>
   );
