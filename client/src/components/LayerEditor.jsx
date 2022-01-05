@@ -43,11 +43,13 @@ export default function LayerEditorCopy({ id }) {
   }, [duration]);
 
   const changeVolumeValue = (event, newValue) => {
+    newValue = Math.round(newValue)
     setVolumeSliderValue(newValue)
     player.changeVolumeValue(newValue)
   };
 
   const changePitchValue = (event, newValue) => {
+    newValue = Math.round(newValue)
     setPitchSliderValue(newValue);
     player.changePitchValue(newValue)
   };

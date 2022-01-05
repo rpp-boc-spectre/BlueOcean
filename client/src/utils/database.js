@@ -64,32 +64,8 @@ const createTrackDataObject = (players, userId) => {
   for (var playerKey in players) {
     let player = players[playerKey]
 
-    function getLayerName(layerData) {
-      if (layerData?.layerName) {
-        return layerData.layerName
-      }
-
-      if (layerData.fileName.includes('.webm')) {
-        return layerData.fileName.split('.webm')[0]
-      }
-
-      if (layerData.fileName.includes('.mp3')) {
-        return layerData.fileName.split('.mp3')[0]
-      }
-
-      return 'unknown'
-    }
-
-    let data = {
-      start: 0,
-      end: 0,
-      duration: 0,
-      pitch: player.pitchShift._pitch,
-      volume: player.layerVolume.volume.value,
-      fileName: player.layerData.fileName,
-      parent: player.layerData.parent,
-      layerName: getLayerName(player.layerData)
-    }
+    let data = player.getLayerData()
+    console.log(data)
 
     trackData.layers.push(data)
   }

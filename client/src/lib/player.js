@@ -60,10 +60,15 @@ export class Layer {
 
   getLayerData() {
     return {
-      id: this.id,
       pitch: this.pitchShift.pitch,
       volume: this.volume.volume.value,
-      url: this.url
+      url: this.url,
+      fileName: this.layerData.fileName,
+      layerName: this.name,
+      parent: this.layerData.parent,
+      start: 0,
+      end: 0,
+      duration: 0,
     }
   }
 
