@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Button, ToggleButton } from '@mui/material';
+
 import StopIcon from '@mui/icons-material/Stop';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -15,6 +16,13 @@ import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import MusicOffIcon from '@mui/icons-material/MusicOff';
+
+// import SvgIcon from '@mui/material/SvgIcon';
+import SoloSVG from './S.svg';
+import SoloFilledSVG from './S-Filled.svg';
+
+const SoloIcon = <img src={SoloSVG} height='24' width='24' />;
+const SoloFilledIcon = <img src={SoloFilledSVG} height='24' width='24' />;
 
 /* attempted to use an object and have the code look up each button name and
    pick the right icon, but it wasn't working. so I just brute forced it, sorry */
@@ -58,10 +66,10 @@ const TimeControlButton = (props) => {
     button = <ToggleButton value={props.button.value} onChange={props.button.handler}><VolumeUpIcon /></ToggleButton>
   }
   if (target === 'Solo' && props.button.value === true) {
-    button = <ToggleButton value={props.button.value} onChange={props.button.handler}><MusicNoteIcon /></ToggleButton>
+    button = <ToggleButton value={props.button.value} onChange={props.button.handler}>{SoloFilledIcon}</ToggleButton>
   }
   if (target === 'Solo' && props.button.value === false) {
-    button = <ToggleButton value={props.button.value} onChange={props.button.handler}><MusicOffIcon /></ToggleButton>
+    button = <ToggleButton value={props.button.value} onChange={props.button.handler}>{SoloIcon}</ToggleButton>
   }
   return (
     <>
