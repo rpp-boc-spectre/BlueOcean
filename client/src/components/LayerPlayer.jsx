@@ -72,28 +72,8 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
   };
 
   const handleSaveClick = async () => {
-    console.log('click')
-    let trackData = {
-      user: userId,
-      layers: []
-    }
-
-    for (var layer of allLayers) {
-      let data = {
-        start: 0,
-        end: 0,
-        duration: 0,
-        pitch: layer.props.pitchShift._pitch,
-        volume: layer.props.layerVolume.volume.value,
-        fileName: layer.props.layerData.fileName,
-        parent: layer.props.layerData.parent,
-        layerName: layer.props.layerData.layerName || layer.props.layerData.fileName.split('.webm')[0]
-      }
-      trackData.layers.push(data)
-    }
-
     try {
-      await saveTrackData(trackData, trackId)
+      await saveTrackData(playerStore.allPlayers, trackId)
       snackbar.showMessage(<Alert variant='success'>Track saved</Alert>)
     } catch (error) {
       console.log(error)
