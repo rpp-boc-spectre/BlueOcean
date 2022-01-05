@@ -36,32 +36,32 @@ const SettingsList = (props) => {
   };
 
   const settingsArray = [
-    {name: 'Save', handler: props.saveHandler},
-    {name: 'New Layer', handler: props.importHandler},
-    {name: 'New Audio', handler: newAudioHandler},
-    {name: 'Upload', handler: uploadHandler}
+    { name: 'Save', handler: props.saveHandler },
+    { name: 'New Layer', handler: props.importHandler },
+    { name: 'New Audio', handler: newAudioHandler },
+    { name: 'Upload', handler: props.uploadHandler }
   ];
 
   return (
     <>
       <Button onClick={handleDrawerToggle} sx={{
         border: 1,
-        gridColumn: {xs: '2', md: '1'},
-        gridRow: {xs: '2', md: '1'}
+        gridColumn: { xs: '2', md: '1' },
+        gridRow: { xs: '2', md: '1' }
       }}>
         <Typography>Settings</Typography>
       </Button>
-      <Drawer  container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            border: 1,
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: '100%', maxHeight: '80%' }
-          }}>
+      <Drawer container={container}
+        variant="temporary"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true, // Better open performance on mobile.
+        }}
+        sx={{
+          border: 1,
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: '100%', maxHeight: '80%' }
+        }}>
         <Typography variant='subtitle1'>Settings List</Typography>
         {settingsArray.map((setting, index) => {
           return (<Button variant='outlined' key={index} onClick={setting.handler}>{setting.name}</Button>);
