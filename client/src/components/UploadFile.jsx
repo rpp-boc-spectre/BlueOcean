@@ -17,9 +17,14 @@ export default function UploadFile() {
 
   const checkFileSize = (e) => {
     setInputFileName(inputFileRef.current.files[0].name)
-    if (inputFileRef.current.files[0].size > 5000000) {
+    if (inputFileRef.current.files[0].size > 1000000) {
+      setFileError(true)
       inputFileRef.current.value = ''
       snackbar.showMessage(<Alert severity="error">This file is too big! uwu</Alert>)
+    } else {
+      if (fileError) {
+        setFileError(false)
+      }
     }
   }
 
@@ -55,7 +60,7 @@ export default function UploadFile() {
       <h3>{inputFileName}</h3>
       <Button
         variant='contained'
-        disabled={fileError || inputFileName.length < 1}
+        disabled={(fileError || inputFileName.length < 1)}
         onClick={handleFileUpload}
       >
         Submit
