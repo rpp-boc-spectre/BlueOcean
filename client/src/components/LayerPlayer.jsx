@@ -16,8 +16,9 @@ import TimeControlBox from './editorComponents/TimeControlBox.jsx';
 import SettingsList from './editorComponents/SettingsList.jsx';
 
 
-export default function LayerPlayer({ layers, trackId, userId, recordingHandler, importHandler }) {
+export default function LayerPlayer({ layers, trackId, userId, recordingHandler, importHandler, uploadHandler }) {
   const [layerStore, dispatch] = useLayerStore()
+
   const allLayersPlayState = useRef('');
   const allLayersRef = useRef(layerStore.allLayers)
   const snackbar = useSnackbar()
@@ -155,7 +156,7 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
 
   return (
     <>
-      <SettingsList importHandler={importHandler} saveHandler={handleSaveClick} />
+      <SettingsList importHandler={importHandler} saveHandler={handleSaveClick} uploadHandler={uploadHandler} />
       <TimeControlBox recordingHandler={recordingHandler} playAllHandler={playAllLayers} stopAllHandler={stopAllLayers} pauseResumeHandler={pauseResumeAllLayers} />
       <Box
         sx={{
