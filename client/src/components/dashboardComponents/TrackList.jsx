@@ -14,7 +14,7 @@ export default function TrackList({ userId }) {
   useEffect(() => {
     getAllTracks(userId)
       .then(data => {
-        console.log(data)
+        console.log('Track Data', data)
         setTracks(data)
       })
       .catch(error => {
@@ -24,11 +24,11 @@ export default function TrackList({ userId }) {
 
   return (
     <>
-      <Typography>Track List Component</Typography>
-      <Box sx={{ width: {xs: '100%', md: '70%'} }}>
+      <Box>
+        <Typography align='center' variant='h5'>Your Tracks</Typography>
         <List>
           {tracks.map((track, index) => {
-            return <TrackListItem trackId={track.id} key={index} />
+            return <TrackListItem track={track} key={index} />
           })}
         </List>
       </Box>

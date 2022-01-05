@@ -35,14 +35,14 @@ export function saveTrackData(trackData, trackId) {
 export function getAllTracks(userId) {
   return new Promise( async (resolve, reject) => {
     try {
-      console.log(userId)
+      //console.log('User ID', userId)
       let collRef = collection(db, 'tracks')
       let q = query(collRef, where('user', '==', userId))
       const querySnapshot = await getDocs(q);
       let data =[]
-      console.log(querySnapshot)
+      //console.log('Query Snapshot', querySnapshot)
       querySnapshot.forEach((doc) => {
-        console.log(doc)
+        //console.log('Doc', doc)
         let docData = doc.data()
         docData.id = doc.id
         data.push(docData)
