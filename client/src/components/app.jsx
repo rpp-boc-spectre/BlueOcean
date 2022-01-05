@@ -33,9 +33,7 @@ export default function App() {
                 <Dashboard />
               </RequireAuth>
             } />
-            <Route path='/recorder' element={<Recorder />} />
             <Route path='*' element={<NotFound />} />
-            <Route path='/upload' element={<UploadFile />} />
           </Routes>
         </div>
       </UserContext.Provider>
