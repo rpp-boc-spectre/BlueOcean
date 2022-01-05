@@ -23,7 +23,7 @@ export default function LayerEditorCopy({ id }) {
   const [duration, setDuration] = useState(false);
   const [pitchSliderValue, setPitchSliderValue] = useState(player._pitch);
   const [volumeSliderValue, setVolumeSliderValue] = useState(player._volume);
-  const [trimFromStart,setTrimFromStart] =useState(player.trimFromStart)
+  const [trimFromStart, setTrimFromStart] = useState(player.trimFromStart);
   // const pitchShift = props.pitchShift;
   // const layerVolume = props.layerVolume;
   // const solo = props.solo;
@@ -74,11 +74,14 @@ export default function LayerEditorCopy({ id }) {
     setIsSolo(player._solo);
   };
   const trimFromStartTime = (event, newValue) => {
-  setTrimFromStart(newValue)
-    player.changeTrimFromStart(newValue)
-      // props.start = newValue
+    setTrimFromStart(newValue);
+    player.changeTrimFromStart(newValue);
+    // props.start = newValue
+  };
+  const testing = () => {
 
-    }
+    player.start()
+  };
   // editor modal handlers
   const [editOpen, setEditOpen] = React.useState(false);
   const layerEditorOpen = () => {
@@ -168,6 +171,7 @@ export default function LayerEditorCopy({ id }) {
             aria-label='Trim Slider'
             valueLabelDisplay='auto'
           />
+          <Button onClick={testing}>DO you work </Button>
         </Box>
       </Modal>
     </>

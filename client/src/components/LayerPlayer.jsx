@@ -27,33 +27,44 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
   const playAllLayers = async () => {
     try {
       await Tone.start();
+      await Tone.loaded();
+
       let keys = Object.keys(playerStore.allPlayers)
       keys.forEach((layerKey, i) => {
-        let layer = playerStore.allPlayers[layerKey]
-        layer.start()
+
         Tone.Transport.schedule((time) => {
           Tone.Draw.schedule(() => {
             renderWaveform(layer.waveform, layerKey);
           }, time);
         }, "+0.005");
+        let layer = playerStore.allPlayers[layerKey]
+        console.log('LAYER',layer.trimFromStart)
+        layer.start((layer.trimFromStart),layer.trimFromStart,layer.layerData.duration)
         // layer.player.sync().start()
       });
 
-      await Tone.loaded();
+
       allLayersPlayState.current = 'started';
+      // move tranport down here  and set the play head back to 0.
+      // this prevents us from having timing errors + fixes bug where
+      // if you pressed play again after the track was over it would throw an error,
+      // because it can't actually play from the time you want it to as its passed.
+      Tone.Transport.seconds=0
       Tone.Transport.start();
     } catch (error) {
+      console.log('ERROR',error)
       snackbar.showMessage(<Alert severity='error'>Error playing all audio</Alert>)
     }
   };
 
   const stopAllLayers = () => {
-    Tone.Transport.stop();
+
     let keys = Object.keys(playerStore.allPlayers)
     keys.forEach((layerKey, i) => {
       let layer = playerStore.allPlayers[layerKey]
       layer.stop()
     });
+    Tone.Transport.stop();
   };
 
   const pauseResumeAllLayers = () => {

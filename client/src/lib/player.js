@@ -32,9 +32,12 @@ export class Layer {
     this.player.stop();
   }
 
-  start() {
-    this.player.sync().stop();
-    this.player.sync().start();
+  start(time, offset, duration) {
+    // changed this to just unsync() , no need to stop it again unless you want individual functionality
+    // inwhich case put it back in.
+    // havnt done offset yet, just handling case of trimming  from audio and wanting it to start at the same spot.
+    this.player.unsync()
+    this.player.sync().start(time, time).stop(duration);
   }
 
   toggleMute() {
@@ -48,8 +51,8 @@ export class Layer {
     this._solo = this.solo.solo;
   }
 
-  changeTrimFromStart(newValue){
-    this.trimFromStart = newValue
+  changeTrimFromStart(newValue) {
+    this.trimFromStart = newValue;
   }
 
   changePitchValue(newValue) {
