@@ -15,10 +15,10 @@ import TimeControlButton from './editorComponents/TimeControlButton.jsx';
 
 export default function LayerEditorCopy(props) {
   const [playerStore, dispatch] = usePlayerStore()
-  const { player, waveform, pitch, volume, solo, pitchShift, layerVolume } = playerStore.allPlayers[props.id]
+  const { player, waveform, pitch, volume, solo, pitchShift, layerVolume, layerData } = playerStore.allPlayers[props.id]
   // const waveform = props.waveform;
   const [isSolo, setIsSolo] = useState(solo.solo);
-  const [isMuted, setIsMuted] = useState(props.layerPlayer.mute);
+  const [isMuted, setIsMuted] = useState(player.mute);
   const [duration, setDuration] = useState(false);
   // const [pitchSliderValue, setPitchSliderValue] = useState(pitch);
   // const [volumeSliderValue, setVolumeSliderValue] = useState(volume);
@@ -85,7 +85,7 @@ export default function LayerEditorCopy(props) {
         }}>
         <FormControlLabel
           sx={{ gridRow: '1', gridColumn: '1' }}
-          label={props.layerData.layerName}
+          label={layerData.layerName}
           control={<Checkbox defaultChecked />}
         />
         <Box sx={{ gridRow: '1', gridColumn: '2', maxWidth: '25vh' }}>
@@ -124,7 +124,7 @@ export default function LayerEditorCopy(props) {
             p: 4,
           }}>
           <Typography variant='subtitle2' id='modal-edit-title'>
-            Edit Layer: {props.layerData.layerName}
+            Edit Layer: {layerData.layerName}
           </Typography>
           <Typography>Volume</Typography>
           <Slider
