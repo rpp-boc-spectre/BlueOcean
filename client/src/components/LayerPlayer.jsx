@@ -51,8 +51,8 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
     let keys = Object.keys(playerStore.allPlayers)
     keys.forEach((layerKey, i) => {
       let layer = playerStore.allPlayers[layerKey]
-      layer.layerPlayer.unsync();
-      layer.layerPlayer.stop()
+      layer.player.unsync();
+      layer.player.stop()
     });
   };
 
@@ -174,14 +174,14 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
         <LayerEditor
           key={index}
           id={index}
-          layerPlayer={newPlayer}
-          pitchShift={pitchShift}
-          pitch={layer.pitch}
-          layerVolume={volume}
-          volume={layer.volume}
-          layerData={layer}
-          solo={solo}
-          waveform={toneWaveform}
+          // layerPlayer={newPlayer}
+          // pitchShift={pitchShift}
+          // pitch={layer.pitch}
+          // layerVolume={volume}
+          // volume={layer.volume}
+          // layerData={layer}
+          // solo={solo}
+          // waveform={toneWaveform}
         />
       );
     });
