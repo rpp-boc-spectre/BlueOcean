@@ -29,33 +29,35 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
 
 
   const playAllLayers = async () => {
-    await Tone.start();
-    let keys = Object.keys(playerStore.allPlayers)
-    keys.forEach((layerKey, i) => {
-      let layer = playerStore.allPlayers[layerKey]
-      console.log('play all: ', layer)
-      // layer.props.layerPlayer.sync().stop();
-      layer.player.sync().stop()
-      console.log('CHECKING PROPS', document.querySelector('.visual-layer' + layerKey));
-      Tone.Transport.schedule((time) => {
-        Tone.Draw.schedule(() => {
-          // console.log('TONE DRAW TIME', time);
-          renderWaveform(layer.waveform, layerKey);
-        }, time);
-      }, "+0.005");
-      // layer.props.layerPlayer.sync().start();
-      layer.player.sync().start()
-    });
-    await Tone.loaded();
-    allLayersPlayState.current = 'started';
-    Tone.Transport.start();
+    try {
+      await Tone.start();
+      let keys = Object.keys(playerStore.allPlayers)
+      keys.forEach((layerKey, i) => {
+        let layer = playerStore.allPlayers[layerKey]
+        layer.player.sync().stop()
+        Tone.Transport.schedule((time) => {
+          Tone.Draw.schedule(() => {
+            renderWaveform(layer.waveform, layerKey);
+          }, time);
+        }, "+0.005");
+        layer.player.sync().start()
+      });
+
+      await Tone.loaded();
+      allLayersPlayState.current = 'started';
+      Tone.Transport.start();
+    } catch (error) {
+      snackbar.showMessage(<Alert severity='error'>Error playing all audio</Alert>)
+    }
   };
 
   const stopAllLayers = () => {
     Tone.Transport.stop();
-    allLayers.forEach((layer, i) => {
-      layer.props.layerPlayer.unsync();
-      layer.props.layerPlayer.stop()
+    let keys = Object.keys(playerStore.allPlayers)
+    keys.forEach((layerKey, i) => {
+      let layer = playerStore.allPlayers[layerKey]
+      layer.layerPlayer.unsync();
+      layer.layerPlayer.stop()
     });
   };
 
