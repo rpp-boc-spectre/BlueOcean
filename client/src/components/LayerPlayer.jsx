@@ -20,13 +20,8 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
   const [playerStore, dispatch] = usePlayerStore()
   const [allLayers, setAllLayers] = useState([]);
   const allLayersPlayState = useRef('');
+  const allPlayersRef = useRef(playerStore.allPlayers)
   const snackbar = useSnackbar()
-  const layersRef = useRef()
-
-  useEffect(() => {
-    layersRef.current = allLayers
-  }, [allLayers])
-
 
   const playAllLayers = async () => {
     try {
@@ -126,17 +121,19 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
   };
 
   useEffect(() => {
-    // for right meow, calling this function instead of fetching data
+    allPlayersRef.current = playerStore.allPlayers
+  }, [playerStore.allPlayers]);
+
+  useEffect(() => {
     layerMaker();
   }, [layers]);
 
   useEffect(() => {
     return () => {
-      if (layersRef.current.length > 0) {
-        layersRef.current.forEach((layer, index) => {
-          console.log('Closing layer', index)
-          layer.props.layerPlayer.dispose()
-        })
+
+      for (let key of Object.keys(allPlayersRef.current)) {
+        let player = allPlayersRef.current[key].player
+        player.dispose()
       }
     }
   }, [])
@@ -144,7 +141,6 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
   const layerMaker = async () => {
 
     let layerEditorComponents = layers.map((layer, index) => {
-      console.log(layer)
       var newPlayer = new Tone.Player(layer.url)
       const volume = new Tone.Volume(layer?.volume || -5)
       const pitchShift = new Tone.PitchShift(layer?.pitch || 0)
