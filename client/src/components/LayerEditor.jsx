@@ -8,21 +8,22 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Modal from '@mui/material/Modal';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Box';
-import { usePlayerStore } from '../context/PlayerContext.js'
+import { usePlayerStore } from '../context/PlayerContext.js';
 import { updatePlayerProperty } from '../lib/playerTableReducer.js';
 
 import TimeControlButton from './editorComponents/TimeControlButton.jsx';
 
 export default function LayerEditorCopy({ id }) {
-  const [playerStore, dispatch] = usePlayerStore()
+  const [playerStore, dispatch] = usePlayerStore();
   // const { player, waveform, pitch, volume, solo, pitchShift, layerVolume, layerData } = playerStore.allPlayers[props.id]
-  const player = playerStore.allPlayers[id]
+  const player = playerStore.allPlayers[id];
   // const waveform = props.waveform;
   const [isSolo, setIsSolo] = useState(player._solo);
   const [isMuted, setIsMuted] = useState(player._mute);
   const [duration, setDuration] = useState(false);
   const [pitchSliderValue, setPitchSliderValue] = useState(player._pitch);
   const [volumeSliderValue, setVolumeSliderValue] = useState(player._volume);
+  const [trimFromStart,setTrimFromStart] =useState(player.trimFromStart)
   // const pitchShift = props.pitchShift;
   // const layerVolume = props.layerVolume;
   // const solo = props.solo;
@@ -43,19 +44,19 @@ export default function LayerEditorCopy({ id }) {
   }, [duration]);
 
   const changeVolumeValue = (event, newValue) => {
-    newValue = Math.round(newValue)
-    setVolumeSliderValue(newValue)
-    player.changeVolumeValue(newValue)
+    newValue = Math.round(newValue);
+    setVolumeSliderValue(newValue);
+    player.changeVolumeValue(newValue);
   };
 
   const changePitchValue = (event, newValue) => {
-    newValue = Math.round(newValue)
+    newValue = Math.round(newValue);
     setPitchSliderValue(newValue);
-    player.changePitchValue(newValue)
+    player.changePitchValue(newValue);
   };
 
   const muteLayer = () => {
-    player.toggleMute()
+    player.toggleMute();
     setIsMuted(player._mute);
   };
 
@@ -69,10 +70,15 @@ export default function LayerEditorCopy({ id }) {
   // };
 
   const soloLayer = () => {
-    player.toggleSolo()
+    player.toggleSolo();
     setIsSolo(player._solo);
   };
+  const trimFromStartTime = (event, newValue) => {
+  setTrimFromStart(newValue)
 
+      // props.start = newValue
+
+    }
   // editor modal handlers
   const [editOpen, setEditOpen] = React.useState(false);
   const layerEditorOpen = () => {
@@ -151,6 +157,15 @@ export default function LayerEditorCopy({ id }) {
             value={pitchSliderValue}
             onChange={changePitchValue}
             aria-label='Pitch Slider'
+            valueLabelDisplay='auto'
+          />
+          <Typography>trimFromStart Audio</Typography>
+          <Slider
+            min={0}
+            max={50}
+            value={trimFromStart}
+            onChange={trimFromStartTime}
+            aria-label='Trim Slider'
             valueLabelDisplay='auto'
           />
         </Box>
