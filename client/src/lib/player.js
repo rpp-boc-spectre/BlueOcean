@@ -2,7 +2,7 @@ import { duration } from '@mui/material';
 import * as Tone from 'tone';
 
 export class Layer {
-  constructor({ url, volume, pitch, id, layerData }) {
+  constructor({ url, volume, pitch, id, layerData, trimFromStart }) {
     this.id = id;
     this.url = url;
     this.player = new Tone.Player(this.url);
@@ -13,7 +13,7 @@ export class Layer {
     this.layerData = layerData;
     this.name = getLayerName(this.layerData);
 
-    this.trimFromStart = this.layerData.trimFromStart || 0;
+    this.trimFromStart = trimFromStart || 0;
     this._pitch = this.pitchShift.pitch;
     this._mute = false;
     this._solo = false;

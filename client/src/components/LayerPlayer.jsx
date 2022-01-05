@@ -31,15 +31,15 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
 
       let keys = Object.keys(playerStore.allPlayers)
       keys.forEach((layerKey, i) => {
-
+        let layer = playerStore.allPlayers[layerKey]
         Tone.Transport.schedule((time) => {
           Tone.Draw.schedule(() => {
             renderWaveform(layer.waveform, layerKey);
           }, time);
         }, "+0.005");
-        let layer = playerStore.allPlayers[layerKey]
+
         console.log('LAYER',layer.trimFromStart)
-        layer.start((layer.trimFromStart),layer.trimFromStart,layer.layerData.duration)
+        layer.start((layer.trimFromStart),layer.trimFromStart,layer.duration())
         // layer.player.sync().start()
       });
 
