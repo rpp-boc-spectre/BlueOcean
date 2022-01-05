@@ -14,9 +14,10 @@ export function getTrackData(trackId) {
   })
 }
 
-export function saveTrackData(trackData, trackId) {
+export function saveTrackData(allPlayers, trackId) {
   return new Promise( async (resolve, reject) => {
     try {
+      let trackData = createTrackDataObject(allPlayers)
       let ref;
       if (!trackId) {
         ref = doc(collection(db, "tracks"))
@@ -52,4 +53,47 @@ export function getAllTracks(userId) {
       reject(error)
     }
   })
+}
+
+
+const createTrackDataObject = (players) => {
+  let trackData = {
+    user: userId,
+    layers: []
+  }
+
+  for (var playerKey in players) {
+    let player = players[playerKey]
+
+    function getLayerName(layerData) {
+      if (layerData?.layerName) {
+        return layerName
+      }
+
+      if (layerData.fileName.includes('.webm')) {
+        return layerData.fileName.split('.webm')[0]
+      }
+
+      if (layerData.fileName.includes('.mp3')) {
+        return layerData.fileName.split('.mp3')[0]
+      }
+
+      return 'unknown'
+    }
+
+    let data = {
+      start: 0,
+      end: 0,
+      duration: 0,
+      pitch: player.pitchShift._pitch,
+      volume: player.layerVolume.volume.value,
+      fileName: player.layerData.fileName,
+      parent: player.layerData.parent,
+      layerName: getLayerName(player.layerData)
+    }
+
+    trackData.layers.push(data)
+  }
+
+  return trackData
 }
