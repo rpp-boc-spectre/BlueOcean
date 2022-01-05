@@ -14,10 +14,10 @@ export function getTrackData(trackId) {
   })
 }
 
-export function saveTrackData(allPlayers, trackId) {
+export function saveTrackData(allPlayers, userId, trackId) {
   return new Promise( async (resolve, reject) => {
     try {
-      let trackData = createTrackDataObject(allPlayers)
+      let trackData = createTrackDataObject(allPlayers, userId)
       let ref;
       if (!trackId) {
         ref = doc(collection(db, "tracks"))
@@ -36,7 +36,6 @@ export function saveTrackData(allPlayers, trackId) {
 export function getAllTracks(userId) {
   return new Promise( async (resolve, reject) => {
     try {
-      console.log(userId)
       let collRef = collection(db, 'tracks')
       let q = query(collRef, where('user', '==', userId))
       const querySnapshot = await getDocs(q);
@@ -56,7 +55,7 @@ export function getAllTracks(userId) {
 }
 
 
-const createTrackDataObject = (players) => {
+const createTrackDataObject = (players, userId) => {
   let trackData = {
     user: userId,
     layers: []
@@ -67,7 +66,7 @@ const createTrackDataObject = (players) => {
 
     function getLayerName(layerData) {
       if (layerData?.layerName) {
-        return layerName
+        return layerData.layerName
       }
 
       if (layerData.fileName.includes('.webm')) {

@@ -73,7 +73,7 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
 
   const handleSaveClick = async () => {
     try {
-      await saveTrackData(playerStore.allPlayers, trackId)
+      await saveTrackData(playerStore.allPlayers, userId, trackId)
       snackbar.showMessage(<Alert variant='success'>Track saved</Alert>)
     } catch (error) {
       console.log(error)
@@ -212,10 +212,3 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
     </>
   );
 }
-
-
-/* <button onClick={playAllLayers}>Play All Layers</button>
-<button onClick={stopAllLayers}>Stop All Layers</button>
-<button onClick={pauseResumeAllLayers}>Pause/Resume</button>
-<button onClick={handleSaveClick}>Save Changes</button>
- */
