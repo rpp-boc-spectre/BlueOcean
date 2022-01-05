@@ -1,6 +1,6 @@
 export const ADD_PLAYER = 'APP/PLAYER_TABLE/ADD_PLAYER';
 export const ADD_PLAYERS = 'APP/PLAYER_TABLE/ADD_PLAYERS';
-export const REMOVE_PLAYER = 'APP/PLAYER_TABLE/ADD_PLAYER';
+export const REMOVE_PLAYER = 'APP/PLAYER_TABLE/REMOVE_PLAYER';
 export const UPDATE_PLAYER_PITCH = 'APP/PLAYER_TABLE/UPDATE_PLAYER/PITCH';
 export const UPDATE_PLAYER_VOLUME = 'APP/PLAYER_TABLE/UPDATE_PLAYER/VOLUME';
 export const UPDATE_PLAYER_PROP = 'APP/PLAYER_TABLE/UPDATE_PLAYER/PROP';
@@ -68,7 +68,7 @@ export const playerTableReducer = (state = initialState, action) => {
   }
 
   if (action.type === REMOVE_PLAYER) {
-    delete state.allPlayers[playerId]
+    delete state.allPlayers[action.playerId]
 
     return {
       ...state

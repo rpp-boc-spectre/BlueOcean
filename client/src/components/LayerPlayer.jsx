@@ -13,7 +13,7 @@ import LayerEditor from './LayerEditor.jsx';
 import TimeControlBox from './editorComponents/TimeControlBox.jsx';
 import SettingsList from './editorComponents/SettingsList.jsx';
 import { usePlayerStore } from '../context/PlayerContext.js'
-import { addPlayer, addPlayers } from '../lib/playerTableReducer.js';
+import { addPlayer, addPlayers, removePlayer } from '../lib/playerTableReducer.js';
 
 
 export default function LayerPlayer({ layers, trackId, userId, recordingHandler, importHandler }) {
@@ -134,6 +134,7 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
       for (let key of Object.keys(allPlayersRef.current)) {
         let player = allPlayersRef.current[key].player
         player.dispose()
+        dispatch(removePlayer(key))
       }
     }
   }, [])
