@@ -13,23 +13,25 @@ import { updatePlayerProperty } from '../lib/playerTableReducer.js';
 
 import TimeControlButton from './editorComponents/TimeControlButton.jsx';
 
-export default function LayerEditorCopy(props) {
+export default function LayerEditorCopy({ id }) {
   const [playerStore, dispatch] = usePlayerStore()
-  const { player, waveform, pitch, volume, solo, pitchShift, layerVolume, layerData } = playerStore.allPlayers[props.id]
+  // const { player, waveform, pitch, volume, solo, pitchShift, layerVolume, layerData } = playerStore.allPlayers[props.id]
+  const player = playerStore.allPlayers[id]
   // const waveform = props.waveform;
-  const [isSolo, setIsSolo] = useState(solo.solo);
-  const [isMuted, setIsMuted] = useState(player.mute);
+  const [isSolo, setIsSolo] = useState(player._solo);
+  const [isMuted, setIsMuted] = useState(player._mute);
   const [duration, setDuration] = useState(false);
-  // const [pitchSliderValue, setPitchSliderValue] = useState(pitch);
-  // const [volumeSliderValue, setVolumeSliderValue] = useState(volume);
+  const [pitchSliderValue, setPitchSliderValue] = useState(player._pitch);
+  const [volumeSliderValue, setVolumeSliderValue] = useState(player._volume);
   // const pitchShift = props.pitchShift;
   // const layerVolume = props.layerVolume;
   // const solo = props.solo;
   // put page on mousedown listener to get the duration of tracks then immediatly remove it after setting each tracks duration.
+
   useEffect(() => {
     const mouse = async () => {
       await Tone.start();
-      setDuration(player._buffer.duration);
+      setDuration(player.duration());
     };
 
     if (!duration) {
@@ -40,28 +42,33 @@ export default function LayerEditorCopy(props) {
     };
   }, [duration]);
 
-  useEffect(() => {
-    console.log('playerer', playerStore.allPlayers[props.id])
-  }, [])
-
   const changeVolumeValue = (event, newValue) => {
-    dispatch(updatePlayerProperty(props.id, 'volume', newValue))
-    layerVolume.volume.value = newValue;
+    setVolumeSliderValue(newValue)
+    player.changeVolumeValue(newValue)
   };
 
   const changePitchValue = (event, newValue) => {
-    // setPitchSliderValue(newValue);
-    dispatch(updatePlayerProperty(props.id, 'pitch', newValue))
-    pitchShift.pitch = newValue;
+    setPitchSliderValue(newValue);
+    player.changePitchValue(newValue)
   };
 
   const muteLayer = () => {
-    setIsMuted(!isMuted);
-    player.mute = !isMuted;
+    player.toggleMute()
+    setIsMuted(player._mute);
   };
+
+  // const muteLayer = () => {
+  //   console.log('click')
+  //   player.toggleMute()
+  // };
+  // const soloLayer = () => {
+  //   setIsSolo(!isSolo);
+  //   solo.solo = !isSolo;
+  // };
+
   const soloLayer = () => {
-    setIsSolo(!isSolo);
-    solo.solo = !isSolo;
+    player.toggleSolo()
+    setIsSolo(player._solo);
   };
 
   // editor modal handlers
@@ -85,7 +92,7 @@ export default function LayerEditorCopy(props) {
         }}>
         <FormControlLabel
           sx={{ gridRow: '1', gridColumn: '1' }}
-          label={layerData.layerName}
+          label={player.name}
           control={<Checkbox defaultChecked />}
         />
         <Box sx={{ gridRow: '1', gridColumn: '2', maxWidth: '25vh' }}>
@@ -102,7 +109,7 @@ export default function LayerEditorCopy(props) {
       </Box>
       <Box sx={{ gridRow: '1', gridColumn: '3', maxWidth: '40vh' }}>
         <canvas
-          className={'visual-layer' + props.id}
+          className={'visual-layer' + id}
           width='350'
           height='75'></canvas>
       </Box>
@@ -124,13 +131,13 @@ export default function LayerEditorCopy(props) {
             p: 4,
           }}>
           <Typography variant='subtitle2' id='modal-edit-title'>
-            Edit Layer: {layerData.layerName}
+            Edit Layer: {player.name}
           </Typography>
           <Typography>Volume</Typography>
           <Slider
             min={-20}
             max={20}
-            value={volume}
+            value={volumeSliderValue}
             onChange={changeVolumeValue}
             aria-label='Volume Slider'
             valueLabelDisplay='auto'
@@ -139,7 +146,7 @@ export default function LayerEditorCopy(props) {
           <Slider
             min={0}
             max={12}
-            value={pitch}
+            value={pitchSliderValue}
             onChange={changePitchValue}
             aria-label='Pitch Slider'
             valueLabelDisplay='auto'

@@ -14,6 +14,7 @@ import TimeControlBox from './editorComponents/TimeControlBox.jsx';
 import SettingsList from './editorComponents/SettingsList.jsx';
 import { usePlayerStore } from '../context/PlayerContext.js'
 import { addPlayer, addPlayers, removePlayer } from '../lib/playerTableReducer.js';
+import { Layer } from '../lib/player.js'
 
 
 export default function LayerPlayer({ layers, trackId, userId, recordingHandler, importHandler }) {
@@ -29,13 +30,13 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
       let keys = Object.keys(playerStore.allPlayers)
       keys.forEach((layerKey, i) => {
         let layer = playerStore.allPlayers[layerKey]
-        layer.player.sync().stop()
+        layer.start()
         Tone.Transport.schedule((time) => {
           Tone.Draw.schedule(() => {
             renderWaveform(layer.waveform, layerKey);
           }, time);
         }, "+0.005");
-        layer.player.sync().start()
+        // layer.player.sync().start()
       });
 
       await Tone.loaded();
@@ -51,8 +52,7 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
     let keys = Object.keys(playerStore.allPlayers)
     keys.forEach((layerKey, i) => {
       let layer = playerStore.allPlayers[layerKey]
-      layer.player.unsync();
-      layer.player.stop()
+      layer.stop()
     });
   };
 
@@ -142,52 +142,41 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
   const layerMaker = async () => {
 
     let layerEditorComponents = layers.map((layer, index) => {
-      var newPlayer = new Tone.Player(layer.url)
-      const volume = new Tone.Volume(layer?.volume || -5)
-      const pitchShift = new Tone.PitchShift(layer?.pitch || 0)
-      const toneWaveform = new Tone.Waveform();
-      var solo = new Tone.Solo().toDestination()
 
-      //   player => volume => pitchShift =>solo=> speakers
-      newPlayer.connect(volume)
-      newPlayer.connect(toneWaveform)
-      volume.connect(pitchShift)
-      pitchShift.connect(solo)
 
-      let player = {
-        id: index,
-        player: newPlayer,
-        pitchShift: pitchShift,
-        pitch: layer.pitch,
-        layerVolume: volume,
-        volume: layer.volume,
-        layerData: layer,
-        solo: solo,
-        waveform: toneWaveform
+      const newPlayer = new Layer({...layer, id: index, layerData: layer})
+      newPlayer.connect()
+      console.log(newPlayer)
+      // const volume = new Tone.Volume(layer?.volume || -5)
+      // const pitchShift = new Tone.PitchShift(layer?.pitch || 0)
+      // const toneWaveform = new Tone.Waveform();
+      // var solo = new Tone.Solo().toDestination()
 
-      }
-      dispatch(addPlayer(player))
+      // //   player => volume => pitchShift =>solo=> speakers
+      // newPlayer.connect(volume)
+      // newPlayer.connect(toneWaveform)
+      // volume.connect(pitchShift)
+      // pitchShift.connect(solo)
+
+      // let player = {
+      //   id: index,
+      //   player: newPlayer,
+      //   pitchShift: pitchShift,
+      //   pitch: layer.pitch,
+      //   layerVolume: volume,
+      //   volume: layer.volume,
+      //   layerData: layer,
+      //   solo: solo,
+      //   waveform: toneWaveform
+      // }
+      dispatch(addPlayer(newPlayer))
 
 
       // do not sync players here in order to maintain individual player control
-      return (
-        <LayerEditor
-          key={index}
-          id={index}
-          // layerPlayer={newPlayer}
-          // pitchShift={pitchShift}
-          // pitch={layer.pitch}
-          // layerVolume={volume}
-          // volume={layer.volume}
-          // layerData={layer}
-          // solo={solo}
-          // waveform={toneWaveform}
-        />
-      );
     });
 
     // save created layers in state so that we can sync them to play all together in playAllLayers()
-    setAllLayers((prevLayers) => layerEditorComponents);
+    // setAllLayers((prevLayers) => layerEditorComponents);
   };
 
   return (
@@ -204,7 +193,7 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
           padding: { xs: '0', md: '10px' },
         }}
       >
-        {allLayers}
+        {Object.keys(playerStore.allPlayers).map((player, index) => <LayerEditor key={index} id={index}/>)}
       </Box>
     </>
   );
