@@ -1,5 +1,6 @@
 export const ADD_PLAYER = 'APP/PLAYER_TABLE/ADD_PLAYER';
 export const ADD_PLAYERS = 'APP/PLAYER_TABLE/ADD_PLAYERS';
+export const REMOVE_PLAYER = 'APP/PLAYER_TABLE/ADD_PLAYER';
 export const UPDATE_PLAYER_PITCH = 'APP/PLAYER_TABLE/UPDATE_PLAYER/PITCH';
 export const UPDATE_PLAYER_VOLUME = 'APP/PLAYER_TABLE/UPDATE_PLAYER/VOLUME';
 export const UPDATE_PLAYER_PROP = 'APP/PLAYER_TABLE/UPDATE_PLAYER/PROP';
@@ -13,17 +14,32 @@ export const addPlayer = (player) => ({
   player,
 });
 
-export const updatePlayerProperty = (playerId, property, value) => ({
-  type: UPDATE_PLAYER_PROP,
-  payload: { playerId, property, value },
-});
-
 export const addPlayers = (players) => ({
   type: ADD_PLAYERS,
   players,
 });
 
+/**
+ * @param playerId: int
+ * @param property: string
+ * @param value: any
+ */
+
+export const updatePlayerProperty = (playerId, property, value) => ({
+  type: UPDATE_PLAYER_PROP,
+  payload: { playerId, property, value },
+});
+
+/**
+ * @param playerId: int, id of the player to remove
+ */
+export const removePlayer = (playerId) => ({
+  type: REMOVE_PLAYER,
+  playerId,
+})
+
 export const playerTableReducer = (state = initialState, action) => {
+
   if (action.type === ADD_PLAYER) {
     let obj = {}
     obj[action.player.id] = action.player
@@ -51,4 +67,13 @@ export const playerTableReducer = (state = initialState, action) => {
     };
   }
 
+  if (action.type === REMOVE_PLAYER) {
+    delete state.allPlayers[playerId]
+
+    return {
+      ...state
+    }
+  }
+
 };
+
