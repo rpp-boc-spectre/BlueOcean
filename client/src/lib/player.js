@@ -1,3 +1,4 @@
+import { duration } from '@mui/material';
 import * as Tone from 'tone';
 
 export class Layer {
@@ -12,7 +13,7 @@ export class Layer {
     this.layerData = layerData;
     this.name = getLayerName(this.layerData);
 
-    this.trimFromStart = this.trimFromStart || 0;
+    this.trimFromStart = this.layerData.trimFromStart || 0;
     this._pitch = this.pitchShift.pitch;
     this._mute = false;
     this._solo = false;
@@ -47,6 +48,10 @@ export class Layer {
     this._solo = this.solo.solo;
   }
 
+  changeTrimFromStart(newValue){
+    this.trimFromStart = newValue
+  }
+
   changePitchValue(newValue) {
     this.pitchShift.pitch = newValue;
   }
@@ -67,9 +72,10 @@ export class Layer {
       fileName: this.layerData.fileName,
       layerName: this.name,
       parent: this.layerData.parent,
+      trimFromStart: this.trimFromStart,
       start: 0,
       end: 0,
-      duration: 0,
+      duration: this.duration(),
     };
   }
 }

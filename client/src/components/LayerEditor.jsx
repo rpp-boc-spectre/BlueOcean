@@ -75,7 +75,7 @@ export default function LayerEditorCopy({ id }) {
   };
   const trimFromStartTime = (event, newValue) => {
   setTrimFromStart(newValue)
-
+    player.changeTrimFromStart(newValue)
       // props.start = newValue
 
     }
@@ -159,7 +159,7 @@ export default function LayerEditorCopy({ id }) {
             aria-label='Pitch Slider'
             valueLabelDisplay='auto'
           />
-          <Typography>trimFromStart Audio</Typography>
+          <Typography>Trim From Start</Typography>
           <Slider
             min={0}
             max={50}
