@@ -37,23 +37,24 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
           }, time);
         }, "+0.005");
 
-        layer.player.playbackRate = layer.playbackRate
+        // layer.player.playbackRate = layer.playbackRate
         // layer.trimFromEnd = layer.trimFromEnd / 2
           // layer.player.overlap = .2
         ///   overlap "delay" / playbackrate
 
-        Tone.Transport.scheduleRepeat((time)=>{
+        // Tone.Transport.scheduleRepeat((time)=>{
 
-          console.log('seconds',layer.player.get())
-          // console.log('LAYER', layer.player.get(), layer.player.buffer)
+        //   console.log('seconds',layer.player.get())
+        //   // console.log('LAYER', layer.player.get(), layer.player.buffer)
 
-          // console.log('layertrim from end',layer.trimFromEnd)
+        //   // console.log('layertrim from end',layer.trimFromEnd)
 
-        },1,0,layer.duration())
+        // },1,0,layer.duration())
 
         // layer.player.overlap = 2
         // layer.player.grainSize = layer.playbackRate
-        layer.start(layer.trimFromStart, layer.trimFromStart, layer.trimFromEnd,layer.playbackRate)
+        layer.start()
+        // layer.start(layer.trimFromStart, layer.trimFromStart, layer.trimFromEnd,layer.playbackRate)
         // layer.player.sync().start()
       });
 
@@ -80,8 +81,8 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
       layer.stop()
     });
     Tone.Transport.stop();
-    Tone.Transport.cancel(0)
-    Tone.Transport.seconds = 0
+    // Tone.Transport.cancel(0)
+    // Tone.Transport.seconds = 0
   };
 
   const pauseResumeAllLayers = () => {

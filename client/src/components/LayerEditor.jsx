@@ -66,10 +66,15 @@ export default function LayerEditorCopy({ id }) {
     setIsSolo(player._solo);
   };
   const trimFromStartTime = (event, newValue) => {
+    // newValue = Number(newValue)
+    newValue = Number.parseFloat(newValue).toFixed(2);
+    newValue = Number(newValue)
     setTrimFromStart(newValue);
     player.changeTrimFromStart(newValue);
   };
   const trimFromEndTime = (event, newValue) => {
+    newValue = Number.parseFloat(newValue).toFixed(2);
+    newValue = Number(newValue)
     setTrimFromEnd(newValue);
     player.changeTrimFromEnd(newValue);
   };
@@ -78,6 +83,7 @@ export default function LayerEditorCopy({ id }) {
     event.preventDefault();
     let newPlayback = Number(event.target.value);
     newPlayback = Number.parseFloat(newPlayback + 0.1).toFixed(2);
+    newPlayback = Number(newPlayback)
     player.increasePlaybackRate(newPlayback);
     setPlayerPlaybackRate(newPlayback);
 
@@ -88,6 +94,8 @@ export default function LayerEditorCopy({ id }) {
     let newPlayback = Number(event.target.value);
 
     newPlayback = Number.parseFloat(newPlayback - 0.1).toFixed(2);
+    newPlayback = Number(newPlayback)
+    console.log('type',typeof newPlayback,Number(newPlayback))
     player.decreasePlaybackRate(newPlayback);
     setPlayerPlaybackRate(newPlayback);
 
@@ -173,15 +181,6 @@ export default function LayerEditorCopy({ id }) {
             aria-label='Pitch Slider'
             valueLabelDisplay='auto'
           />
-          <Typography>Trim From Start</Typography>
-          <Slider
-            min={0}
-            max={player.duration() / player.playbackRate}
-            value={trimFromStart}
-            onChange={trimFromStartTime}
-            aria-label='Trim Slider'
-            valueLabelDisplay='auto'
-          />
           <Typography>Trim From End</Typography>
           <Slider
             min={0}
@@ -191,6 +190,15 @@ export default function LayerEditorCopy({ id }) {
             aria-label='Trim Slider'
             valueLabelDisplay='auto'
             track='inverted'
+          />
+          <Typography>Trim From Start</Typography>
+          <Slider
+            min={0}
+            max={player.duration()/ player.playbackRate}
+            value={trimFromStart}
+            onChange={trimFromStartTime}
+            aria-label='Trim Slider'
+            valueLabelDisplay='auto'
           />
           <Typography>Playback Rate {Number(playerPlaybackRate).toFixed(2)}</Typography>
 
