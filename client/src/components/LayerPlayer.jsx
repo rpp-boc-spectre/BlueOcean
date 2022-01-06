@@ -38,7 +38,7 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
         }, "+0.005");
 
         console.log('LAYER', layer.trimFromStart)
-        layer.start((layer.trimFromStart), layer.trimFromStart, layer.duration())
+        layer.start((layer.trimFromStart), layer.trimFromStart, layer.trimFromEnd)
         // layer.player.sync().start()
       });
 
@@ -149,6 +149,7 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
       for (let key of Object.keys(allLayersRef.current)) {
         let player = allLayersRef.current[key].player
         player.dispose()
+        Tone.Transport.cancel(0)
         dispatch(removeLayer(key))
       }
     }

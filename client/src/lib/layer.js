@@ -1,7 +1,7 @@
 import * as Tone from 'tone';
 
 export class Layer {
-  constructor({ url, volume, pitch, id, layerData, trimFromStart }) {
+  constructor({ url, volume, pitch, id, layerData, trimFromStart,trimFromEnd }) {
     this.id = id;
     this.url = url;
     this.player = new Tone.Player(this.url);
@@ -11,7 +11,7 @@ export class Layer {
     this.solo = new Tone.Solo().toDestination();
     this.layerData = layerData;
     this.name = getLayerName(this.layerData);
-
+    this.trimFromEnd = trimFromEnd || Infinity
     this.trimFromStart = trimFromStart || 0;
     this._pitch = this.pitchShift.pitch;
     this._mute = false;
@@ -31,12 +31,13 @@ export class Layer {
     this.player.stop();
   }
 
-  start(time, offset, duration) {
+  start(startTrim, offset, endTrim) {
     // changed this to just unsync() , no need to stop it again unless you want individual functionality
     // inwhich case put it back in.
     // havnt done offset yet, just handling case of trimming  from audio and wanting it to start at the same spot.
+    // currently this is just set up to trim without cutting. This is why startTrim is called as the offset as well as the wait time
     this.player.unsync()
-    this.player.sync().start(time, time).stop(duration);
+    this.player.sync().start(startTrim, startTrim).stop(endTrim);
   }
 
   toggleMute() {
@@ -53,7 +54,9 @@ export class Layer {
   changeTrimFromStart(newValue) {
     this.trimFromStart = newValue;
   }
-
+  changeTrimFromEnd (newValue) {
+    this.trimFromEnd = newValue
+  }
   changePitchValue(newValue) {
     this.pitchShift.pitch = newValue;
   }
@@ -75,6 +78,7 @@ export class Layer {
       layerName: this.name,
       parent: this.layerData.parent,
       trimFromStart: this.trimFromStart,
+      trimFromEnd: this.trimFromEnd,
       start: 0,
       end: 0,
       duration: this.duration(),
