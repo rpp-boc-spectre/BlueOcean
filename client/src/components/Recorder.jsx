@@ -87,7 +87,6 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
   }
 
   const handleUploadClick = async () => {
-    //TODO, make link dynamic
     try {
       const mp3StorageRef = ref(storage, `audio/${user.uid}/${recordingName}.webm`)
       await uploadBytes(mp3StorageRef, micRecorder)
@@ -152,7 +151,6 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
 
   return (
     <>
-      <Typography variant='h3'>Recorder Component</Typography>
       {(!!micRecorder && !isFinished) && <Typography>{`${Math.abs(timeRemaining - recordingLimit.current).toFixed(2)} / ${recordingLimit.current}:00`}</Typography>}
       <Button variant='outlined' onClick={startRecorder} startIcon={<MicIcon />} disabled={isFinished === false && !!micRecorder}>Click to record</Button>
       <Button variant='outlined' onClick={stopRecorder} endIcon={<StopCircleIcon />} disabled={isFinished === true || !micRecorder}>Click to stop</Button>

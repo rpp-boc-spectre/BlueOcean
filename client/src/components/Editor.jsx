@@ -5,6 +5,11 @@ import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Modal from "@mui/material/Modal";
+import Drawer from "@mui/material/Drawer";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import ArrowDownward from '@mui/icons-material/ArrowDownward'
+
 import { useSnackbar } from "material-ui-snackbar-provider";
 
 import LayerPlayer from "./LayerPlayer";
@@ -117,11 +122,25 @@ export default function Editor() {
           <ImportAduio userId={userData?.user?.uid} currentList={audioLayers} setParentLayers={setAudioLayers} close={handleImportClose} />
         </Box>
       </Modal>
-      <Modal open={recordingModalState} onClose={handleRecorderClose} >
-        <Box sx={{ backgroundColor: 'white', margin: 'auto', top: 50, }}>
-          <Recorder currentList={audioLayers} setAudioLayers={setAudioLayers} />
-        </Box>
-      </Modal>
+      <Drawer
+        sx={{
+          width: 400,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: 400,
+            boxSizing: 'border-box',
+          },
+        }}
+        variant="persistent"
+        anchor="bottom"
+        open={recordingModalState}
+      >
+        <IconButton onClick={handleRecorderClose}>
+          <ArrowDownward />
+        </IconButton>
+        <Divider />
+        <Recorder currentList={audioLayers} setAudioLayers={setAudioLayers} />
+      </Drawer>
       <Modal open={uploadModalState} onClose={handleUploadClose} >
         <Box sx={{ backgroundColor: 'white', margin: 'auto', top: 50, }}>
           <UploadFile />
