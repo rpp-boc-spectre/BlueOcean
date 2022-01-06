@@ -25,11 +25,7 @@ export default function Editor() {
   const [recordingModalState, setRecordingModalState] = useState(false);
   const [uploadModalState, setUploadModalState] = useState(false);
   const [audioLayers, setAudioLayers] = useState([]);
-  const [trackMetadata, setTrackMetadata] = useState({
-    trackName: "",
-    tag: "",
-    public: false
-  });
+  const [trackMetadata, setTrackMetadata] = useState({});
   const userData = useContext(UserContext);
   const snackbar = useSnackbar();
   const { trackId } = useParams();

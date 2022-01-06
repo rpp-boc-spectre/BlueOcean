@@ -22,8 +22,13 @@ const uploadHandler = () => {
   console.log('CLICKED UPLOAD');
 }
 
-
-
+const tagsList = [
+  "General",
+  "Rock",
+  "Electric",
+  "Folk",
+  "Pop"
+];
 
 const SettingsList = (props) => {
   const { window } = props;
@@ -63,7 +68,6 @@ const SettingsList = (props) => {
           '& .MuiDrawer-paper': { boxSizing: 'border-box', width: '100%', maxHeight: '80%' }
         }}>
         <Typography variant='subtitle1'>Settings List</Typography>
-        {console.log(props.metadata.public)}
         <form>
           <label>
             Name:
@@ -71,14 +75,14 @@ const SettingsList = (props) => {
           </label>
           <label>
             Tag:
-            <input type="text" id="track-tag" defaultValue={props.metadata.tag} placeholder="Tag"/>
+            <select id="track-tag">
+              {tagsList.map((tag, idx) => <option value={tag} key={idx}>{tag}</option>)}
+            </select>
           </label>
           <label>
             Public:
             <input type="checkbox" id="track-publicity" defaultChecked={props.metadata.public}/>
           </label>
-          {/* <input type="text" id="track-tag" placeholder="Tag" value={props.metadata.tag}/>
-          <input type="checkbox" id="track-publicity" checked={props.metadata.publicity}/>Public */}
         </form>
         {settingsArray.map((setting, index) => {
           return (<Button variant='outlined' key={index} onClick={setting.handler}>{setting.name}</Button>);
