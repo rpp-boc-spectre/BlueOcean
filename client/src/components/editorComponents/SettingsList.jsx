@@ -101,36 +101,30 @@ const SettingsList = (props) => {
           '& .MuiDrawer-paper': { boxSizing: 'border-box', width: '100%', maxHeight: '80%' }
         }}>
         <Typography variant='subtitle1'>Settings List</Typography>
-        {props.metadata.trackName !== undefined && (
-          <TextField
-            id="track-name"
-            label="Track Name"
-            variant="outlined"
-            value={props.metadata.trackName}
-            onChange={handleTrackNameChange}
-          />
-        )}
-        {props.metadata.tag !== undefined && (
-          <FormControl fullWidth>
-          <InputLabel id="tag-select-label">Tag</InputLabel>
-            <Select
-              labelId="tag-select-label"
-              id="track-tag-select"
-              value={props.metadata.tag}
-              onChange={handleTagChange}
-              label="Tag"
-            >
-              {tagsList.map((tag, idx) => <MenuItem value={tag} key={idx}>{tag}</MenuItem>)}
-            </Select>
-          </FormControl>
-        )}
-        {props.metadata.public !== undefined && (
-          <FormControlLabel
-            id="track-publicity"
-            control={<Switch checked={publicChecked} onChange={handlePublicToggle}/>}
-            label={publicChecked ? "Public" : "Private"}
-          />
-        )}
+        <TextField
+          id="track-name"
+          label="Track Name"
+          variant="outlined"
+          value={props.metadata.trackName || ""}
+          onChange={handleTrackNameChange}
+        />
+        <FormControl fullWidth>
+        <InputLabel id="tag-select-label">Tag</InputLabel>
+          <Select
+            labelId="tag-select-label"
+            id="track-tag-select"
+            value={props.metadata.tag || "General"}
+            onChange={handleTagChange}
+            label="Tag"
+          >
+            {tagsList.map((tag, idx) => <MenuItem value={tag} key={idx}>{tag}</MenuItem>)}
+          </Select>
+        </FormControl>
+        <FormControlLabel
+          id="track-publicity"
+          control={<Switch checked={publicChecked} onChange={handlePublicToggle}/>}
+          label={publicChecked ? "Public" : "Private"}
+        />
         {settingsArray.map((setting, index) => {
           return (<Button variant='outlined' key={index} onClick={setting.handler}>{setting.name}</Button>);
         })}
