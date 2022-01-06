@@ -9,24 +9,26 @@ import Modal from '@mui/material/Modal';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Box';
 
+import { useLayerStore } from '../context/LayerContext.js';
+
 import TimeControlButton from './editorComponents/TimeControlButton.jsx';
 
-export default function LayerEditorCopy(props) {
-  const player = props.layerPlayer;
-  const waveform = props.waveform;
-  const [isSolo, setIsSolo] = useState(props.solo.solo);
-  const [isMuted, setIsMuted] = useState(props.layerPlayer.mute);
+export default function LayerEditorCopy({ id }) {
+  const [layerStore, dispatch] = useLayerStore();
+  const player = layerStore.allLayers[id];
+  const [isSolo, setIsSolo] = useState(player._solo);
+  const [isMuted, setIsMuted] = useState(player._mute);
   const [duration, setDuration] = useState(false);
-  const [pitchSliderValue, setPitchSliderValue] = useState(props.pitch);
-  const [volumeSliderValue, setVolumeSliderValue] = useState(props.volume);
-  const pitchShift = props.pitchShift;
-  const layerVolume = props.layerVolume;
-  const solo = props.solo;
+  const [pitchSliderValue, setPitchSliderValue] = useState(player._pitch);
+  const [volumeSliderValue, setVolumeSliderValue] = useState(player._volume);
+  const [trimFromStart, setTrimFromStart] = useState(player.trimFromStart);
+  const [trimFromEnd, setTrimFromEnd] = useState(player.trimFromEnd);
+
   // put page on mousedown listener to get the duration of tracks then immediatly remove it after setting each tracks duration.
   useEffect(() => {
     const mouse = async () => {
       await Tone.start();
-      setDuration(player._buffer.duration);
+      setDuration(player.duration());
     };
 
     if (!duration) {
@@ -38,22 +40,37 @@ export default function LayerEditorCopy(props) {
   }, [duration]);
 
   const changeVolumeValue = (event, newValue) => {
+    newValue = Math.round(newValue);
     setVolumeSliderValue(newValue);
-    layerVolume.volume.value = newValue;
+    player.changeVolumeValue(newValue);
   };
 
   const changePitchValue = (event, newValue) => {
+    newValue = Math.round(newValue);
     setPitchSliderValue(newValue);
-    pitchShift.pitch = newValue;
+    player.changePitchValue(newValue);
   };
 
   const muteLayer = () => {
-    setIsMuted(!isMuted);
-    player.mute = !isMuted;
+    player.toggleMute();
+    setIsMuted(player._mute);
   };
+
   const soloLayer = () => {
-    setIsSolo(!isSolo);
-    solo.solo = !isSolo;
+    player.toggleSolo();
+    setIsSolo(player._solo);
+  };
+  const trimFromStartTime = (event, newValue) => {
+    setTrimFromStart(newValue);
+    player.changeTrimFromStart(newValue);
+  };
+  const trimFromEndTime = (event, newValue) => {
+    setTrimFromEnd(newValue);
+    player.changeTrimFromEnd(newValue);
+  };
+  const testing = () => {
+
+    player.start()
   };
 
   // editor modal handlers
@@ -77,7 +94,7 @@ export default function LayerEditorCopy(props) {
         }}>
         <FormControlLabel
           sx={{ gridRow: '1', gridColumn: '1' }}
-          label={props.layerData.layerName}
+          label={player.name}
           control={<Checkbox defaultChecked />}
         />
         <Box sx={{ gridRow: '1', gridColumn: '2', maxWidth: '25vh' }}>
@@ -94,7 +111,7 @@ export default function LayerEditorCopy(props) {
       </Box>
       <Box sx={{ gridRow: '1', gridColumn: '3', maxWidth: '40vh' }}>
         <canvas
-          className={'visual-layer' + props.id}
+          className={'visual-layer' + id}
           width='350'
           height='75'></canvas>
       </Box>
@@ -116,7 +133,7 @@ export default function LayerEditorCopy(props) {
             p: 4,
           }}>
           <Typography variant='subtitle2' id='modal-edit-title'>
-            Edit Layer: {props.layerData.layerName}
+            Edit Layer: {player.name}
           </Typography>
           <Typography>Volume</Typography>
           <Slider
@@ -136,6 +153,26 @@ export default function LayerEditorCopy(props) {
             aria-label='Pitch Slider'
             valueLabelDisplay='auto'
           />
+          <Typography>Trim From Start</Typography>
+          <Slider
+            min={0}
+            max={player.duration()}
+            value={trimFromStart}
+            onChange={trimFromStartTime}
+            aria-label='Trim Slider'
+            valueLabelDisplay='auto'
+          />
+             <Typography>Trim From End</Typography>
+          <Slider
+            min={0}
+            max={player.duration()}
+            value={trimFromEnd}
+            onChange={trimFromEndTime}
+            aria-label='Trim Slider'
+            valueLabelDisplay='auto'
+            track="inverted"
+          />
+          <Button onClick={testing}>DO you work </Button>
         </Box>
       </Modal>
     </>
