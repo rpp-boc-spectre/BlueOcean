@@ -48,7 +48,6 @@ export default function Editor() {
         .then(data => {
           console.log('Track Data', data)
           if (data && data.metadata) {
-            // trackMetadata = data.metadata;
             setTrackMetadata(data.metadata);
           }
           return getTrackUrls(data)
@@ -96,6 +95,7 @@ export default function Editor() {
           userId={userData?.user?.uid}
           trackId={trackId}
           trackMetadata={trackMetadata}
+          updateMetadata={setTrackMetadata}
           recordingHandler={recordingHandler}
           importHandler={importHandler}
           uploadHandler={uploadHandler}

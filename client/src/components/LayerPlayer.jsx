@@ -16,7 +16,7 @@ import TimeControlBox from './editorComponents/TimeControlBox.jsx';
 import SettingsList from './editorComponents/SettingsList.jsx';
 
 
-export default function LayerPlayer({ layers, trackId, trackMetadata, userId, recordingHandler, importHandler, uploadHandler }) {
+export default function LayerPlayer({ layers, trackId, trackMetadata, userId, recordingHandler, importHandler, uploadHandler, updateMetadata }) {
   const [layerStore, dispatch] = useLayerStore()
 
   const allLayersPlayState = useRef('');
@@ -77,20 +77,12 @@ export default function LayerPlayer({ layers, trackId, trackMetadata, userId, re
 
   const handleSaveClick = async () => {
     try {
-      const name = document.getElementById("track-name").value;
-      const tag = document.getElementById("track-tag").value;
-      const publicity = document.getElementById("track-publicity").checked;
-      const metadata = {
-        trackName: name,
-        public: publicity,
-        tag: tag
-      };
-      if (name === "") {
-        snackbar.showMessage(<Alert variant='error'>Please provide a track name</Alert>)
-      } else {
-        await saveTrackData(layerStore.allLayers, userId, trackId, metadata);
-        snackbar.showMessage(<Alert variant='success'>Track saved</Alert>)
-      }
+      // const name = document.getElementById("track-name").value;
+      // const tag = document.getElementById("track-tag-select").innerText;
+      // const publicity = document.getElementById("track-publicity");
+      console.log(trackMetadata);
+      await saveTrackData(layerStore.allLayers, userId, trackId, trackMetadata);
+      snackbar.showMessage(<Alert variant='success'>Track saved</Alert>)
     } catch (error) {
       console.log(error)
       snackbar.showMessage(<Alert variant='error'>Track failed to save</Alert>)
@@ -169,7 +161,7 @@ export default function LayerPlayer({ layers, trackId, trackMetadata, userId, re
 
   return (
     <>
-      <SettingsList importHandler={importHandler} saveHandler={handleSaveClick} uploadHandler={uploadHandler} metadata={trackMetadata}/>
+      <SettingsList importHandler={importHandler} saveHandler={handleSaveClick} uploadHandler={uploadHandler} metadata={trackMetadata} updateMetadata={updateMetadata}/>
       <TimeControlBox recordingHandler={recordingHandler} playAllHandler={playAllLayers} stopAllHandler={stopAllLayers} pauseResumeHandler={pauseResumeAllLayers} />
       <Box
         sx={{

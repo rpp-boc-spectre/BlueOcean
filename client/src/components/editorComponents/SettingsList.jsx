@@ -1,6 +1,19 @@
 import React from 'react';
 
-import { Box, Button, Drawer, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Drawer,
+  Typography,
+  Switch,
+  FormGroup,
+  FormControlLabel,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormControl,
+  TextField
+} from '@mui/material';
 
 /*
 Actual settings and their respective functions subject to change, and their
@@ -33,12 +46,32 @@ const tagsList = [
 const SettingsList = (props) => {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [publicChecked, setPublicChecked] = React.useState(false);
 
   const container = window !== undefined ? () => window().document.body : undefined;
+
+  const handlePublicToggle = (e) => {
+    setPublicChecked(e.target.checked);
+    props.updateMetadata({...props.metadata, public: !publicChecked});
+  }
+
+  const handleTagChange = (e) => {
+    props.updateMetadata({...props.metadata, tag: e.target.value});
+  }
+
+  const handleTrackNameChange = (e) => {
+    props.updateMetadata({...props.metadata, trackName: e.target.value});
+  }
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  React.useEffect(() => {
+    if (props.metadata.public !== undefined && props.metadata.public !== publicChecked) {
+      setPublicChecked(props.metadata.public);
+    }
+  }, [props.metadata]);
 
   const settingsArray = [
     { name: 'Save', handler: props.saveHandler },
@@ -68,22 +101,36 @@ const SettingsList = (props) => {
           '& .MuiDrawer-paper': { boxSizing: 'border-box', width: '100%', maxHeight: '80%' }
         }}>
         <Typography variant='subtitle1'>Settings List</Typography>
-        <form>
-          <label>
-            Name:
-            <input type="text" id="track-name" defaultValue={props.metadata.trackName} placeholder="Name"/>
-          </label>
-          <label>
-            Tag:
-            <select id="track-tag">
-              {tagsList.map((tag, idx) => <option value={tag} key={idx}>{tag}</option>)}
-            </select>
-          </label>
-          <label>
-            Public:
-            <input type="checkbox" id="track-publicity" defaultChecked={props.metadata.public}/>
-          </label>
-        </form>
+        {props.metadata.trackName !== undefined && (
+          <TextField
+            id="track-name"
+            label="Track Name"
+            variant="outlined"
+            value={props.metadata.trackName}
+            onChange={handleTrackNameChange}
+          />
+        )}
+        {props.metadata.tag !== undefined && (
+          <FormControl fullWidth>
+          <InputLabel id="tag-select-label">Tag</InputLabel>
+            <Select
+              labelId="tag-select-label"
+              id="track-tag-select"
+              value={props.metadata.tag}
+              onChange={handleTagChange}
+              label="Tag"
+            >
+              {tagsList.map((tag, idx) => <MenuItem value={tag} key={idx}>{tag}</MenuItem>)}
+            </Select>
+          </FormControl>
+        )}
+        {props.metadata.public !== undefined && (
+          <FormControlLabel
+            id="track-publicity"
+            control={<Switch checked={publicChecked} onChange={handlePublicToggle}/>}
+            label={publicChecked ? "Public" : "Private"}
+          />
+        )}
         {settingsArray.map((setting, index) => {
           return (<Button variant='outlined' key={index} onClick={setting.handler}>{setting.name}</Button>);
         })}
