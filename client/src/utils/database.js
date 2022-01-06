@@ -14,10 +14,10 @@ export function getTrackData(trackId) {
   })
 }
 
-export function saveTrackData(allPlayers, userId, trackId) {
+export function saveTrackData(allPlayers, userId, trackId, metadata) {
   return new Promise( async (resolve, reject) => {
     try {
-      let trackData = createTrackDataObject(allPlayers, userId)
+      let trackData = createTrackDataObject(allPlayers, userId, metadata)
       let ref;
       if (!trackId) {
         ref = doc(collection(db, "tracks"))
@@ -55,10 +55,11 @@ export function getAllTracks(userId) {
 }
 
 
-const createTrackDataObject = (players, userId) => {
+const createTrackDataObject = (players, userId, metadata) => {
   let trackData = {
     user: userId,
-    layers: []
+    layers: [],
+    metadata: metadata
   }
 
   for (var playerKey in players) {
