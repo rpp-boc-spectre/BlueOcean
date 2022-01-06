@@ -24,7 +24,8 @@ export default function Editor() {
   const [importModalState, setImportModalState] = useState(false);
   const [recordingModalState, setRecordingModalState] = useState(false);
   const [uploadModalState, setUploadModalState] = useState(false);
-  const [audioLayers, setAudioLayers] = useState([])
+  const [audioLayers, setAudioLayers] = useState([]);
+  const [trackMetadata, setTrackMetadata] = useState({});
   const userData = useContext(UserContext);
   const snackbar = useSnackbar();
   const { trackId } = useParams();
@@ -46,6 +47,9 @@ export default function Editor() {
       getTrackData(trackId)
         .then(data => {
           console.log('Track Data', data)
+          if (data && data.metadata) {
+            setTrackMetadata(data.metadata);
+          }
           return getTrackUrls(data)
         })
         .then(trackWithUrls => {
@@ -56,6 +60,7 @@ export default function Editor() {
           setAudioLayers(layers)
         })
         .catch(error => {
+          console.log(error);
           snackbar.showMessage(<Alert variant='error'>There was an error getting your track</Alert>)
         })
     }
@@ -89,6 +94,8 @@ export default function Editor() {
           layers={audioLayers}
           userId={userData?.user?.uid}
           trackId={trackId}
+          trackMetadata={trackMetadata}
+          updateMetadata={setTrackMetadata}
           recordingHandler={recordingHandler}
           importHandler={importHandler}
           uploadHandler={uploadHandler}

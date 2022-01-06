@@ -16,7 +16,7 @@ import TimeControlBox from './editorComponents/TimeControlBox.jsx';
 import SettingsList from './editorComponents/SettingsList.jsx';
 
 
-export default function LayerPlayer({ layers, trackId, userId, recordingHandler, importHandler, uploadHandler }) {
+export default function LayerPlayer({ layers, trackId, trackMetadata, userId, recordingHandler, importHandler, uploadHandler, updateMetadata }) {
   const [layerStore, dispatch] = useLayerStore()
 
   const allLayersPlayState = useRef('');
@@ -77,7 +77,7 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
 
   const handleSaveClick = async () => {
     try {
-      await saveTrackData(layerStore.allLayers, userId, trackId)
+      await saveTrackData(layerStore.allLayers, userId, trackId, trackMetadata);
       snackbar.showMessage(<Alert variant='success'>Track saved</Alert>)
     } catch (error) {
       console.log(error)
@@ -157,7 +157,7 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
 
   return (
     <>
-      <SettingsList importHandler={importHandler} saveHandler={handleSaveClick} uploadHandler={uploadHandler} />
+      <SettingsList importHandler={importHandler} saveHandler={handleSaveClick} uploadHandler={uploadHandler} metadata={trackMetadata} updateMetadata={updateMetadata}/>
       <TimeControlBox recordingHandler={recordingHandler} playAllHandler={playAllLayers} stopAllHandler={stopAllLayers} pauseResumeHandler={pauseResumeAllLayers} />
       <Box
         sx={{
