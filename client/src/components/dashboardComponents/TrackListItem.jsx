@@ -11,9 +11,9 @@ import PublicIcon from '@mui/icons-material/Public';
 
 export default function TrackListItem(props) {
   const trackId = props.track.id;
-  const trackName = props.track.name || 'Unknown';
-  const publicSetting = props.track.public || false;
-  const tags = props.track.tags || ['untagged'];
+  const trackName = props.track.metadata ? props.track.metadata.trackName : trackId;
+  const publicSetting = props.track.metadata ? props.track.metadata.public : false;
+  const tags = props.track.metadata ? props.track.metadata.tag : ['untagged'];
 
   const navigate = useNavigate();
 
@@ -26,9 +26,9 @@ export default function TrackListItem(props) {
   }
 
   return (
-    <ListItem>
-      <ListItemButton onClick={handleNavigation}>
-        <ListItemText primary={trackId} />
+    <ListItem sx={{ px: '5px' }}>
+      <ListItemButton onClick={handleNavigation} sx={{ px: '5px' }}>
+        <ListItemText primary={trackName} />
         {tags.map((tag, index) => {
           return (<Chip key={index} label={tag} />)
         })}

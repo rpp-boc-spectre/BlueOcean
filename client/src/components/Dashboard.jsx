@@ -29,7 +29,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <Box mx='auto' mt='10px' p='5px' sx={{ width: {xs: '100', md: '70vw'}, maxWidth: '1000px', maxHeight: '100vh', overflow:'auto', border: '2px solid black' }}>
+      <Box mx='auto' mt='10px'  sx={{ width: {xs: '100', md: '70vw'}, maxWidth: '1000px', maxHeight: '100vh', overflow:'auto', border: '2px solid black' }}>
         <Typography variant='h3' align='center'>Welcome {userData.username}</Typography>
         { userData.user && <TrackList userId={userData.user.uid}/> }
       </Box>
