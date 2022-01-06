@@ -92,7 +92,7 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
   return (
     <>
     <Typography variant='h3'>Recorder Component</Typography>
-    <Button variant='outlined' onClick={startRecorder} startIcon={<MicIcon />} disabled={isFinished === false && micRecorder}>Click to record</Button>
+    <Button variant='outlined' onClick={startRecorder} startIcon={<MicIcon />} disabled={isFinished === false && !!micRecorder}>Click to record</Button>
     <Button variant='outlined' onClick={stopRecorder} endIcon={<StopCircleIcon />} disabled={isFinished === true || !micRecorder}>Click to stop</Button>
     <ValidatorForm onSubmit={handleUploadClick}>
       <TextValidator
