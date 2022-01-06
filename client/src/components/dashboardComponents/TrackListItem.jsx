@@ -13,7 +13,7 @@ export default function TrackListItem(props) {
   const trackId = props.track.id;
   const trackName = props.track.metadata ? props.track.metadata.trackName : trackId;
   const publicSetting = props.track.metadata ? props.track.metadata.public : false;
-  const tags = props.track.metadata ? props.track.metadata.tag : ['untagged'];
+  const tags = props.track.metadata ? props.track.metadata.tag : ['General'];
 
   const navigate = useNavigate();
 

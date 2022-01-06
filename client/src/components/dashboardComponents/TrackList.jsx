@@ -26,7 +26,7 @@ export default function TrackList({ userId }) {
   const trackSorter = () => {
     let sortedTracks = {};
     tracks.map((track) => {
-      const tag = track.metadata ? track.metadata.tag : 'Nothing';
+      const tag = track.metadata ? track.metadata.tag : 'General';
       if (sortedTracks[tag] === undefined) {
         sortedTracks[tag] = [track];
       } else {
