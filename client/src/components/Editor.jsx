@@ -14,12 +14,18 @@ import Recorder from './Recorder';
 import { getTrackData } from "../utils/database";
 import { getTrackUrls } from "../utils/storage";
 import UserContext from "../context/UserContext";
+import UploadFile from "./UploadFile.jsx";
+
+import { addLayer, removeLayer } from '../lib/layerTableReducer.js';
+import { useLayerStore } from '../context/LayerContext.js'
 
 export default function Editor() {
-
+  const [layerStore, dispatch] = useLayerStore();
   const [importModalState, setImportModalState] = useState(false);
   const [recordingModalState, setRecordingModalState] = useState(false);
-  const [audioLayers, setAudioLayers] = useState([])
+  const [uploadModalState, setUploadModalState] = useState(false);
+  const [audioLayers, setAudioLayers] = useState([]);
+  const [trackMetadata, setTrackMetadata] = useState({});
   const userData = useContext(UserContext);
   const snackbar = useSnackbar();
   const { trackId } = useParams();
@@ -32,11 +38,18 @@ export default function Editor() {
     setRecordingModalState(false)
   }
 
+  const handleUploadClose = () => {
+    setUploadModalState(false)
+  }
+
   useEffect(() => {
     if (trackId) { // if trackID is undefined, this will just open a blank editor (for a new track)
       getTrackData(trackId)
         .then(data => {
           console.log('Track Data', data)
+          if (data && data.metadata) {
+            setTrackMetadata(data.metadata);
+          }
           return getTrackUrls(data)
         })
         .then(trackWithUrls => {
@@ -47,10 +60,24 @@ export default function Editor() {
           setAudioLayers(layers)
         })
         .catch(error => {
+          console.log(error);
           snackbar.showMessage(<Alert variant='error'>There was an error getting your track</Alert>)
         })
     }
-  }, [])
+
+    if (trackId === undefined) {
+      setTrackMetadata({})
+      if (audioLayers?.length > 0) {
+        setAudioLayers([])
+      }
+      let keys = Object.keys(layerStore.allLayers)
+      if (keys.length > 0) {
+        for (var key in keys) {
+          dispatch(removeLayer(key))
+        }
+      }
+    }
+  }, [trackId])
 
   const importHandler = () => {
     setImportModalState(true);
@@ -58,35 +85,49 @@ export default function Editor() {
   const recordingHandler = () => {
     setRecordingModalState(true);
   };
+  const uploadHandler = () => {
+    console.log('click')
+    setUploadModalState(true)
+  };
 
   return (
-    <>
-      <Container sx={{
-        border: 1,
-        maxHeight: '90vh',
-        minHeight: { xs: '100%', md: '70%' },
-        width: { xs: '100%', md: '70%' },
-        display: 'grid',
-        gridTemplateColumns: { xs: '3fr 2fr', md: '1fr 6fr' },
-        gridTemplateRows: { xs: '5fr 1fr', md: '6fr 1fr' }
-      }}>
 
-        <LayerPlayer layers={audioLayers} userId={userData?.user?.uid} trackId={trackId} recordingHandler={recordingHandler} importHandler={importHandler} />
+    <Container sx={{
+      border: 1,
+      maxHeight: '90vh',
+      minHeight: { xs: '100%', md: '70%' },
+      width: { xs: '100%', md: '70%' },
+      display: 'grid',
+      gridTemplateColumns: { xs: '3fr 2fr', md: '1fr 6fr' },
+      gridTemplateRows: { xs: '5fr 1fr', md: '6fr 1fr' }
+    }}>
+      <LayerPlayer
+        layers={audioLayers}
+        userId={userData?.user?.uid}
+        trackId={trackId}
+        trackMetadata={trackMetadata}
+        recordingHandler={recordingHandler}
+        updateMetadata={setTrackMetadata}
+        importHandler={importHandler}
+        uploadHandler={uploadHandler}
+      />
 
-        <Modal open={importModalState} onClose={handleImportClose}>
-          <Box sx={{ backgroundColor: 'white', top: 50, maxHeight: '100vh', overflow: 'auto' }}>
-            <ImportAduio userId={userData?.user?.uid} currentList={audioLayers} setParentLayers={setAudioLayers} close={handleImportClose} />
-          </Box>
-        </Modal>
-        <Modal open={recordingModalState} onClose={handleRecorderClose} >
-          <Box sx={{ backgroundColor: 'white', margin: 'auto', top: 50, }}>
-            <Recorder currentList={audioLayers} setAudioLayers={setAudioLayers} />
-          </Box>
-        </Modal>
-      </Container>
-    </>
+      <Modal open={importModalState} onClose={handleImportClose}>
+        <Box sx={{ backgroundColor: 'white', top: 50, maxHeight: '100vh', overflow: 'auto' }}>
+          <ImportAduio userId={userData?.user?.uid} currentList={audioLayers} setParentLayers={setAudioLayers} close={handleImportClose} />
+        </Box>
+      </Modal>
+      <Modal open={recordingModalState} onClose={handleRecorderClose} >
+        <Box sx={{ backgroundColor: 'white', margin: 'auto', top: 50, }}>
+          <Recorder currentList={audioLayers} setAudioLayers={setAudioLayers} />
+        </Box>
+      </Modal>
+      <Modal open={uploadModalState} onClose={handleUploadClose} >
+        <Box sx={{ backgroundColor: 'white', margin: 'auto', top: 50, }}>
+          <UploadFile />
+        </Box>
+      </Modal>
+    </Container>
+
   )
 }
-
-/* <Button variant="outlined" onClick={() => {setRecordingModalState(true)}}>Record New Layer</Button> */
-/* <Button variant="outlined" onClick={() => {setImportModalState(true)}}>Import Audio Layers</Button> */
