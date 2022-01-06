@@ -4,7 +4,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
-export default function TrackListItem({ trackId }) {
+export default function TrackListItem({ trackId, meta }) {
 
   const navigate = useNavigate();
 
@@ -15,7 +15,7 @@ export default function TrackListItem({ trackId }) {
   return (
     <ListItem>
       <ListItemButton onClick={handleNavigation}>
-        <ListItemText primary={trackId} />
+        <ListItemText primary={`${meta.trackName} (${meta.public ? 'Public' : 'Private'})`} />
       </ListItemButton>
     </ListItem>
   )
