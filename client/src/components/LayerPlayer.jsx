@@ -37,7 +37,9 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
           }, time);
         }, "+0.005");
 
-        console.log('LAYER', layer.trimFromStart)
+        layer.player.playbackRate = layer.playbackRate
+        // layer.trimFromEnd = layer.trimFromEnd / 2
+        console.log('LAYER', layer.player.get(), layer.player.buffer)
         layer.start((layer.trimFromStart), layer.trimFromStart, layer.trimFromEnd)
         // layer.player.sync().start()
       });

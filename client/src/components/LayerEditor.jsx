@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as Tone from 'tone';
 
+
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -23,6 +24,9 @@ export default function LayerEditorCopy({ id }) {
   const [volumeSliderValue, setVolumeSliderValue] = useState(player._volume);
   const [trimFromStart, setTrimFromStart] = useState(player.trimFromStart);
   const [trimFromEnd, setTrimFromEnd] = useState(player.trimFromEnd);
+  const [playerPlaybackRate, setPlayerPlaybackRate] = useState(
+    player.playbackRate
+  );
 
   // put page on mousedown listener to get the duration of tracks then immediatly remove it after setting each tracks duration.
   useEffect(() => {
@@ -68,11 +72,26 @@ export default function LayerEditorCopy({ id }) {
     setTrimFromEnd(newValue);
     player.changeTrimFromEnd(newValue);
   };
-  const testing = () => {
+  const increasePlayback = (event, newValue) => {
 
-    player.start()
+    event.preventDefault();
+    let newPlayback = Number(event.target.value);
+    newPlayback = Number.parseFloat(newPlayback + 0.1).toFixed(2);
+    player.increasePlaybackRate(newPlayback);
+    setPlayerPlaybackRate(newPlayback);
+
+
   };
+  const decreasePlayback = (event) => {
+    event.preventDefault();
+    let newPlayback = Number(event.target.value);
 
+    newPlayback = Number.parseFloat(newPlayback - 0.1).toFixed(2);
+    player.decreasePlaybackRate(newPlayback);
+    setPlayerPlaybackRate(newPlayback);
+
+
+  };
   // editor modal handlers
   const [editOpen, setEditOpen] = React.useState(false);
   const layerEditorOpen = () => {
@@ -162,7 +181,7 @@ export default function LayerEditorCopy({ id }) {
             aria-label='Trim Slider'
             valueLabelDisplay='auto'
           />
-             <Typography>Trim From End</Typography>
+          <Typography>Trim From End</Typography>
           <Slider
             min={0}
             max={player.duration()}
@@ -170,9 +189,23 @@ export default function LayerEditorCopy({ id }) {
             onChange={trimFromEndTime}
             aria-label='Trim Slider'
             valueLabelDisplay='auto'
-            track="inverted"
+            track='inverted'
           />
-          <Button onClick={testing}>DO you work </Button>
+          <Typography>Playback Rate {Number(playerPlaybackRate).toFixed(2)}</Typography>
+
+          <Button
+            name='increaseTempo'
+            onClick={increasePlayback}
+            value={playerPlaybackRate}>
+            +
+          </Button>
+          {/* <Typography>Decrease Playback</Typography> */}
+          <Button
+            name='decreasePlayback'
+            onClick={decreasePlayback}
+            value={playerPlaybackRate}>
+           -
+          </Button>
         </Box>
       </Modal>
     </>

@@ -1,18 +1,28 @@
 import * as Tone from 'tone';
 
 export class Layer {
-  constructor({ url, volume, pitch, id, layerData, trimFromStart,trimFromEnd }) {
+  constructor({
+    url,
+    volume,
+    pitch,
+    id,
+    layerData,
+    trimFromStart,
+    trimFromEnd,
+    playbackRate,
+  }) {
     this.id = id;
     this.url = url;
-    this.player = new Tone.Player(this.url);
+    this.player = new Tone.GrainPlayer(this.url);
     this.volume = new Tone.Volume(volume || -5);
     this.pitchShift = new Tone.PitchShift(pitch || 0);
     this.waveform = new Tone.Waveform();
     this.solo = new Tone.Solo().toDestination();
     this.layerData = layerData;
     this.name = getLayerName(this.layerData);
-    this.trimFromEnd = trimFromEnd || Infinity
+    this.trimFromEnd = trimFromEnd || Infinity;
     this.trimFromStart = trimFromStart || 0;
+    this.playbackRate = playbackRate || 1;
     this._pitch = this.pitchShift.pitch;
     this._mute = false;
     this._solo = false;
@@ -36,7 +46,7 @@ export class Layer {
     // inwhich case put it back in.
     // havnt done offset yet, just handling case of trimming  from audio and wanting it to start at the same spot.
     // currently this is just set up to trim without cutting. This is why startTrim is called as the offset as well as the wait time
-    this.player.unsync()
+    this.player.unsync();
     this.player.sync().start(startTrim, startTrim).stop(endTrim);
   }
 
@@ -54,8 +64,8 @@ export class Layer {
   changeTrimFromStart(newValue) {
     this.trimFromStart = newValue;
   }
-  changeTrimFromEnd (newValue) {
-    this.trimFromEnd = newValue
+  changeTrimFromEnd(newValue) {
+    this.trimFromEnd = newValue;
   }
   changePitchValue(newValue) {
     this.pitchShift.pitch = newValue;
@@ -64,9 +74,15 @@ export class Layer {
   changeVolumeValue(newValue) {
     this.volume.volume.value = newValue;
   }
-
+  increasePlaybackRate(newValue) {
+    this.playbackRate = newValue;
+  }
+  decreasePlaybackRate(newValue) {
+    this.playbackRate = newValue;
+  }
   duration() {
-    return this.player._buffer.duration;
+    // return this.player._buffer.duration;
+    return this.player.buffer.duration;
   }
 
   getLayerData() {
@@ -79,6 +95,7 @@ export class Layer {
       parent: this.layerData.parent,
       trimFromStart: this.trimFromStart,
       trimFromEnd: this.trimFromEnd,
+      playbackRate: this.playbackRate,
       start: 0,
       end: 0,
       duration: this.duration(),
