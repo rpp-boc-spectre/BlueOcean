@@ -66,6 +66,7 @@ export default function Editor() {
     }
 
     if (trackId === undefined) {
+      setTrackMetadata({})
       if (audioLayers?.length > 0) {
         setAudioLayers([])
       }
@@ -104,6 +105,7 @@ export default function Editor() {
         layers={audioLayers}
         userId={userData?.user?.uid}
         trackId={trackId}
+        trackMetadata={trackMetadata}
         recordingHandler={recordingHandler}
         updateMetadata={setTrackMetadata}
         importHandler={importHandler}
