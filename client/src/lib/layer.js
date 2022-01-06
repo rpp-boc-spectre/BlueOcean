@@ -41,13 +41,27 @@ export class Layer {
     this.player.stop();
   }
 
-  start(startTrim, offset, endTrim) {
+  start(startTrim, offset, endTrim, playbackrate) {
     // changed this to just unsync() , no need to stop it again unless you want individual functionality
     // inwhich case put it back in.
     // havnt done offset yet, just handling case of trimming  from audio and wanting it to start at the same spot.
     // currently this is just set up to trim without cutting. This is why startTrim is called as the offset as well as the wait time
+    offset = startTrim
     this.player.unsync();
-    this.player.sync().start(startTrim, startTrim).stop(endTrim);
+
+    this.player
+      .sync()
+      .start(startTrim, offset, this.duration() / playbackrate - offset)
+      .stop(endTrim);
+
+    //  offset = this.trimFromStart
+
+    //  this.player.unsync()
+    //   this.player
+    //   .sync()
+    //   .start(this.trimFromStart, offset, this.duration() / this.playbackRate - offset)
+    //   .stop(this.trimFromEnd);
+
   }
 
   toggleMute() {
@@ -65,6 +79,8 @@ export class Layer {
     this.trimFromStart = newValue;
   }
   changeTrimFromEnd(newValue) {
+
+    //  newvalue/ playbackrate
     this.trimFromEnd = newValue;
   }
   changePitchValue(newValue) {

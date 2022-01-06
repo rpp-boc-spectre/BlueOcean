@@ -13,6 +13,7 @@ import Typography from '@mui/material/Box';
 import { useLayerStore } from '../context/LayerContext.js';
 
 import TimeControlButton from './editorComponents/TimeControlButton.jsx';
+import { Player } from 'tone';
 
 export default function LayerEditorCopy({ id }) {
   const [layerStore, dispatch] = useLayerStore();
@@ -175,7 +176,7 @@ export default function LayerEditorCopy({ id }) {
           <Typography>Trim From Start</Typography>
           <Slider
             min={0}
-            max={player.duration()}
+            max={player.duration() / player.playbackRate}
             value={trimFromStart}
             onChange={trimFromStartTime}
             aria-label='Trim Slider'
@@ -184,7 +185,7 @@ export default function LayerEditorCopy({ id }) {
           <Typography>Trim From End</Typography>
           <Slider
             min={0}
-            max={player.duration()}
+            max={player.duration() / player.playbackRate}
             value={trimFromEnd}
             onChange={trimFromEndTime}
             aria-label='Trim Slider'
