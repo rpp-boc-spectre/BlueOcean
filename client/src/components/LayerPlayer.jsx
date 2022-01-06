@@ -1,13 +1,15 @@
-import React, { useEffect, useState, useRef } from 'react';
-
+import React, { useEffect, useRef } from 'react';
 import * as Tone from 'tone';
-import { UserMedia } from 'tone';
 
-import { saveTrackData } from '../utils/database.js';
+import { useSnackbar } from 'material-ui-snackbar-provider';
+import { useLayerStore } from '../context/LayerContext.js'
 
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
-import { useSnackbar } from 'material-ui-snackbar-provider';
+
+import { addLayer, removeLayer } from '../lib/layerTableReducer.js';
+import { saveTrackData } from '../utils/database.js';
+import { Layer } from '../lib/layer.js'
 
 import LayerEditor from './LayerEditor.jsx';
 import TimeControlBox from './editorComponents/TimeControlBox.jsx';
@@ -15,41 +17,52 @@ import SettingsList from './editorComponents/SettingsList.jsx';
 
 
 export default function LayerPlayer({ layers, trackId, userId, recordingHandler, importHandler, uploadHandler }) {
-  const [allLayers, setAllLayers] = useState([]);
+  const [layerStore, dispatch] = useLayerStore()
+
   const allLayersPlayState = useRef('');
+  const allLayersRef = useRef(layerStore.allLayers)
   const snackbar = useSnackbar()
-  const layersRef = useRef()
-
-  useEffect(() => {
-    layersRef.current = allLayers
-  }, [allLayers])
-
 
   const playAllLayers = async () => {
-    await Tone.start();
-    allLayers.forEach((layer, i) => {
-      console.log('play all: ', layer)
-      layer.props.layerPlayer.sync().stop();
-      console.log('CHECKING PROPS', document.querySelector('.visual-layer' + layer.props.id));
-      Tone.Transport.schedule((time) => {
-        Tone.Draw.schedule(() => {
-          // console.log('TONE DRAW TIME', time);
-          renderWaveform(layer.props.waveform, layer.props.id);
-        }, time);
-      }, "+0.005");
-      layer.props.layerPlayer.sync().start();
-    });
-    await Tone.loaded();
-    allLayersPlayState.current = 'started';
-    Tone.Transport.start();
+    try {
+      await Tone.start();
+      await Tone.loaded();
+
+      let keys = Object.keys(layerStore.allLayers)
+      keys.forEach((layerKey, i) => {
+        let layer = layerStore.allLayers[layerKey]
+        Tone.Transport.schedule((time) => {
+          Tone.Draw.schedule(() => {
+            renderWaveform(layer.waveform, layerKey);
+          }, time);
+        }, "+0.005");
+
+        console.log('LAYER', layer.trimFromStart)
+        layer.start((layer.trimFromStart), layer.trimFromStart, layer.duration())
+        // layer.player.sync().start()
+      });
+
+
+      allLayersPlayState.current = 'started';
+      // move tranport down here  and set the play head back to 0.
+      // this prevents us from having timing errors + fixes bug where
+      // if you pressed play again after the track was over it would throw an error,
+      // because it can't actually play from the time you want it to as its passed.
+      Tone.Transport.seconds = 0
+      Tone.Transport.start();
+    } catch (error) {
+      console.log('ERROR', error)
+      snackbar.showMessage(<Alert severity='error'>Error playing all audio</Alert>)
+    }
   };
 
   const stopAllLayers = () => {
-    Tone.Transport.stop();
-    allLayers.forEach((layer, i) => {
-      layer.props.layerPlayer.unsync();
-      layer.props.layerPlayer.stop()
+    let keys = Object.keys(layerStore.allLayers)
+    keys.forEach((layerKey, i) => {
+      let layer = layerStore.allLayers[layerKey]
+      layer.stop()
     });
+    Tone.Transport.stop();
   };
 
   const pauseResumeAllLayers = () => {
@@ -63,28 +76,8 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
   };
 
   const handleSaveClick = async () => {
-    console.log('click')
-    let trackData = {
-      user: userId,
-      layers: []
-    }
-
-    for (var layer of allLayers) {
-      let data = {
-        start: 0,
-        end: 0,
-        duration: 0,
-        pitch: layer.props.pitchShift._pitch,
-        volume: layer.props.layerVolume.volume.value,
-        fileName: layer.props.layerData.fileName,
-        parent: layer.props.layerData.parent,
-        layerName: layer.props.layerData.layerName || layer.props.layerData.fileName.split('.webm')[0]
-      }
-      trackData.layers.push(data)
-    }
-
     try {
-      await saveTrackData(trackData, trackId)
+      await saveTrackData(layerStore.allLayers, userId, trackId)
       snackbar.showMessage(<Alert variant='success'>Track saved</Alert>)
     } catch (error) {
       console.log(error)
@@ -136,68 +129,30 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
     }
   };
 
+  // create refs to be used during cleanup
   useEffect(() => {
-    // for right meow, calling this function instead of fetching data
-    layerMaker();
+    allLayersRef.current = layerStore.allLayers
+  }, [layerStore.allLayers]);
+
+  // create audio layers
+  useEffect(() => {
+    layers.forEach((layer, index) => {
+      const newPlayer = new Layer({ ...layer, id: index, layerData: layer })
+      newPlayer.connect()
+      dispatch(addLayer(newPlayer))
+    });
   }, [layers]);
 
+  //cleanup on unmount
   useEffect(() => {
     return () => {
-      if (layersRef.current.length > 0) {
-        layersRef.current.forEach((layer, index) => {
-          console.log('Closing layer', index)
-          layer.props.layerPlayer.dispose()
-        })
+      for (let key of Object.keys(allLayersRef.current)) {
+        let player = allLayersRef.current[key].player
+        player.dispose()
+        dispatch(removeLayer(key))
       }
     }
   }, [])
-
-  const layerMaker = async () => {
-
-    let layerEditorComponents = layers.map((layer, index) => {
-      console.log(layer)
-      var newPlayer = new Tone.Player(layer.url)
-      const volume = new Tone.Volume(layer?.volume || -5)
-      const pitchShift = new Tone.PitchShift(layer?.pitch || 0)
-      const toneWaveform = new Tone.Waveform();
-      var solo = new Tone.Solo().toDestination()
-
-      //   player => volume => pitchShift =>solo=> speakers
-      newPlayer.connect(volume)
-      newPlayer.connect(toneWaveform)
-      volume.connect(pitchShift)
-      pitchShift.connect(solo)
-
-
-
-      // var newPlayer = new Tone.Player(layer.url)
-      // const pitchShift = new Tone.PitchShift(layer?.pitch || 0).toDestination();
-      // const volume = new Tone.Volume(layer?.volume || -5)
-      // volume.connect(pitchShift)
-      // newPlayer.connect(volume)
-      // const toneWaveform = new Tone.Waveform();
-      // newPlayer.connect(toneWaveform);
-
-      // do not sync players here in order to maintain individual player control
-      return (
-        <LayerEditor
-          key={index}
-          id={index}
-          layerPlayer={newPlayer}
-          pitchShift={pitchShift}
-          pitch={layer.pitch}
-          layerVolume={volume}
-          volume={layer.volume}
-          layerData={layer}
-          solo={solo}
-          waveform={toneWaveform}
-        />
-      );
-    });
-
-    // save created layers in state so that we can sync them to play all together in playAllLayers()
-    setAllLayers((prevLayers) => layerEditorComponents);
-  };
 
   return (
     <>
@@ -213,15 +168,8 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
           padding: { xs: '0', md: '10px' },
         }}
       >
-        {allLayers}
+        {Object.keys(layerStore.allLayers).map((player, index) => <LayerEditor key={index} id={index} />)}
       </Box>
     </>
   );
 }
-
-
-/* <button onClick={playAllLayers}>Play All Layers</button>
-<button onClick={stopAllLayers}>Stop All Layers</button>
-<button onClick={pauseResumeAllLayers}>Pause/Resume</button>
-<button onClick={handleSaveClick}>Save Changes</button>
- */

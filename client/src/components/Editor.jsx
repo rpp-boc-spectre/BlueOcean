@@ -16,6 +16,9 @@ import { getTrackUrls } from "../utils/storage";
 import UserContext from "../context/UserContext";
 import UploadFile from "./UploadFile.jsx";
 
+import { LayerStoreProvider } from "../context/LayerContext.js";
+import { initialState, layerTableReducer } from "../lib/layerTableReducer.js";
+
 export default function Editor() {
 
   const [importModalState, setImportModalState] = useState(false);
@@ -70,7 +73,8 @@ export default function Editor() {
   };
 
   return (
-    <>
+
+    <LayerStoreProvider initialState={initialState} reducer={layerTableReducer}>
       <Container sx={{
         border: 1,
         maxHeight: '90vh',
@@ -106,7 +110,7 @@ export default function Editor() {
           </Box>
         </Modal>
       </Container>
-    </>
+    </LayerStoreProvider>
   )
 }
 
