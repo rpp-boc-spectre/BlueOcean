@@ -77,10 +77,6 @@ export default function LayerPlayer({ layers, trackId, trackMetadata, userId, re
 
   const handleSaveClick = async () => {
     try {
-      // const name = document.getElementById("track-name").value;
-      // const tag = document.getElementById("track-tag-select").innerText;
-      // const publicity = document.getElementById("track-publicity");
-      console.log(trackMetadata);
       await saveTrackData(layerStore.allLayers, userId, trackId, trackMetadata);
       snackbar.showMessage(<Alert variant='success'>Track saved</Alert>)
     } catch (error) {
