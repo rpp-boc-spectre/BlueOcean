@@ -22,7 +22,7 @@ export default function LayerEditorCopy({ id }) {
   const [pitchSliderValue, setPitchSliderValue] = useState(player._pitch);
   const [volumeSliderValue, setVolumeSliderValue] = useState(player._volume);
   const [trimFromStart, setTrimFromStart] = useState(player.trimFromStart);
-
+  const [trimFromEnd, setTrimFromEnd] = useState(player.trimFromEnd);
 
   // put page on mousedown listener to get the duration of tracks then immediatly remove it after setting each tracks duration.
   useEffect(() => {
@@ -63,6 +63,10 @@ export default function LayerEditorCopy({ id }) {
   const trimFromStartTime = (event, newValue) => {
     setTrimFromStart(newValue);
     player.changeTrimFromStart(newValue);
+  };
+  const trimFromEndTime = (event, newValue) => {
+    setTrimFromEnd(newValue);
+    player.changeTrimFromEnd(newValue);
   };
   const testing = () => {
 
@@ -152,11 +156,21 @@ export default function LayerEditorCopy({ id }) {
           <Typography>Trim From Start</Typography>
           <Slider
             min={0}
-            max={50}
+            max={player.duration()}
             value={trimFromStart}
             onChange={trimFromStartTime}
             aria-label='Trim Slider'
             valueLabelDisplay='auto'
+          />
+             <Typography>Trim From End</Typography>
+          <Slider
+            min={0}
+            max={player.duration()}
+            value={trimFromEnd}
+            onChange={trimFromEndTime}
+            aria-label='Trim Slider'
+            valueLabelDisplay='auto'
+            track="inverted"
           />
           <Button onClick={testing}>DO you work </Button>
         </Box>
