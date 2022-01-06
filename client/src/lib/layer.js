@@ -31,13 +31,13 @@ export class Layer {
     this.player.stop();
   }
 
-  start(startTrim, offset, endTrim) {
+  start() {
     // changed this to just unsync() , no need to stop it again unless you want individual functionality
     // inwhich case put it back in.
     // havnt done offset yet, just handling case of trimming  from audio and wanting it to start at the same spot.
     // currently this is just set up to trim without cutting. This is why startTrim is called as the offset as well as the wait time
     this.player.unsync()
-    this.player.sync().start(startTrim, startTrim).stop(endTrim);
+    this.player.sync().start(this.trimFromStart, this.trimFromStart).stop(this.trimFromEnd);
     this.startWaveform()
   }
 
@@ -48,7 +48,7 @@ export class Layer {
         const canvas = document.querySelector('.visual-layer' + this.id);
         const canvasCtx = canvas.getContext('2d');
 
-        analyser = this.waveforme._analyser._analysers[0];
+        analyser = this.waveform._analyser._analysers[0];
         analyser.fftSize = 2048;
         bufferLength = analyser.frequencyBinCount;
         dataArray = new Uint8Array(bufferLength);

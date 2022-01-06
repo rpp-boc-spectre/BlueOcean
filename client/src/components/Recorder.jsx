@@ -3,6 +3,7 @@ import React, { useState, useContext, useRef, useEffect } from 'react';
 import * as Tone from 'tone';
 import { ref, uploadBytes } from 'firebase/storage';
 import { storage } from '../lib/firebase';
+import { useLayerStore } from '../context/LayerContext.js'
 
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import Typography from '@mui/material/Typography';
@@ -29,6 +30,7 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
   const userMicRef = useRef()
   const updateTimerRef = useRef()
   const recorderTimeoutRef = useRef()
+  const [layerStore, dispatch] = useLayerStore()
 
   const startRecorder = async function () {
     try {
@@ -39,9 +41,9 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
       const mic = new Tone.UserMedia().connect(recorder);
       setMicRecorder(recorder);
       setUserMic(mic);
-
       await mic.open();
       recorder.start();
+      layerStore.player.start()
       startTimer();
     } catch (error) {
       console.log('Start Recorder', error)
@@ -53,7 +55,7 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
       const recording = await micRecorderRef.current.stop();
       // close mic on stop.
       await userMicRef.current.close();
-
+      layerStore.player.stop()
       let newBlobURL = URL.createObjectURL(recording);
       setUrl(newBlobURL)
       setMicRecorder(recording)

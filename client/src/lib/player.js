@@ -1,5 +1,5 @@
 import * as Tone from 'tone';
-import Layer from './layer.js'
+import { Layer } from './layer.js'
 
 export class Player {
   constructor(layersData, trackId, metaData) {
@@ -8,11 +8,11 @@ export class Player {
     this.metaData = metaData
     this.isPlaying = false
 
-    for (var layer of layersData) {
+    layersData.forEach((layer, index) => {
       const newLayer = new Layer({ ...layer, id: index, layerData: layer })
       newLayer.connect()
       this.layers.push(newLayer)
-    }
+    })
   }
 
   start() {
@@ -35,6 +35,7 @@ export class Player {
   stop() {
     this.layers.forEach((layer) => { layer.stop() })
     Tone.Transport.stop();
+    this.isPlaying = false
   }
 
   pause() {
@@ -44,5 +45,25 @@ export class Player {
       Tone.Transport.start();
     }
     this.isPlaying = !this.isPlaying
+  }
+
+  reload(layers) {
+    if (this.isPlaying) {
+      this.stop()
+    }
+    this.layers.forEach((layer) => { layer.dispose() })
+    layers.forEach((layer, index) => {
+      const newLayer = new Layer({ ...layer, id: index, layerData: layer })
+      newLayer.connect()
+      this.layers.push(newLayer)
+    })
+  }
+
+  dispose() {
+    this.layers.forEach((layer) => {
+      layer.dispose()
+    })
+    this.layers = []
+    Tone.Transport.cancel(0)
   }
 }

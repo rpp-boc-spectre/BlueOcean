@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as Tone from 'tone';
 
 import { useSnackbar } from 'material-ui-snackbar-provider';
@@ -7,10 +7,10 @@ import { useLayerStore } from '../context/LayerContext.js'
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 
-import { addLayer, removeLayer } from '../lib/layerTableReducer.js';
+import { addLayer, removeLayer, setPlayer } from '../lib/layerTableReducer.js';
 import { saveTrackData } from '../utils/database.js';
 import { Layer } from '../lib/layer.js'
-import { player } from '../lib/player.js'
+import { Player } from '../lib/player.js'
 
 import LayerEditor from './LayerEditor.jsx';
 import TimeControlBox from './editorComponents/TimeControlBox.jsx';
@@ -22,58 +22,61 @@ export default function LayerPlayer({ layers, trackId, trackMetadata, userId, re
   const allLayersPlayState = useRef('');
   const allLayersRef = useRef(layerStore.allLayers)
   const snackbar = useSnackbar()
-  const [player, setPlayer] = useState(null)
-  const playerRef = useRef(player)
+  const playerRef = useRef(layerStore.player)
+  const [allLayersLoaded, setAllLayersLoaded] = useState(false)
 
   const playAllLayers = async () => {
-    if (player) {
-      player.start()
+    if (layerStore.player) {
+      layerStore.player.start()
     }
   };
 
   const stopAllLayers = () => {
-    if (player) {
-      player.stop()
+    if (layerStore.player) {
+      layerStore.player.stop()
     }
   };
 
   const pauseResumeAllLayers = () => {
-    player.pause()
+    if (layerStore.player) {
+      layerStore.player.pause()
+    }
   };
 
   const handleSaveClick = async () => {
-    try {
-      await saveTrackData(player.layers, userId, trackId, trackMetadata);
-      snackbar.showMessage(<Alert variant='success'>Track saved</Alert>)
-    } catch (error) {
-      console.log(error)
-      snackbar.showMessage(<Alert variant='error'>Track failed to save</Alert>)
-    }
+    // try {
+    //   await saveTrackData(player.layers, userId, trackId, trackMetadata);
+    //   snackbar.showMessage(<Alert variant='success'>Track saved</Alert>)
+    // } catch (error) {
+    //   console.log(error)
+    //   snackbar.showMessage(<Alert variant='error'>Track failed to save</Alert>)
+    // }
   }
 
   // create refs to be used during cleanup
   useEffect(() => {
-    player.current = player
-  }, [player]);
+    playerRef.current = layerStore.player
+  }, [layerStore.player]);
 
   // create audio layers
   useEffect(() => {
-    layers.forEach((layer, index) => {
-      const newPlayer = new Layer({ ...layer, id: index, layerData: layer })
-      newPlayer.connect()
-      dispatch(addLayer(newPlayer))
-    });
+    if (layers?.length > 0 && layerStore.player) {
+      setAllLayersLoaded(false)
+      layerStore.player.reload(layers)
+      setAllLayersLoaded(true)
+    }
+
+    if (layers?.length > 0 && !layerStore.player) {
+      let newPlayer = new Player(layers)
+      dispatch(setPlayer(newPlayer))
+      setAllLayersLoaded(true)
+    }
   }, [layers]);
 
   //cleanup on unmount
   useEffect(() => {
     return () => {
-      for (let key of Object.keys(allLayersRef.current)) {
-        let player = allLayersRef.current[key].player
-        player.dispose()
-        Tone.Transport.cancel(0)
-        dispatch(removeLayer(key))
-      }
+      layerStore.player.dispose()
     }
   }, [])
 
@@ -91,7 +94,7 @@ export default function LayerPlayer({ layers, trackId, trackMetadata, userId, re
           padding: { xs: '0', md: '10px' },
         }}
       >
-        {player?.layers.map((layer, index) => <LayerEditor key={index} id={index} />)}
+        {allLayersLoaded && layers.map((layer, index) => <LayerEditor key={index} id={index} />)}
       </Box>
     </>
   );

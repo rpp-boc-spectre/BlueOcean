@@ -15,7 +15,8 @@ import TimeControlButton from './editorComponents/TimeControlButton.jsx';
 
 export default function LayerEditorCopy({ id }) {
   const [layerStore, dispatch] = useLayerStore();
-  const player = layerStore.allLayers[id];
+  const player = layerStore.player.layers[id];
+  console.log(player)
   const [isSolo, setIsSolo] = useState(player._solo);
   const [isMuted, setIsMuted] = useState(player._mute);
   const [duration, setDuration] = useState(false);
@@ -162,7 +163,7 @@ export default function LayerEditorCopy({ id }) {
             aria-label='Trim Slider'
             valueLabelDisplay='auto'
           />
-             <Typography>Trim From End</Typography>
+          <Typography>Trim From End</Typography>
           <Slider
             min={0}
             max={player.duration()}
