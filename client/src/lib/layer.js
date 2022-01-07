@@ -122,7 +122,10 @@ export class Layer {
   changePitchValue(newValue) {
     this.pitchShift.pitch = newValue;
   }
+  changeDetuneValue(newValue){
 
+    this.player.detune = newValue
+  }
   changeVolumeValue(newValue) {
     this.volume.volume.value = newValue;
   }
@@ -131,6 +134,10 @@ export class Layer {
     this.player.playbackRate = Number(newValue);
   }
   decreasePlaybackRate(newValue) {
+    this.playbackRate = Number(newValue);
+    this.player.playbackRate = Number(newValue);
+  }
+changePlaybackRate(newValue) {
     this.playbackRate = Number(newValue);
     this.player.playbackRate = Number(newValue);
   }
