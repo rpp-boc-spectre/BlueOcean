@@ -36,6 +36,7 @@ export default function LayerPlayer({
   const playerRef = useRef(layerStore.player);
   const [allLayersLoaded, setAllLayersLoaded] = useState(false);
   const [globalPitch, setGlobalPitch] = useState(0);
+  const [globalVolume, setGlobalVolume] = useState(0)
 
   const playAllLayers = async () => {
     if (layerStore.player) {
@@ -99,6 +100,13 @@ export default function LayerPlayer({
     layerStore.player.setAllLayersPitch(newValue * 100);
     setGlobalPitch(newValue);
   };
+
+
+  const changeVolumeValue = (event, newValue) => {
+    newValue = Math.round(newValue);
+    setGlobalVolume(newValue);
+   layerStore.player.setAllLayersVolume(newValue)
+  };
   const [editOpen, setEditOpen] = React.useState(false);
   const layerEditorOpen = () => {
     setEditOpen(true);
@@ -151,14 +159,14 @@ export default function LayerPlayer({
               Edit Layer: {'placeholder'}
             </Typography>
             <Typography>Volume</Typography>
-          {/* <Slider
+          <Slider
             min={-20}
             max={20}
-            value={volumeSliderValue}
+            value={globalVolume}
             onChange={changeVolumeValue}
             aria-label='Volume Slider'
             valueLabelDisplay='auto'
-          /> */}
+          />
             <Typography> Set Track Pitch {globalPitch} </Typography>
             <Slider
               min={-12}
