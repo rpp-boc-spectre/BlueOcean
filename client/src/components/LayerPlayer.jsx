@@ -50,12 +50,11 @@ export default function LayerPlayer({ layers, trackId, userId, recordingHandler,
         //   // console.log('layertrim from end',layer.trimFromEnd)
 
         // },1,0,layer.duration())
-
-        // layer.player.overlap = 2
+        // layer.player.grainSize =.3
+        // layer.player.overlap = .4
         // layer.player.grainSize = layer.playbackRate
         layer.start()
-        // layer.start(layer.trimFromStart, layer.trimFromStart, layer.trimFromEnd,layer.playbackRate)
-        // layer.player.sync().start()
+
       });
 
 

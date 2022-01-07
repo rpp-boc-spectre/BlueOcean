@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import * as Tone from 'tone';
 
-
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -28,6 +27,10 @@ export default function LayerEditorCopy({ id }) {
   const [playerPlaybackRate, setPlayerPlaybackRate] = useState(
     player.playbackRate
   );
+
+  const [playerGrain, setPlayerGrain] = useState(player.player.grainSize);
+  const [playerOverlap, setPlayerOverlap] = useState(player.player.overlap);
+  const [playerDetune,setPlayerDetune] = useState(player.player.detune)
 
   // put page on mousedown listener to get the duration of tracks then immediatly remove it after setting each tracks duration.
   useEffect(() => {
@@ -68,39 +71,94 @@ export default function LayerEditorCopy({ id }) {
   const trimFromStartTime = (event, newValue) => {
     // newValue = Number(newValue)
     newValue = Number.parseFloat(newValue).toFixed(2);
-    newValue = Number(newValue)
+    newValue = Number(newValue);
     setTrimFromStart(newValue);
     player.changeTrimFromStart(newValue);
   };
   const trimFromEndTime = (event, newValue) => {
     newValue = Number.parseFloat(newValue).toFixed(2);
-    newValue = Number(newValue)
+    newValue = Number(newValue);
     setTrimFromEnd(newValue);
     player.changeTrimFromEnd(newValue);
   };
   const increasePlayback = (event, newValue) => {
-
     event.preventDefault();
     let newPlayback = Number(event.target.value);
     newPlayback = Number.parseFloat(newPlayback + 0.1).toFixed(2);
-    newPlayback = Number(newPlayback)
+    newPlayback = Number(newPlayback);
     player.increasePlaybackRate(newPlayback);
     setPlayerPlaybackRate(newPlayback);
-
-
   };
   const decreasePlayback = (event) => {
     event.preventDefault();
     let newPlayback = Number(event.target.value);
 
     newPlayback = Number.parseFloat(newPlayback - 0.1).toFixed(2);
-    newPlayback = Number(newPlayback)
-    console.log('type',typeof newPlayback,Number(newPlayback))
+    newPlayback = Number(newPlayback);
+    console.log('type', typeof newPlayback, Number(newPlayback));
     player.decreasePlaybackRate(newPlayback);
     setPlayerPlaybackRate(newPlayback);
-
-
   };
+
+  const increaseGrain = (event) => {
+    let newGrain = Number(event.target.value);
+
+    newGrain = Number.parseFloat(newGrain + 0.025).toFixed(3);
+    newGrain = Number(newGrain);
+
+    console.log('NEWGRAIN', newGrain);
+    player.player.grainSize = newGrain;
+    setPlayerGrain(newGrain);
+  };
+
+  const decreaseGrain = (event) => {
+    let newGrain = Number(event.target.value);
+
+    newGrain = Number.parseFloat(newGrain - 0.025).toFixed(3);
+    newGrain = Number(newGrain);
+
+    console.log('NEWGRAIN', newGrain);
+    player.player.grainSize = newGrain;
+    setPlayerGrain(newGrain);
+  };
+
+  const increaseOverlap = (event) => {
+
+    let newOverlap = Number(event.target.value)
+    newOverlap = Number.parseFloat(newOverlap + 0.025).toFixed(3)
+
+    newOverlap = Number(newOverlap)
+
+    player.player.overlap = newOverlap
+
+    setPlayerOverlap(newOverlap)
+
+  }
+
+  const decreaseOverlap = (event) => {
+
+    let newOverlap = Number(event.target.value)
+    newOverlap = Number.parseFloat(newOverlap - 0.025).toFixed(3)
+
+    newOverlap = Number(newOverlap)
+
+    player.player.overlap = newOverlap
+
+    setPlayerOverlap(newOverlap)
+
+  }
+
+
+  const changeDetune = (event, newValue ) => {
+
+
+    newValue = Number(newValue)
+
+    player.player.detune = newValue *100
+    setPlayerDetune(newValue)
+
+
+  }
   // editor modal handlers
   const [editOpen, setEditOpen] = React.useState(false);
   const layerEditorOpen = () => {
@@ -174,11 +232,21 @@ export default function LayerEditorCopy({ id }) {
           />
           <Typography>Pitch</Typography>
           <Slider
-            min={0}
+            min={-12}
             max={12}
             value={pitchSliderValue}
             onChange={changePitchValue}
             aria-label='Pitch Slider'
+            valueLabelDisplay='auto'
+          />
+
+          <Typography>Trim From Start</Typography>
+          <Slider
+            min={0}
+            max={player.duration() / player.playbackRate}
+            value={trimFromStart}
+            onChange={trimFromStartTime}
+            aria-label='Trim Slider'
             valueLabelDisplay='auto'
           />
           <Typography>Trim From End</Typography>
@@ -191,30 +259,51 @@ export default function LayerEditorCopy({ id }) {
             valueLabelDisplay='auto'
             track='inverted'
           />
-          <Typography>Trim From Start</Typography>
-          <Slider
-            min={0}
-            max={player.duration()/ player.playbackRate}
-            value={trimFromStart}
-            onChange={trimFromStartTime}
-            aria-label='Trim Slider'
-            valueLabelDisplay='auto'
-          />
-          <Typography>Playback Rate {Number(playerPlaybackRate).toFixed(2)}</Typography>
-
-          <Button
-            name='increaseTempo'
-            onClick={increasePlayback}
-            value={playerPlaybackRate}>
-            +
-          </Button>
-          {/* <Typography>Decrease Playback</Typography> */}
+          <Typography>
+            Playback Rate {Number(playerPlaybackRate).toFixed(2)}
+          </Typography>
           <Button
             name='decreasePlayback'
             onClick={decreasePlayback}
             value={playerPlaybackRate}>
-           -
+            -
           </Button>
+          <Button
+            name='increasePlayback'
+            onClick={increasePlayback}
+            value={playerPlaybackRate}>
+            +
+          </Button>
+
+          <Typography>Grain Size {playerGrain}</Typography>
+
+
+          <Button name='testGrain' onClick={decreaseGrain} value={playerGrain}>
+            -GrainSize
+          </Button>
+
+          <Button name='testGrain' onClick={increaseGrain} value={playerGrain}>
+            +GrainSize
+          </Button>
+
+          <Typography>Overlap/Crossfade {playerOverlap}</Typography>
+          <Button
+            name='decreaseOverlap'
+            onClick={decreaseOverlap}
+            value={playerOverlap}>-Overlap Size</Button>
+          <Button
+            name='increaseOverlap'
+            onClick={increaseOverlap}
+            value={playerOverlap}>+Overlap Size</Button>
+     <Typography> Detune {playerDetune} </Typography>
+          <Slider
+            min={-12}
+            max={12}
+            value={playerDetune}
+            onChange={changeDetune}
+            aria-label='Trim Slider'
+            valueLabelDisplay='auto'
+          />
         </Box>
       </Modal>
     </>

@@ -42,7 +42,7 @@ export class Layer {
     this.player.stop();
   }
 
-  start(startTrim, offset, endTrim, playbackrate) {
+  start() {
     // changed this to just unsync() , no need to stop it again unless you want individual functionality
     // inwhich case put it back in.
     // havnt done offset yet, just handling case of trimming  from audio and wanting it to start at the same spot.
@@ -50,14 +50,10 @@ export class Layer {
     // offset = startTrim
     // this.player.unsync();
 
-    // this.player
-    //   .sync()
-    //   .start(startTrim, offset, this.duration() / playbackrate - offset)
-    //   .stop(endTrim);
 
-     offset = this.trimFromStart
+    let  offset = this.trimFromStart
 
-     this.player.unsync()
+     this.player.unsync().stop()
       this.player
       .sync()
       .start(this.trimFromStart, offset, this.duration() / this.player.playbackRate - offset)
