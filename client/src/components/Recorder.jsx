@@ -6,12 +6,15 @@ import { storage } from '../lib/firebase';
 import { useLayerStore } from '../context/LayerContext.js'
 
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import Typography from '@mui/material/Typography';
 import UserContext from '../context/UserContext';
+
+import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert'
 import MicIcon from '@mui/icons-material/Mic';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
+import Switch from '@mui/material/Switch';
+
 import { useSnackbar } from 'material-ui-snackbar-provider';
 import { getLayerUrl } from '../utils/storage';
 import { Timer } from '../utils/recorder';
@@ -31,6 +34,7 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
   const updateTimerRef = useRef()
   const recorderTimeoutRef = useRef()
   const [layerStore, dispatch] = useLayerStore()
+  const [playWith, setPlayWith] = useState(true)
 
   const startRecorder = async function () {
     try {
@@ -43,7 +47,9 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
       setUserMic(mic);
       await mic.open();
       recorder.start();
-      layerStore.player.start()
+      if (playWith) {
+        layerStore.player.start()
+      }
       startTimer();
     } catch (error) {
       console.log('Start Recorder', error)
@@ -55,7 +61,9 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
       const recording = await micRecorderRef.current.stop();
       // close mic on stop.
       await userMicRef.current.close();
-      layerStore.player.stop()
+      if (playWith) {
+        layerStore.player.stop()
+      }
       let newBlobURL = URL.createObjectURL(recording);
       setUrl(newBlobURL)
       setMicRecorder(recording)
@@ -79,7 +87,7 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
     }, (recordingLimit.current * 1000) + 400)
 
     let updateTimer = setInterval(function () {
-      let time = recorderTimeout.getTimeLeft();
+      let time = recorderTimeoutRef.current.getTimeLeft();
       setTimeRemaining((time / 1000));
     }, 90);
 
@@ -153,6 +161,8 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
 
   return (
     <>
+
+      <Switch checked={playWith} onChange={() => { setPlayWith((prev) => !prev) }} />
       {(!!micRecorder && !isFinished) && <Typography>{`${Math.abs(timeRemaining - recordingLimit.current).toFixed(2)} / ${recordingLimit.current}:00`}</Typography>}
       <Button variant='outlined' onClick={startRecorder} startIcon={<MicIcon />} disabled={isFinished === false && !!micRecorder}>Click to record</Button>
       <Button variant='outlined' onClick={stopRecorder} endIcon={<StopCircleIcon />} disabled={isFinished === true || !micRecorder}>Click to stop</Button>
