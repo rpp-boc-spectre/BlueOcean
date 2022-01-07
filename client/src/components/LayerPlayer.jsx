@@ -8,6 +8,7 @@ import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Box';
+import Slider from '@mui/material/Slider';
 import { addLayer, removeLayer, setPlayer } from '../lib/layerTableReducer.js';
 import { saveTrackData } from '../utils/database.js';
 import { Player } from '../lib/player.js';
@@ -34,6 +35,8 @@ export default function LayerPlayer({
   const snackbar = useSnackbar();
   const playerRef = useRef(layerStore.player);
   const [allLayersLoaded, setAllLayersLoaded] = useState(false);
+const [globalPitch,setGlobalPitch] = useState(0)
+
 
   const playAllLayers = async () => {
     if (layerStore.player) {
@@ -91,6 +94,16 @@ export default function LayerPlayer({
     };
   }, []);
 
+
+  const changeDetune = (event, newValue) => {
+
+    newValue = Number(newValue)
+    // newValue * 100
+layerStore.player.setAllLayersPitch(newValue *100)
+   setGlobalPitch(newValue)
+
+
+  }
   const [editOpen, setEditOpen] = React.useState(false);
   const layerEditorOpen = () => {
     setEditOpen(true);
@@ -142,6 +155,15 @@ export default function LayerPlayer({
             <Typography variant='subtitle2' id='modal-edit-title'>
               Edit Layer: {'placeholder'}
             </Typography>
+            <Typography> Set Track Pitch {globalPitch} </Typography>
+          <Slider
+            min={-12}
+            max={12}
+            value={globalPitch}
+            onChange={changeDetune}
+            aria-label='Trim Slider'
+            valueLabelDisplay='auto'
+          />
           </Box>
         </Modal>
         {allLayersLoaded &&

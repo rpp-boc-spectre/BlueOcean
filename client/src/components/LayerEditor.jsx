@@ -147,9 +147,7 @@ export default function LayerEditorCopy({ id }) {
 
   }
 
-
   const changeDetune = (event, newValue) => {
-
 
     newValue = Number(newValue)
 
