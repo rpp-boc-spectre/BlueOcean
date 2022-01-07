@@ -83,22 +83,26 @@ export class Player {
     };
   }
 
-  setAllLayersPlaybackRate() {}
+  setAllLayersPlaybackRate(newValue) {
+
+
+    this.layers.forEach((layer)=>{
+      layer.changePlaybackRate(newValue)
+
+    })
+
+  }
 
   setAllLayersPitch(newValue) {
     this.layers.forEach((layer) => {
-
       layer.changeDetuneValue(newValue);
     });
   }
 
   setAllLayersVolume(newValue) {
-
     this.layers.forEach((layer) => {
-
       layer.changeVolumeValue(newValue);
     });
-
   }
 
   setAllLayersGrainSize() {}

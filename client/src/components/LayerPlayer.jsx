@@ -37,6 +37,7 @@ export default function LayerPlayer({
   const [allLayersLoaded, setAllLayersLoaded] = useState(false);
   const [globalPitch, setGlobalPitch] = useState(0);
   const [globalVolume, setGlobalVolume] = useState(0)
+  const [globalPlayback,setGlobalPlayback] = useState(1)
 
   const playAllLayers = async () => {
     if (layerStore.player) {
@@ -107,6 +108,20 @@ export default function LayerPlayer({
     setGlobalVolume(newValue);
    layerStore.player.setAllLayersVolume(newValue)
   };
+
+  const changePlaybackRate = (event,newValue) => {
+
+    console.log('nev',newValue)
+    let newPlayback = Number(event.target.value);
+    console.log('Newpl',newPlayback)
+    newPlayback >=0.5 ? newPlayback = Number.parseFloat(newPlayback).toFixed(2):
+    newPlayback = Number.parseFloat(newPlayback + 0.1).toFixed(2);
+
+    newPlayback = Number(newPlayback);
+    setGlobalPlayback(newPlayback)
+    layerStore.player.setAllLayersPlaybackRate(newPlayback)
+
+  }
   const [editOpen, setEditOpen] = React.useState(false);
   const layerEditorOpen = () => {
     setEditOpen(true);
@@ -173,6 +188,16 @@ export default function LayerPlayer({
               max={12}
               value={globalPitch}
               onChange={changeDetune}
+              aria-label='Trim Slider'
+              valueLabelDisplay='auto'
+            />
+            <Typography> Set Track Playback {globalPlayback} </Typography>
+            <Slider
+              min={.50}
+              max={2}
+              step={.10}
+              value={globalPlayback}
+              onChange={changePlaybackRate}
               aria-label='Trim Slider'
               valueLabelDisplay='auto'
             />

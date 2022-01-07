@@ -137,6 +137,10 @@ export class Layer {
     this.playbackRate = Number(newValue);
     this.player.playbackRate = Number(newValue);
   }
+changePlaybackRate(newValue) {
+    this.playbackRate = Number(newValue);
+    this.player.playbackRate = Number(newValue);
+  }
   duration() {
     return this.player.buffer.duration;
   }
