@@ -47,7 +47,7 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
       setUserMic(mic);
       await mic.open();
       recorder.start();
-      if (playWith) {
+      if (playWith && layerStore.player) {
         layerStore.player.start()
       }
       startTimer();
@@ -61,7 +61,7 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
       const recording = await micRecorderRef.current.stop();
       // close mic on stop.
       await userMicRef.current.close();
-      if (playWith) {
+      if (playWith && layerStore.player) {
         layerStore.player.stop()
       }
       let newBlobURL = URL.createObjectURL(recording);
