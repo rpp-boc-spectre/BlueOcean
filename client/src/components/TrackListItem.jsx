@@ -16,8 +16,8 @@ export default function TrackListItem({ trackId, meta }) {
     <ListItem>
       <ListItemButton onClick={handleNavigation}>
         <ListItemText
-          primary={meta.trackName}
-          secondary={meta.public ? 'Public' : 'Private'}
+          primary={meta?.trackName || trackId}
+          secondary={meta?.public ? 'Public' : 'Private'}
         />
       </ListItemButton>
     </ListItem>
