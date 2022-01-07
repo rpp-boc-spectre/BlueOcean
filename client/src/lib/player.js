@@ -20,9 +20,9 @@ export class Player {
   start() {
     return new Promise(async (resolve, reject) => {
       try {
+        console.log('layerStore/Player.js')
         await Tone.start();
         await Tone.loaded();
-
         this.layers.forEach((layer) => { layer.start() });
         Tone.Transport.seconds = 0
         Tone.Transport.start();
@@ -75,5 +75,30 @@ export class Player {
       layers: this.layers.map((layer) => layer.getLayerData()),
       meta: this.meta
     }
+  }
+
+
+setAllLayersPlaybackRate(){
+
+
+}
+
+  setAllLayersPitch(){
+
+
+  }
+
+  setAllLayersVolume(){
+
+  }
+
+  setAllLayersGrainSize(){
+
+
+  }
+
+
+  setAllLayersReverse(){
+
   }
 }

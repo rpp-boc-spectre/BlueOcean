@@ -2,87 +2,118 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as Tone from 'tone';
 
 import { useSnackbar } from 'material-ui-snackbar-provider';
-import { useLayerStore } from '../context/LayerContext.js'
+import { useLayerStore } from '../context/LayerContext.js';
 
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
-
+import Modal from '@mui/material/Modal';
+import Typography from '@mui/material/Box';
 import { addLayer, removeLayer, setPlayer } from '../lib/layerTableReducer.js';
 import { saveTrackData } from '../utils/database.js';
-import { Player } from '../lib/player.js'
+import { Player } from '../lib/player.js';
 
 import LayerEditor from './LayerEditor.jsx';
 import TimeControlBox from './editorComponents/TimeControlBox.jsx';
+import TimeControlButton from './editorComponents/TimeControlButton.jsx';
 import SettingsList from './editorComponents/SettingsList.jsx';
 
-
-export default function LayerPlayer({ layers, trackId, trackMetadata, userId, recordingHandler, importHandler, uploadHandler, updateMetadata, trackData }) {
-  const [layerStore, dispatch] = useLayerStore()
+export default function LayerPlayer({
+  layers,
+  trackId,
+  trackMetadata,
+  userId,
+  recordingHandler,
+  importHandler,
+  uploadHandler,
+  updateMetadata,
+  trackData,
+}) {
+  const [layerStore, dispatch] = useLayerStore();
   const allLayersPlayState = useRef('');
-  const allLayersRef = useRef(layerStore.allLayers)
-  const snackbar = useSnackbar()
-  const playerRef = useRef(layerStore.player)
-  const [allLayersLoaded, setAllLayersLoaded] = useState(false)
+  const allLayersRef = useRef(layerStore.allLayers);
+  const snackbar = useSnackbar();
+  const playerRef = useRef(layerStore.player);
+  const [allLayersLoaded, setAllLayersLoaded] = useState(false);
 
   const playAllLayers = async () => {
     if (layerStore.player) {
-      layerStore.player.start()
+      console.log('LAYERPLAYER');
+      layerStore.player.start();
     }
   };
 
   const stopAllLayers = () => {
     if (layerStore.player) {
-      layerStore.player.stop()
+      layerStore.player.stop();
     }
   };
 
   const pauseResumeAllLayers = () => {
     if (layerStore.player) {
-      layerStore.player.pause()
+      layerStore.player.pause();
     }
   };
 
   const handleSaveClick = async () => {
     try {
       await saveTrackData(layerStore.player, userId, trackMetadata);
-      snackbar.showMessage(<Alert variant='success'>Track saved</Alert>)
+      snackbar.showMessage(<Alert variant='success'>Track saved</Alert>);
     } catch (error) {
-      console.log(error)
-      snackbar.showMessage(<Alert variant='error'>Track failed to save</Alert>)
+      console.log(error);
+      snackbar.showMessage(<Alert variant='error'>Track failed to save</Alert>);
     }
-  }
+  };
 
   // create refs to be used during cleanup
   useEffect(() => {
-    playerRef.current = layerStore.player
+    playerRef.current = layerStore.player;
   }, [layerStore.player]);
 
   // create audio layers
   useEffect(() => {
     if (layers?.length > 0 && layerStore.player) {
-      setAllLayersLoaded(false)
-      layerStore.player.reload(layers)
-      setAllLayersLoaded(true)
+      setAllLayersLoaded(false);
+      layerStore.player.reload(layers);
+      setAllLayersLoaded(true);
     }
 
     if (layers?.length > 0 && !layerStore.player) {
-      let newPlayer = new Player(layers, trackData)
-      dispatch(setPlayer(newPlayer))
-      setAllLayersLoaded(true)
+      let newPlayer = new Player(layers, trackData);
+      dispatch(setPlayer(newPlayer));
+      setAllLayersLoaded(true);
     }
   }, [layers]);
 
   //cleanup on unmount
   useEffect(() => {
     return () => {
-      layerStore.player.dispose()
-    }
-  }, [])
+      layerStore.player.dispose();
+    };
+  }, []);
 
+  const [editOpen, setEditOpen] = React.useState(false);
+  const layerEditorOpen = () => {
+    setEditOpen(true);
+  };
+  const layerEditClose = () => {
+    setEditOpen(false);
+  };
   return (
     <>
-      <SettingsList importHandler={importHandler} saveHandler={handleSaveClick} uploadHandler={uploadHandler} metadata={trackMetadata} updateMetadata={updateMetadata} />
-      <TimeControlBox recordingHandler={recordingHandler} playAllHandler={playAllLayers} stopAllHandler={stopAllLayers} pauseResumeHandler={pauseResumeAllLayers} />
+      <SettingsList
+        importHandler={importHandler}
+        saveHandler={handleSaveClick}
+        uploadHandler={uploadHandler}
+        metadata={trackMetadata}
+        updateMetadata={updateMetadata}
+      />
+      <TimeControlBox
+        recordingHandler={recordingHandler}
+        playAllHandler={playAllLayers}
+        stopAllHandler={stopAllLayers}
+        pauseResumeHandler={pauseResumeAllLayers}
+      />
+      <TimeControlButton button={{ name: 'Edit', handler: layerEditorOpen }} />
       <Box
         sx={{
           bgcolor: 'background.paper',
@@ -91,9 +122,30 @@ export default function LayerPlayer({ layers, trackId, trackMetadata, userId, re
           minHeight: '60vh',
           maxHeight: '80vh',
           padding: { xs: '0', md: '10px' },
-        }}
-      >
-        {allLayersLoaded && layers.map((layer, index) => <LayerEditor key={index} id={index} />)}
+        }}>
+        <Modal
+          open={editOpen}
+          onClose={layerEditClose}
+          aria-label='modal-edit-title'>
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: { xs: '95%', md: 400 },
+              bgcolor: 'background.paper',
+              border: '2px solid #000',
+              boxShadow: 24,
+              p: 4,
+            }}>
+            <Typography variant='subtitle2' id='modal-edit-title'>
+              Edit Layer: {'placeholder'}
+            </Typography>
+          </Box>
+        </Modal>
+        {allLayersLoaded &&
+          layers.map((layer, index) => <LayerEditor key={index} id={index} />)}
       </Box>
     </>
   );
