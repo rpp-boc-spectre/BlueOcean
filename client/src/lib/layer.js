@@ -138,6 +138,14 @@ export class Layer {
     return this.player.buffer.duration;
   }
 
+  dispose() {
+    this.player.dispose()
+    this.waveform.dispose()
+    this.volume.dispose()
+    this.pitchShift.dispose()
+    this.solo.dispose()
+  }
+
   getLayerData() {
     return {
       pitch: this.pitchShift.pitch,

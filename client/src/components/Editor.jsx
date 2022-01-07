@@ -31,6 +31,7 @@ export default function Editor() {
   const [uploadModalState, setUploadModalState] = useState(false);
   const [audioLayers, setAudioLayers] = useState([]);
   const [trackMetadata, setTrackMetadata] = useState({});
+  const [trackData, setTrackData] = useState(null)
   const userData = useContext(UserContext);
   const snackbar = useSnackbar();
   const { trackId } = useParams();
@@ -55,6 +56,7 @@ export default function Editor() {
           if (data && data.metadata) {
             setTrackMetadata(data.metadata);
           }
+          data.id = trackId
           return getTrackUrls(data)
         })
         .then(trackWithUrls => {
@@ -62,6 +64,7 @@ export default function Editor() {
           for (var layer in trackWithUrls.layers) {
             layers.push(trackWithUrls.layers[layer])
           }
+          setTrackData(trackWithUrls)
           setAudioLayers(layers)
         })
         .catch(error => {
@@ -75,8 +78,10 @@ export default function Editor() {
       if (audioLayers?.length > 0) {
         setAudioLayers([])
       }
-      layerStore.player.dispose()
-      dispatch(setPlayer(null))
+      if (layerStore.player) {
+        layerStore.player.dispose()
+        dispatch(setPlayer(null))
+      }
     }
   }, [trackId])
 
@@ -111,6 +116,7 @@ export default function Editor() {
         updateMetadata={setTrackMetadata}
         importHandler={importHandler}
         uploadHandler={uploadHandler}
+        trackData={trackData}
       />
 
       <Modal open={importModalState} onClose={handleImportClose}>

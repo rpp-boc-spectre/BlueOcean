@@ -2,11 +2,13 @@ import * as Tone from 'tone';
 import { Layer } from './layer.js'
 
 export class Player {
-  constructor(layersData, trackId, metaData) {
+  constructor(layersData, trackData) {
     this.layers = []
-    this.trackId = trackId
-    this.metaData = metaData
+    this.meta = trackData?.meta
+    this.trackData = trackData
+    this.owner = trackData?.user
     this.isPlaying = false
+    this.id = trackData?.id
 
     layersData.forEach((layer, index) => {
       const newLayer = new Layer({ ...layer, id: index, layerData: layer })
@@ -65,5 +67,13 @@ export class Player {
     })
     this.layers = []
     Tone.Transport.cancel(0)
+  }
+
+  getTrackData() {
+    return {
+      user: this.owner,
+      layers: this.layers.map((layer) => layer.getLayerData()),
+      meta: this.meta
+    }
   }
 }

@@ -16,7 +16,6 @@ import TimeControlButton from './editorComponents/TimeControlButton.jsx';
 export default function LayerEditorCopy({ id }) {
   const [layerStore, dispatch] = useLayerStore();
   const player = layerStore.player.layers[id];
-  console.log(player)
   const [isSolo, setIsSolo] = useState(player._solo);
   const [isMuted, setIsMuted] = useState(player._mute);
   const [duration, setDuration] = useState(false);
@@ -30,7 +29,7 @@ export default function LayerEditorCopy({ id }) {
 
   const [playerGrain, setPlayerGrain] = useState(player.player.grainSize);
   const [playerOverlap, setPlayerOverlap] = useState(player.player.overlap);
-  const [playerDetune,setPlayerDetune] = useState(player.player.detune)
+  const [playerDetune, setPlayerDetune] = useState(player.player.detune)
 
   // put page on mousedown listener to get the duration of tracks then immediatly remove it after setting each tracks duration.
   useEffect(() => {
@@ -149,17 +148,17 @@ export default function LayerEditorCopy({ id }) {
   }
 
 
-  const changeDetune = (event, newValue ) => {
+  const changeDetune = (event, newValue) => {
 
 
     newValue = Number(newValue)
 
-    player.player.detune = newValue *100
+    player.player.detune = newValue * 100
     setPlayerDetune(newValue)
 
 
   }
- // editor modal handlers
+  // editor modal handlers
   const [editOpen, setEditOpen] = React.useState(false);
   const layerEditorOpen = () => {
     setEditOpen(true);
@@ -295,7 +294,7 @@ export default function LayerEditorCopy({ id }) {
             name='increaseOverlap'
             onClick={increaseOverlap}
             value={playerOverlap}>+Overlap Size</Button>
-     <Typography> Detune {playerDetune} </Typography>
+          <Typography> Detune {playerDetune} </Typography>
           <Slider
             min={-12}
             max={12}

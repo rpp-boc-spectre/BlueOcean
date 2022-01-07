@@ -9,7 +9,6 @@ import Box from '@mui/material/Box';
 
 import { addLayer, removeLayer, setPlayer } from '../lib/layerTableReducer.js';
 import { saveTrackData } from '../utils/database.js';
-import { Layer } from '../lib/layer.js'
 import { Player } from '../lib/player.js'
 
 import LayerEditor from './LayerEditor.jsx';
@@ -17,7 +16,7 @@ import TimeControlBox from './editorComponents/TimeControlBox.jsx';
 import SettingsList from './editorComponents/SettingsList.jsx';
 
 
-export default function LayerPlayer({ layers, trackId, trackMetadata, userId, recordingHandler, importHandler, uploadHandler, updateMetadata }) {
+export default function LayerPlayer({ layers, trackId, trackMetadata, userId, recordingHandler, importHandler, uploadHandler, updateMetadata, trackData }) {
   const [layerStore, dispatch] = useLayerStore()
   const allLayersPlayState = useRef('');
   const allLayersRef = useRef(layerStore.allLayers)
@@ -44,13 +43,13 @@ export default function LayerPlayer({ layers, trackId, trackMetadata, userId, re
   };
 
   const handleSaveClick = async () => {
-    // try {
-    //   await saveTrackData(player.layers, userId, trackId, trackMetadata);
-    //   snackbar.showMessage(<Alert variant='success'>Track saved</Alert>)
-    // } catch (error) {
-    //   console.log(error)
-    //   snackbar.showMessage(<Alert variant='error'>Track failed to save</Alert>)
-    // }
+    try {
+      await saveTrackData(layerStore.player, userId, trackMetadata);
+      snackbar.showMessage(<Alert variant='success'>Track saved</Alert>)
+    } catch (error) {
+      console.log(error)
+      snackbar.showMessage(<Alert variant='error'>Track failed to save</Alert>)
+    }
   }
 
   // create refs to be used during cleanup
@@ -67,7 +66,7 @@ export default function LayerPlayer({ layers, trackId, trackMetadata, userId, re
     }
 
     if (layers?.length > 0 && !layerStore.player) {
-      let newPlayer = new Player(layers)
+      let newPlayer = new Player(layers, trackData)
       dispatch(setPlayer(newPlayer))
       setAllLayersLoaded(true)
     }
