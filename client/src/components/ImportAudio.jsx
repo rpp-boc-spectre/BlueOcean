@@ -37,10 +37,8 @@ export default function ImportAduio({ userId, currentList, setParentLayers, clos
               layer.url = url
             })
 
-            layer.pitch = 0
-            layer.volume = 0
-            layer.parent = userId
-            layer.fileName = itemRef.name
+          layer.parent = userId
+          layer.fileName = itemRef.name
 
           return layer
         });
@@ -76,7 +74,7 @@ export default function ImportAduio({ userId, currentList, setParentLayers, clos
     close()
   }
 
-  return(
+  return (
     <>
       {loading ?
         <p>loading...</p>
@@ -87,7 +85,7 @@ export default function ImportAduio({ userId, currentList, setParentLayers, clos
               {audioLayerList.map((item, index) => {
                 const labelId = `checkbox-list-label-${index}`;
                 const disabled = checked.length >= 4 && checked.indexOf(index) === -1
-                return(
+                return (
                   <ListItem key={index}>
                     <ListItemButton role={undefined} onClick={handleToggle(index)} dense disabled={disabled}>
                       <ListItemIcon>

@@ -1,9 +1,11 @@
 export const ADD_LAYER = 'APP/LAYER_TABLE/ADD_LAYER';
 export const ADD_LAYERS = 'APP/LAYER_TABLE/ADD_LAYERS';
 export const REMOVE_LAYER = 'APP/LAYER_TABLE/REMOVE_LAYER';
+export const SET_PLAYER = 'APP/LAYER_TABLE/SET_PLAYER';
 
 export const initialState = {
   allLayers: {},
+  player: null
 };
 
 /**
@@ -17,7 +19,7 @@ export const addLayer = (layer) => ({
 /**
  * @param layers: array of layer classes
  */
-export const addLayers = (layer) => ({
+export const addLayers = (layers) => ({
   type: ADD_LAYERS,
   layers,
 });
@@ -29,6 +31,11 @@ export const removeLayer = (layerId) => ({
   type: REMOVE_LAYER,
   layerId,
 })
+
+export const setPlayer = (player) => ({
+  type: SET_PLAYER,
+  player,
+});
 
 export const layerTableReducer = (state = initialState, action) => {
 
@@ -53,6 +60,13 @@ export const layerTableReducer = (state = initialState, action) => {
 
     return {
       ...state
+    }
+  }
+
+  if (action.type === SET_PLAYER) {
+    return {
+      ...state,
+      player: action.player
     }
   }
 

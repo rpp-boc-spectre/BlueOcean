@@ -7,6 +7,7 @@ export function getTrackData(trackId) {
       let docRef = doc(db, 'tracks', trackId)
       const docSnap = await getDoc(docRef)
       const docData = docSnap.data()
+      docData.id = trackId
       resolve(docData)
     } catch (error) {
       reject(error)
@@ -14,16 +15,22 @@ export function getTrackData(trackId) {
   })
 }
 
-export function saveTrackData(allPlayers, userId, trackId, metadata) {
-  return new Promise( async (resolve, reject) => {
+export function saveTrackData(player, userId, metadata) {
+  return new Promise(async (resolve, reject) => {
     try {
-      let trackData = createTrackDataObject(allPlayers, userId, metadata)
+      let trackData = player.getTrackData();
       let ref;
-      if (!trackId) {
-        ref = doc(collection(db, "tracks"))
+
+      if ((userId === player.owner) && player.id) {
+        console.log('update track')
+        ref = doc(db, "tracks", player.id)
         await setDoc(ref, trackData)
       } else {
-        ref = doc(db, "tracks", trackId)
+        console.log('new track')
+        trackData.user = userId
+        trackData.meta = metadata
+        console.log(trackData)
+        ref = doc(collection(db, "tracks"))
         await setDoc(ref, trackData)
       }
       resolve()
@@ -34,12 +41,12 @@ export function saveTrackData(allPlayers, userId, trackId, metadata) {
 }
 
 export function getAllTracks(userId) {
-  return new Promise( async (resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     try {
       let collRef = collection(db, 'tracks')
       let q = query(collRef, where('user', '==', userId))
       const querySnapshot = await getDocs(q);
-      let data =[]
+      let data = []
       console.log(querySnapshot)
       querySnapshot.forEach((doc) => {
         console.log(doc)

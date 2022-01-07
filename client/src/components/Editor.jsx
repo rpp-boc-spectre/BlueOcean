@@ -5,6 +5,11 @@ import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Modal from "@mui/material/Modal";
+import Drawer from "@mui/material/Drawer";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import ArrowDownward from '@mui/icons-material/ArrowDownward'
+
 import { useSnackbar } from "material-ui-snackbar-provider";
 
 import LayerPlayer from "./LayerPlayer";
@@ -16,7 +21,7 @@ import { getTrackUrls } from "../utils/storage";
 import UserContext from "../context/UserContext";
 import UploadFile from "./UploadFile.jsx";
 
-import { addLayer, removeLayer } from '../lib/layerTableReducer.js';
+import { addLayer, removeLayer, setPlayer } from '../lib/layerTableReducer.js';
 import { useLayerStore } from '../context/LayerContext.js'
 
 export default function Editor() {
@@ -26,6 +31,7 @@ export default function Editor() {
   const [uploadModalState, setUploadModalState] = useState(false);
   const [audioLayers, setAudioLayers] = useState([]);
   const [trackMetadata, setTrackMetadata] = useState({});
+  const [trackData, setTrackData] = useState(null)
   const userData = useContext(UserContext);
   const snackbar = useSnackbar();
   const { trackId } = useParams();
@@ -50,6 +56,7 @@ export default function Editor() {
           if (data && data.metadata) {
             setTrackMetadata(data.metadata);
           }
+          data.id = trackId
           return getTrackUrls(data)
         })
         .then(trackWithUrls => {
@@ -57,6 +64,7 @@ export default function Editor() {
           for (var layer in trackWithUrls.layers) {
             layers.push(trackWithUrls.layers[layer])
           }
+          setTrackData(trackWithUrls)
           setAudioLayers(layers)
         })
         .catch(error => {
@@ -70,11 +78,9 @@ export default function Editor() {
       if (audioLayers?.length > 0) {
         setAudioLayers([])
       }
-      let keys = Object.keys(layerStore.allLayers)
-      if (keys.length > 0) {
-        for (var key in keys) {
-          dispatch(removeLayer(key))
-        }
+      if (layerStore.player) {
+        layerStore.player.dispose()
+        dispatch(setPlayer(null))
       }
     }
   }, [trackId])
@@ -110,6 +116,7 @@ export default function Editor() {
         updateMetadata={setTrackMetadata}
         importHandler={importHandler}
         uploadHandler={uploadHandler}
+        trackData={trackData}
       />
 
       <Modal open={importModalState} onClose={handleImportClose}>
@@ -117,11 +124,25 @@ export default function Editor() {
           <ImportAduio userId={userData?.user?.uid} currentList={audioLayers} setParentLayers={setAudioLayers} close={handleImportClose} />
         </Box>
       </Modal>
-      <Modal open={recordingModalState} onClose={handleRecorderClose} >
-        <Box sx={{ backgroundColor: 'white', margin: 'auto', top: 50, }}>
-          <Recorder currentList={audioLayers} setAudioLayers={setAudioLayers} />
-        </Box>
-      </Modal>
+      <Drawer
+        sx={{
+          width: 400,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: 400,
+            boxSizing: 'border-box',
+          },
+        }}
+        variant="persistent"
+        anchor="bottom"
+        open={recordingModalState}
+      >
+        <IconButton onClick={handleRecorderClose}>
+          <ArrowDownward />
+        </IconButton>
+        <Divider />
+        <Recorder currentList={audioLayers} setAudioLayers={setAudioLayers} />
+      </Drawer>
       <Modal open={uploadModalState} onClose={handleUploadClose} >
         <Box sx={{ backgroundColor: 'white', margin: 'auto', top: 50, }}>
           <UploadFile />

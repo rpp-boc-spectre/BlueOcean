@@ -14,6 +14,7 @@ import RequireAuth from "./RequireAuth.jsx";
 import Dashboard from './Dashboard.jsx'
 import ResponsiveHeader from './ResponsiveHeader.jsx';
 import Editor from "./Editor.jsx";
+import UploadFile from "./UploadFile.jsx";
 
 export default function App() {
   const userData = useUserData()
