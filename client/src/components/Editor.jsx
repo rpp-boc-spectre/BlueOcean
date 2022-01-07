@@ -21,7 +21,7 @@ import { getTrackUrls } from "../utils/storage";
 import UserContext from "../context/UserContext";
 import UploadFile from "./UploadFile.jsx";
 
-import { addLayer, removeLayer } from '../lib/layerTableReducer.js';
+import { addLayer, removeLayer, setPlayer } from '../lib/layerTableReducer.js';
 import { useLayerStore } from '../context/LayerContext.js'
 
 export default function Editor() {
@@ -75,12 +75,8 @@ export default function Editor() {
       if (audioLayers?.length > 0) {
         setAudioLayers([])
       }
-      let keys = Object.keys(layerStore.allLayers)
-      if (keys.length > 0) {
-        for (var key in keys) {
-          dispatch(removeLayer(key))
-        }
-      }
+      layerStore.player.dispose()
+      dispatch(setPlayer(null))
     }
   }, [trackId])
 
