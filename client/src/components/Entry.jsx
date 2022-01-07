@@ -29,10 +29,13 @@ export default function Entry() {
     try {
       const provider = new FacebookAuthProvider();
       let result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      const credential = FacebookAuthProvider.credentialFromResult(result);
-      const accessToken = credential.accessToken;
-      console.log(user, credential, accessToken);
+      snackbar.showMessage(<Alert severity="success" sx={{ width: '100%' }}>Welcome {result.user.displayName}</Alert>)
+      let username = await getUserName(result.user.uid)
+      if (!username) {
+        setShowUserForm(true)
+      } else {
+        navigate(from, { replace: true });
+      }
     } catch (error) {
       console.log(error)
       snackbar.showMessage(<Alert severity="error" sx={{ width: '100%' }}>{`There was an error signing you in :(`}</Alert>)
