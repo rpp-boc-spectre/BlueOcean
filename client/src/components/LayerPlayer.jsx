@@ -35,8 +35,7 @@ export default function LayerPlayer({
   const snackbar = useSnackbar();
   const playerRef = useRef(layerStore.player);
   const [allLayersLoaded, setAllLayersLoaded] = useState(false);
-const [globalPitch,setGlobalPitch] = useState(0)
-
+  const [globalPitch, setGlobalPitch] = useState(0);
 
   const playAllLayers = async () => {
     if (layerStore.player) {
@@ -94,16 +93,12 @@ const [globalPitch,setGlobalPitch] = useState(0)
     };
   }, []);
 
-
   const changeDetune = (event, newValue) => {
-
-    newValue = Number(newValue)
+    newValue = Number(newValue);
     // newValue * 100
-layerStore.player.setAllLayersPitch(newValue *100)
-   setGlobalPitch(newValue)
-
-
-  }
+    layerStore.player.setAllLayersPitch(newValue * 100);
+    setGlobalPitch(newValue);
+  };
   const [editOpen, setEditOpen] = React.useState(false);
   const layerEditorOpen = () => {
     setEditOpen(true);
@@ -155,15 +150,24 @@ layerStore.player.setAllLayersPitch(newValue *100)
             <Typography variant='subtitle2' id='modal-edit-title'>
               Edit Layer: {'placeholder'}
             </Typography>
-            <Typography> Set Track Pitch {globalPitch} </Typography>
-          <Slider
-            min={-12}
-            max={12}
-            value={globalPitch}
-            onChange={changeDetune}
-            aria-label='Trim Slider'
+            <Typography>Volume</Typography>
+          {/* <Slider
+            min={-20}
+            max={20}
+            value={volumeSliderValue}
+            onChange={changeVolumeValue}
+            aria-label='Volume Slider'
             valueLabelDisplay='auto'
-          />
+          /> */}
+            <Typography> Set Track Pitch {globalPitch} </Typography>
+            <Slider
+              min={-12}
+              max={12}
+              value={globalPitch}
+              onChange={changeDetune}
+              aria-label='Trim Slider'
+              valueLabelDisplay='auto'
+            />
           </Box>
         </Modal>
         {allLayersLoaded &&

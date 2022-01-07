@@ -122,7 +122,12 @@ export class Layer {
   changePitchValue(newValue) {
     this.pitchShift.pitch = newValue;
   }
-
+  changeDetuneValue(newValue,newValueFromGlobal){
+     if(newValueFromGlobal) {
+      //  console.log("GLOBAL",newValueFromGlobal)
+     }
+    this.player.detune = newValue
+  }
   changeVolumeValue(newValue) {
     this.volume.volume.value = newValue;
   }

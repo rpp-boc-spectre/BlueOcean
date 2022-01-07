@@ -29,7 +29,7 @@ export default function LayerEditorCopy({ id }) {
 
   const [playerGrain, setPlayerGrain] = useState(player.player.grainSize);
   const [playerOverlap, setPlayerOverlap] = useState(player.player.overlap);
-  const [playerDetune, setPlayerDetune] = useState(player.player.detune)
+  const [playerDetune, setPlayerDetune] = useState(player.player.detune);
 
   // put page on mousedown listener to get the duration of tracks then immediatly remove it after setting each tracks duration.
   useEffect(() => {
@@ -102,7 +102,7 @@ export default function LayerEditorCopy({ id }) {
   const increaseGrain = (event) => {
     let newGrain = Number(event.target.value);
 
-    newGrain = Number.parseFloat(newGrain + 0.025).toFixed(3);
+    newGrain = Number.parseFloat(newGrain + 0.01).toFixed(2);
     newGrain = Number(newGrain);
 
     console.log('NEWGRAIN', newGrain);
@@ -113,7 +113,7 @@ export default function LayerEditorCopy({ id }) {
   const decreaseGrain = (event) => {
     let newGrain = Number(event.target.value);
 
-    newGrain = Number.parseFloat(newGrain - 0.025).toFixed(3);
+    newGrain = Number.parseFloat(newGrain - 0.01).toFixed(2);
     newGrain = Number(newGrain);
 
     console.log('NEWGRAIN', newGrain);
@@ -122,40 +122,33 @@ export default function LayerEditorCopy({ id }) {
   };
 
   const increaseOverlap = (event) => {
+    let newOverlap = Number(event.target.value);
+    newOverlap = Number.parseFloat(newOverlap + 0.01).toFixed(2);
 
-    let newOverlap = Number(event.target.value)
-    newOverlap = Number.parseFloat(newOverlap + 0.025).toFixed(3)
+    newOverlap = Number(newOverlap);
 
-    newOverlap = Number(newOverlap)
+    player.player.overlap = newOverlap;
 
-    player.player.overlap = newOverlap
-
-    setPlayerOverlap(newOverlap)
-
-  }
+    setPlayerOverlap(newOverlap);
+  };
 
   const decreaseOverlap = (event) => {
+    let newOverlap = Number(event.target.value);
+    newOverlap = Number.parseFloat(newOverlap - 0.01).toFixed(2);
 
-    let newOverlap = Number(event.target.value)
-    newOverlap = Number.parseFloat(newOverlap - 0.025).toFixed(3)
+    newOverlap = Number(newOverlap);
 
-    newOverlap = Number(newOverlap)
+    player.player.overlap = newOverlap;
 
-    player.player.overlap = newOverlap
-
-    setPlayerOverlap(newOverlap)
-
-  }
+    setPlayerOverlap(newOverlap);
+  };
 
   const changeDetune = (event, newValue) => {
+    newValue = Number(newValue);
 
-    newValue = Number(newValue)
-
-    player.player.detune = newValue * 100
-    setPlayerDetune(newValue)
-
-
-  }
+    player.changeDetuneValue(newValue * 100);
+    setPlayerDetune(newValue);
+  };
   // editor modal handlers
   const [editOpen, setEditOpen] = React.useState(false);
   const layerEditorOpen = () => {
@@ -274,7 +267,6 @@ export default function LayerEditorCopy({ id }) {
 
           <Typography>Grain Size {playerGrain}</Typography>
 
-
           <Button name='testGrain' onClick={decreaseGrain} value={playerGrain}>
             -GrainSize
           </Button>
@@ -287,11 +279,15 @@ export default function LayerEditorCopy({ id }) {
           <Button
             name='decreaseOverlap'
             onClick={decreaseOverlap}
-            value={playerOverlap}>-Overlap Size</Button>
+            value={playerOverlap}>
+            -Overlap Size
+          </Button>
           <Button
             name='increaseOverlap'
             onClick={increaseOverlap}
-            value={playerOverlap}>+Overlap Size</Button>
+            value={playerOverlap}>
+            +Overlap Size
+          </Button>
           <Typography> Detune {playerDetune} </Typography>
           <Slider
             min={-12}

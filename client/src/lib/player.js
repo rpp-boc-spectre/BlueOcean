@@ -85,8 +85,10 @@ setAllLayersPlaybackRate(){
 
   setAllLayersPitch(newValue){
   this.layers.forEach((layer)=>{
-
-    layer.player.detune = newValue
+    console.log('newValue',newValue)
+    let currentValue = layer.player.detune
+    console.log("current",currentValue)
+    layer.changeDetuneValue(newValue,currentValue)
 
 
   })
