@@ -178,8 +178,6 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
       snackbar.showMessage(<Alert severity="success" sx={{ width: '100%' }}>{`Layer Uploaded :)`}</Alert>)
       let url = await getLayerUrl(mp3StorageRef)
       let data = {
-        pitch: 0,
-        volume: 0,
         parent: user.uid,
         fileName: `${recordingName}.webm`,
         layerName: recordingName,
@@ -188,7 +186,9 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
 
       // make sure we are not already capped on layers before adding them to the editor
       if ((currentList?.length || 0) < 4) {
+
         setAudioLayers((prevLayers) => {
+          layerStore.player.reload([...prevLayers, data])
           return [...prevLayers, data]
         })
       }
