@@ -35,6 +35,10 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
   const recorderTimeoutRef = useRef()
   const [layerStore, dispatch] = useLayerStore()
   const [playWith, setPlayWith] = useState(true)
+  const [countDown, setCountDown] = useState(false)
+  const [countDownLimit, setCountDownLimit] = useState(10)
+  const [currentCountDown, setCurrentCountDown] = useState(countDownLimit)
+  const countDownTimerRef = useRef();
 
   const renderWaveform = (fft) => {
     let analyser, bufferLength, dataArray;
@@ -146,6 +150,7 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
     updateTimerRef.current = updateTimer
     recorderTimeoutRef.current = recorderTimeout
   }
+
   const audioPlayback = async () => {
     await Tone.start();
     const player = new Tone.Player(url).toDestination();
@@ -193,6 +198,23 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
     }
   }
 
+  const handleRecordClick = () => {
+    setCountDown(true)
+    let timer = new Timer(() => {
+      clearInterval(updateTimerRef.current)
+      setCountDown(false)
+      startRecorder()
+    }, countDownLimit * 1000)
+
+    let updater = setInterval(() => {
+      let timeRemaining = countDownTimerRef.current.getTimeLeft()
+      setCurrentCountDown(timeRemaining)
+    }, 50)
+
+    countDownTimerRef.current = timer
+    updateTimerRef.current = updater
+  }
+
   useEffect(() => {
     if (userMic instanceof Blob) {
       micRecorderRef.current = null
@@ -233,7 +255,8 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
     <>
       <Switch checked={playWith} onChange={() => { setPlayWith((prev) => !prev) }} />
       {(!!micRecorder && !isFinished) && <Typography>{`${Math.abs(timeRemaining - recordingLimit.current).toFixed(2)} / ${recordingLimit.current}:00`}</Typography>}
-      <Button variant='outlined' onClick={startRecorder} startIcon={<MicIcon />} disabled={isFinished === false && !!micRecorder}>Click to record</Button>
+      {(countDown) && <Typography>{(currentCountDown / 1000).toFixed(2)}</Typography>}
+      <Button variant='outlined' onClick={handleRecordClick} startIcon={<MicIcon />} disabled={isFinished === false && !!micRecorder}>Click to record</Button>
       <Button variant='outlined' onClick={stopRecorder} endIcon={<StopCircleIcon />} disabled={isFinished === true || !micRecorder}>Click to stop</Button>
       <ValidatorForm onSubmit={handleUploadClick}>
         <TextValidator
