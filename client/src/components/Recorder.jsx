@@ -95,7 +95,7 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
       setMicRecorder(recorder);
       setUserMic(mic);
       await mic.open();
-      recorder.start();
+     recorder.start();
       if (playWith && layerStore.player) {
         layerStore.player.start()
       }
@@ -243,11 +243,11 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
         clearInterval(updateTimerRef.current)
       }
 
-      if ((micRecorderRef.current !== null) && !(micRecorderRef.current instanceof Blob)) {
+      if ((micRecorderRef.current !== null) && !(micRecorderRef.current instanceof Blob) && micRecorderRef.current !==undefined) {
         micRecorderRef.current.dispose();
       }
       // close mic on stop.
-      if (userMicRef.current !== null) {
+      if (userMicRef.current !== null && micRecorderRef.current !== undefined) {
         userMicRef.current.close();
       }
     }
