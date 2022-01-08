@@ -72,7 +72,6 @@ export function getAllPublicTracks() {
         docData.id = doc.id
         data.push(docData)
       })
-      console.log(data);
       resolve(data)
     } catch (error) {
       reject(error)
