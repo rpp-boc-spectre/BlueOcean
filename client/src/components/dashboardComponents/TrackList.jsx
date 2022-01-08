@@ -23,30 +23,30 @@ export default function TrackList({ userId }) {
       })
   }, [])
 
+  let sortedTracks = {
+    General: [],
+    Rock: [],
+    Electric: [],
+    Folk: [],
+    Pop: []
+  };
+
   const trackSorter = () => {
-    let sortedTracks = {};
     tracks.map((track) => {
       const tag = track.meta ? track.meta.tag : 'General';
-      if (sortedTracks[tag] === undefined) {
-        sortedTracks[tag] = [track];
-      } else {
-        sortedTracks[tag].push(track);
-      }
+      sortedTracks[tag].push(track);
     });
-    return sortedTracks;
   }
-  const sortedTracks = trackSorter();
+  trackSorter();
   const tagList = Object.keys(sortedTracks);
   //console.log('SORTED', tagList);
   return (
     <>
       <Box>
         <Typography align='center' variant='h5'>Your Tracks</Typography>
-        <List>
-          {tagList.map((tag, index) => {
-            return <TaggedTracks tag={tag} tracks={sortedTracks[tag]} key={index} />
-          })}
-        </List>
+        {tagList.map((tag, index) => {
+          return <TaggedTracks tag={tag} tracks={sortedTracks[tag]} key={index} />
+        })}
       </Box>
     </>
   )

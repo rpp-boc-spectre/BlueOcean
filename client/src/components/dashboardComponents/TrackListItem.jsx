@@ -1,10 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardActionArea from '@mui/material/CardActionArea';
 import Chip from '@mui/material/Chip';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
 
 import LockIcon from '@mui/icons-material/Lock';
 import PublicIcon from '@mui/icons-material/Public';
@@ -42,12 +43,14 @@ export default function TrackListItem({ trackId, meta }) {
   }
 
   return (
-    <ListItem sx={{ px: '5px' }}>
-      <ListItemButton onClick={handleNavigation} sx={{ px: '5px' }}>
-        <ListItemText primary={displayName} />
-        <Chip label={tag} />
-        {icon}
-      </ListItemButton>
-    </ListItem>
+    <CardActionArea onClick={handleNavigation} sx={{ p: '2px' }}>
+      <Card sx={{ height: {xs: '35vh', md: '200px'}, width: {xs: '45vw', md: '300px'} }}>
+        <CardContent>
+          <Typography variant="h6">{displayName}</Typography>
+          <Chip label={tag} />
+          {icon}
+        </CardContent>
+      </Card>
+    </CardActionArea>
   )
 }

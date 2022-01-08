@@ -1,6 +1,7 @@
 import React from "react";
 
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import List from '@mui/material/List'
 import Typography from "@mui/material/Typography";
 
@@ -12,11 +13,14 @@ export default function TaggedTracks(props) {
     <>
       <Box>
         <Typography align='center' variant='h6'>Tracks Tagged {props.tag}</Typography>
-        <List>
+        <Grid container spacing='2'>
           {tracks.map((track, index) => {
-            return <TrackListItem trackId={track.id} meta={track.meta} key={index} />
+            return (
+              <Grid item key={index}>
+                <TrackListItem trackId={track.id} meta={track.meta} />
+              </Grid>)
           })}
-        </List>
+        </Grid>
       </Box>
     </>
   )
