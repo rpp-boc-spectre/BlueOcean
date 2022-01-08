@@ -70,7 +70,9 @@ export default function ImportAduio({ userId, currentList, setParentLayers, clos
     checked.forEach((value) => {
       submitList.push(audioLayerList[value])
     })
-    layerStore.player.reload(submitList)
+    if (layerStore.player) {
+      layerStore.player.reload(submitList)
+    }
     setParentLayers(submitList)
     snackbar.showMessage(<Alert variant='success'>{`Imported ${checked.length} item(s)`}</Alert>)
     close()
