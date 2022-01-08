@@ -5,7 +5,7 @@ import { Typography, Button, Alert } from '@mui/material'
 
 import UserContext from "../context/UserContext.js";
 
-import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, signOut, getAuth } from "firebase/auth";
 import { auth } from '../lib/firebase.js'
 import { useSnackbar } from 'material-ui-snackbar-provider';
 
@@ -25,6 +25,23 @@ export default function Entry() {
 
   let from = location.state?.from?.pathname || "/dashboard";
 
+  const handleSignInWithFacebook = async () => {
+    try {
+      const provider = new FacebookAuthProvider();
+      let result = await signInWithPopup(auth, provider);
+      snackbar.showMessage(<Alert severity="success" sx={{ width: '100%' }}>Welcome {result.user.displayName}</Alert>)
+      let username = await getUserName(result.user.uid)
+      if (!username) {
+        setShowUserForm(true)
+      } else {
+        navigate(from, { replace: true });
+      }
+    } catch (error) {
+      console.log(error)
+      snackbar.showMessage(<Alert severity="error" sx={{ width: '100%' }}>{`There was an error signing you in :(`}</Alert>)
+    }
+  }
+
   const handleSignInWithGoogle = async () => {
     try {
       const provider = new GoogleAuthProvider()
@@ -37,7 +54,7 @@ export default function Entry() {
         navigate(from, { replace: true });
       }
     } catch (error) {
-      console.log(error)
+      console.log('Google Signon Error:', error)
       snackbar.showMessage(<Alert severity="error" sx={{ width: '100%' }}>{`There was an error signing you in :(`}</Alert>)
     }
   }
@@ -84,6 +101,7 @@ export default function Entry() {
           :
           <>
             <Button variant="contained" onClick={handleSignInWithGoogle}>Sign In with Google</Button>
+            <Button variant="contained" onClick={handleSignInWithFacebook}>Sign In with Facebook</Button>
             <Button variant="outlined" onClick={() => {setSignIn(false)}}>Sign Up</Button>
           </>
         }

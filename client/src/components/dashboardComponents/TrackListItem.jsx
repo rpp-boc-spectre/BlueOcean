@@ -9,11 +9,9 @@ import ListItemText from '@mui/material/ListItemText';
 import LockIcon from '@mui/icons-material/Lock';
 import PublicIcon from '@mui/icons-material/Public';
 
-export default function TrackListItem(props) {
-  const trackId = props.track.id;
-  const trackName = props.track.metadata ? props.track.metadata.trackName : trackId;
-  const publicSetting = props.track.metadata ? props.track.metadata.public : false;
-  const tags = props.track.metadata ? props.track.metadata.tag : ['General'];
+export default function TrackListItem({ trackId, meta }) {
+  const publicSetting = meta?.public || false;
+  const tags = meta?.tag || ['General'];
 
   const navigate = useNavigate();
 
@@ -28,7 +26,7 @@ export default function TrackListItem(props) {
   return (
     <ListItem sx={{ px: '5px' }}>
       <ListItemButton onClick={handleNavigation} sx={{ px: '5px' }}>
-        <ListItemText primary={trackName} />
+        <ListItemText primary={meta?.trackName || trackId} />
         {tags.map((tag, index) => {
           return (<Chip key={index} label={tag} />)
         })}
