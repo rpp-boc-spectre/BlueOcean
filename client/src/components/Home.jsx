@@ -20,7 +20,6 @@ export default function Home() {
             tags.push(track.meta.tag);
           }
         });
-        console.log(data);
         setTagTypes(tags);
       })
       .catch((error) => {
