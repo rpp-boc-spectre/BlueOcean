@@ -37,7 +37,7 @@ export default function TrackList({ userId }) {
   }
   const sortedTracks = trackSorter();
   const tagList = Object.keys(sortedTracks);
-  console.log('SORTED', tagList);
+  //console.log('SORTED', tagList);
   return (
     <>
       <Box>

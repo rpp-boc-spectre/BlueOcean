@@ -10,9 +10,10 @@ import LockIcon from '@mui/icons-material/Lock';
 import PublicIcon from '@mui/icons-material/Public';
 
 export default function TrackListItem({ trackId, meta }) {
-  console.log('META', meta);
+  //console.log('META', meta);
   let publicSetting, displayName, tag;
-  if (meta && meta.publicSetting) {
+  if (meta && meta.public) {
+    //console.log('PUBLIC SETTING', publicSetting)
     publicSetting = meta.public;
   } else {
     publicSetting = false;
@@ -29,12 +30,12 @@ export default function TrackListItem({ trackId, meta }) {
   }
 
 
-
   const navigate = useNavigate();
 
   const handleNavigation = () => {
     navigate(`/edit/${trackId}`)
-  }
+  };
+
   let icon = <LockIcon />;
   if (publicSetting) {
     icon = <PublicIcon />
