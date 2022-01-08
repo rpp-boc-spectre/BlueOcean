@@ -75,7 +75,9 @@ export default function LayerPlayer({
 
   // create audio layers
   useEffect(() => {
+    console.log('layers changed', layers)
     if (layers?.length > 0 && layerStore.player) {
+      console.log('Reloading')
       setAllLayersLoaded(false);
       layerStore.player.reload(layers);
       setAllLayersLoaded(true);
