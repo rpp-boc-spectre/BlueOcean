@@ -11,9 +11,10 @@ import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 import { useSnackbar } from 'material-ui-snackbar-provider';
 import { getLayerUrl } from '../utils/storage.js';
+import { useLayerStore } from '../context/LayerContext.js';
 
 export default function ImportAduio({ userId, currentList, setParentLayers, close }) {
-
+  const [layerStore, dispatch] = useLayerStore();
   const [audioLayerList, setAudioLayerList] = useState([])
   const [loading, setLoading] = useState(true)
   const [checked, setChecked] = React.useState([]);
@@ -26,9 +27,10 @@ export default function ImportAduio({ userId, currentList, setParentLayers, clos
         let items = res.items.map((itemRef, index) => {
           // All the items under listRef.
           let layer = {}
-          layer.layerName = itemRef.name.split('.webm')[0]
+
+          layer.layerName = getLayerName(itemRef.name)
           for (var currentLayer of currentList) {
-            if (currentLayer.name === layer.layerName) {
+            if (currentLayer.layerName === layer.layerName) {
               setChecked((prev) => [...prev, index])
             }
           }
@@ -39,7 +41,6 @@ export default function ImportAduio({ userId, currentList, setParentLayers, clos
 
           layer.parent = userId
           layer.fileName = itemRef.name
-
           return layer
         });
         setAudioLayerList(items)
@@ -69,6 +70,7 @@ export default function ImportAduio({ userId, currentList, setParentLayers, clos
     checked.forEach((value) => {
       submitList.push(audioLayerList[value])
     })
+    layerStore.player.reload(submitList)
     setParentLayers(submitList)
     snackbar.showMessage(<Alert variant='success'>{`Imported ${checked.length} item(s)`}</Alert>)
     close()
@@ -110,4 +112,16 @@ export default function ImportAduio({ userId, currentList, setParentLayers, clos
       }
     </>
   )
+}
+
+function getLayerName(name) {
+  if (name.includes('.webm')) {
+    return name.split('.webm')[0];
+  }
+
+  if (name.includes('.mp3')) {
+    return name.split('.mp3')[0];
+  }
+
+  return 'unknown';
 }
