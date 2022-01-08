@@ -28,7 +28,7 @@ export default function ImportAduio({ userId, currentList, setParentLayers, clos
           let layer = {}
           layer.layerName = itemRef.name.split('.webm')[0]
           for (var currentLayer of currentList) {
-            if (currentLayer.layerName === layer.layerName) {
+            if (currentLayer.name === layer.layerName) {
               setChecked((prev) => [...prev, index])
             }
           }
