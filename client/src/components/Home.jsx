@@ -44,9 +44,6 @@ export default function Home() {
         tempTracks = tempTracks.slice(0, 5); // Only get the first 5 for now
         return (<HomeTrackBar tracks={tempTracks} tag={tag} key={idx}/>);
       })}
-      <Link to='/dashboard'>
-        <Button variant="contained">Dashboard</Button>
-      </Link>
     </div>
   )
 }
