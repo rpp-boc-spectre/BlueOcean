@@ -60,8 +60,19 @@ export default function LayerPlayer({
 
   const handleSaveClick = async () => {
     try {
-      await saveTrackData(layerStore.player, userId, trackMetadata);
-      snackbar.showMessage(<Alert variant='success'>Track saved</Alert>);
+      let temp = { ...trackMetadata };
+      if (temp.tag === undefined) {
+        temp.tag = "General";
+      }
+      if (temp.public === undefined) {
+        temp.public = false;
+      }
+      if (temp.trackName === undefined || temp.trackName === "") {
+        snackbar.showMessage(<Alert variant='error'>Please enter a track name</Alert>);
+      } else {
+        await saveTrackData(layerStore.player, userId, temp);
+        snackbar.showMessage(<Alert variant='success'>Track saved</Alert>);
+      }
     } catch (error) {
       console.log(error);
       snackbar.showMessage(<Alert variant='error'>Track failed to save</Alert>);

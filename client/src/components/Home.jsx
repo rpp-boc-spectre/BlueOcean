@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom'
 import { getAllPublicTracks } from "../utils/database";
-import { Typography, Button, Alert } from '@mui/material'
+import { Typography, Button, Alert, Grid, Card, CardContent, CardActionArea, Box } from '@mui/material'
 import { useSnackbar } from "material-ui-snackbar-provider";
 
 export default function Home() {
@@ -27,9 +27,24 @@ export default function Home() {
   return (
     <div>
       <Typography variant='h3'>Tracks</Typography>
-      <ul>
-        {tracks.map((track, index) => <p key={index}>{track.meta.trackName}</p>)}
-      </ul>
+      <Box sx={{ width: '100%', height: 400}}>
+        <Grid container spacing={2}>
+          {tracks.map((track, index) => <Grid item key={index}>
+            <Card sx={{ maxWidth: 300, height: 350 }}>
+              <CardActionArea>
+                <CardContent>
+                  <Typography variant="h6" component="div">
+                    {track.meta.trackName}
+                  </Typography>
+                  <Typography variant="p" component="div">
+                    {track.meta.tag}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>)}
+        </Grid>
+      </Box>
       <Link to='/dashboard'>
         <Button variant="contained">Dashboard</Button>
       </Link>
