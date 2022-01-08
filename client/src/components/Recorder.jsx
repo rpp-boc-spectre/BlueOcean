@@ -36,7 +36,7 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
   const [layerStore, dispatch] = useLayerStore()
   const [playWith, setPlayWith] = useState(true)
   const [countDown, setCountDown] = useState(false)
-  const [countDownLimit, setCountDownLimit] = useState(10)
+  const [countDownLimit, setCountDownLimit] = useState(6)
   const [currentCountDown, setCurrentCountDown] = useState(countDownLimit)
   const countDownTimerRef = useRef();
 
