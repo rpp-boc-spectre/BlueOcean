@@ -28,7 +28,7 @@ export default function Home() {
     <div>
       <Typography variant='h3'>Tracks</Typography>
       <ul>
-        {tracks.map((track, index) => <p key={index}>{track.id}</p>)}
+        {tracks.map((track, index) => <p key={index}>{track.meta.trackName}</p>)}
       </ul>
       <Link to='/dashboard'>
         <Button variant="contained">Dashboard</Button>

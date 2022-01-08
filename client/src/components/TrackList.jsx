@@ -27,7 +27,7 @@ export default function TrackList({ userId }) {
       <Box sx={{ width: '100%', height: 400, maxWidth: 360 }}>
         <List>
           {tracks.map((track, index) => {
-            return <TrackListItem trackId={track.id} meta={track.metadata} key={index} />
+            return <TrackListItem trackId={track.id} meta={track.meta} key={index} />
           })}
         </List>
       </Box>

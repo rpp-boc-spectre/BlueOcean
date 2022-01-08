@@ -91,7 +91,9 @@ export default function LayerPlayer({
   //cleanup on unmount
   useEffect(() => {
     return () => {
-      layerStore.player.dispose();
+      if (layerStore.player !== null) {
+        layerStore.player.dispose();
+      }
     };
   }, []);
 

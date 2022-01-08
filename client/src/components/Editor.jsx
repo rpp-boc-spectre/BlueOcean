@@ -53,8 +53,8 @@ export default function Editor() {
       getTrackData(trackId)
         .then(data => {
           console.log('Track Data', data)
-          if (data && data.metadata) {
-            setTrackMetadata(data.metadata);
+          if (data && data.meta) {
+            setTrackMetadata(data.meta);
           }
           data.id = trackId
           return getTrackUrls(data)
