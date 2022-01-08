@@ -54,12 +54,14 @@ export class Player {
   }
 
   reload(layers) {
+    console.log('reloading layers')
     if (this.isPlaying) {
       this.stop();
     }
     this.layers.forEach((layer) => {
       layer.dispose();
     });
+    this.layers = []
     layers.forEach((layer, index) => {
       const newLayer = new Layer({ ...layer, id: index, layerData: layer });
       newLayer.connect();
