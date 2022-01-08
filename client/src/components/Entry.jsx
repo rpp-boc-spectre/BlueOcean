@@ -13,6 +13,7 @@ import { db } from '../lib/firebase.js';
 import { doc, getDoc} from 'firebase/firestore'
 import UserForm from './UserForm.jsx';
 import SignUp from './SignUp.jsx';
+import SignIn from './SignIn.jsx';
 
 export default function Entry() {
   const userData = useContext(UserContext)
@@ -100,9 +101,14 @@ export default function Entry() {
           <UserForm userId={userData.user.uid}/>
           :
           <>
-            <Button variant="contained" onClick={handleSignInWithGoogle}>Sign In with Google</Button>
-            <Button variant="contained" onClick={handleSignInWithFacebook}>Sign In with Facebook</Button>
-            <Button variant="outlined" onClick={() => {setSignIn(false)}}>Sign Up</Button>
+
+              <SignIn />
+
+            <>
+              <Button variant="contained" onClick={handleSignInWithGoogle}>Sign In with Google</Button>
+              <Button variant="contained" onClick={handleSignInWithFacebook}>Sign In with Facebook</Button>
+              <Button variant="outlined" onClick={() => {setSignIn(false)}}>Sign Up</Button>
+            </>
           </>
         }
         </>
