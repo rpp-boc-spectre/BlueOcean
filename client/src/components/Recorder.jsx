@@ -188,7 +188,9 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
       if ((currentList?.length || 0) < 4) {
 
         setAudioLayers((prevLayers) => {
-          layerStore.player.reload([...prevLayers, data])
+          if (layerStore.player) {
+            layerStore.player.reload([...prevLayers, data])
+          }
           return [...prevLayers, data]
         })
       }

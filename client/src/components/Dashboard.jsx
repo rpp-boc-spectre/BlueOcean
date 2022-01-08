@@ -1,11 +1,14 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+
+import UserContext from "../context/UserContext.js";
+
+import TrackList from "./dashboardComponents/TrackList.jsx";
+
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
-import UserContext from "../context/UserContext.js";
 import { useSnackbar } from 'material-ui-snackbar-provider'
-
-import TrackList from "./TrackList.jsx";
 
 export default function Dashboard() {
 
@@ -26,9 +29,10 @@ export default function Dashboard() {
 
   return (
     <>
-    <Typography variant='h1'>Dashboard</Typography>
-    <Typography variant='h3'>Welcome {userData.username}</Typography>
-    { userData.user && <TrackList userId={userData.user.uid}/> }
+      <Box mx='auto' mt='10px'  sx={{ width: {xs: '100', md: '70vw'}, maxWidth: '1000px', maxHeight: '100vh', overflow:'auto', border: '2px solid black' }}>
+        <Typography variant='h3' align='center'>Welcome {userData.username}</Typography>
+        { userData.user && <TrackList userId={userData.user.uid}/> }
+      </Box>
     </>
   )
 }

@@ -85,6 +85,15 @@ export default function Editor() {
     }
   }, [trackId])
 
+  useEffect(() => {
+    return () => {
+      if (layerStore.player) {
+        layerStore.player.dispose()
+        dispatch(setPlayer(null))
+      }
+    }
+  })
+
   const importHandler = () => {
     setImportModalState(true);
   };
@@ -120,7 +129,13 @@ export default function Editor() {
       />
 
       <Modal open={importModalState} onClose={handleImportClose}>
-        <Box sx={{ backgroundColor: 'white', top: 50, maxHeight: '100vh', overflow: 'auto' }}>
+        <Box sx={{
+          backgroundColor: 'white',
+          top: 50,
+          maxHeight: '100vh',
+          overflow: 'auto'
+          }}
+        >
           <ImportAduio userId={userData?.user?.uid} currentList={audioLayers} setParentLayers={setAudioLayers} close={handleImportClose} />
         </Box>
       </Modal>
