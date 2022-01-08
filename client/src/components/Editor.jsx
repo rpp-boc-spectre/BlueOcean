@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
@@ -35,6 +35,7 @@ export default function Editor() {
   const userData = useContext(UserContext);
   const snackbar = useSnackbar();
   const { trackId } = useParams();
+  const playerRef = useRef();
 
   const handleImportClose = () => {
     setImportModalState(false)
@@ -84,15 +85,6 @@ export default function Editor() {
       }
     }
   }, [trackId])
-
-  useEffect(() => {
-    return () => {
-      if (layerStore.player) {
-        layerStore.player.dispose()
-        dispatch(setPlayer(null))
-      }
-    }
-  })
 
   const importHandler = () => {
     setImportModalState(true);

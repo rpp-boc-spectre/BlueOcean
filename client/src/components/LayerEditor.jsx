@@ -13,9 +13,9 @@ import { useLayerStore } from '../context/LayerContext.js';
 
 import TimeControlButton from './editorComponents/TimeControlButton.jsx';
 
-export default function LayerEditorCopy({ id }) {
+export default function LayerEditorCopy({ id, player }) {
   const [layerStore, dispatch] = useLayerStore();
-  const player = layerStore.player.layers[id];
+  // const player = layerStore.player.layers[id];
   const [isSolo, setIsSolo] = useState(player._solo);
   const [isMuted, setIsMuted] = useState(player._mute);
   const [duration, setDuration] = useState(false);

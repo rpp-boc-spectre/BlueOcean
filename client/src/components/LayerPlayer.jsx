@@ -30,8 +30,8 @@ export default function LayerPlayer({
   trackData,
 }) {
   const [layerStore, dispatch] = useLayerStore();
-  const allLayersPlayState = useRef('');
-  const allLayersRef = useRef(layerStore.allLayers);
+  // const allLayersPlayState = useRef('');
+  // const allLayersRef = useRef(layerStore.allLayers);
   const snackbar = useSnackbar();
   const playerRef = useRef(layerStore.player);
   const [allLayersLoaded, setAllLayersLoaded] = useState(false);
@@ -104,8 +104,9 @@ export default function LayerPlayer({
   //cleanup on unmount
   useEffect(() => {
     return () => {
-      if (layerStore.player !== null) {
-        layerStore.player.dispose();
+      if (playerRef.current !== null) {
+        playerRef.current.dispose();
+        dispatch(setPlayer(null))
       }
     };
   }, []);
@@ -218,8 +219,8 @@ export default function LayerPlayer({
             />
           </Box>
         </Modal>
-        {allLayersLoaded &&
-          layers.map((layer, index) => <LayerEditor key={index} id={index} />)}
+        {(allLayersLoaded && layers) &&
+          layers.map((layer, index) => <LayerEditor key={index} id={index} player={layerStore.player.layers[index]} />)}
       </Box>
     </>
   );
