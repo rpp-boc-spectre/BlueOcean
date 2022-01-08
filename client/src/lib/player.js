@@ -23,10 +23,10 @@ export class Player {
         console.log('layerStore/Player.js');
         await Tone.start();
         await Tone.loaded();
+        Tone.Transport.seconds = 0;
         this.layers.forEach((layer) => {
           layer.start();
         });
-        Tone.Transport.seconds = 0;
         Tone.Transport.start();
         this.isPlaying = true;
         resolve(this.isPlaying);
