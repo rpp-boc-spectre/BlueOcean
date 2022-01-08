@@ -47,9 +47,7 @@ export function getAllTracks(userId) {
       let q = query(collRef, where('user', '==', userId))
       const querySnapshot = await getDocs(q);
       let data = []
-      console.log(querySnapshot)
       querySnapshot.forEach((doc) => {
-        console.log(doc)
         let docData = doc.data()
         docData.id = doc.id
         data.push(docData)
@@ -61,6 +59,24 @@ export function getAllTracks(userId) {
   })
 }
 
+export function getAllPublicTracks() {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let collRef = collection(db, 'tracks')
+      let q = query(collRef, where('meta.public', '==', true))
+      const querySnapshot = await getDocs(q);
+      let data = []
+      querySnapshot.forEach((doc) => {
+        let docData = doc.data()
+        docData.id = doc.id
+        data.push(docData)
+      })
+      resolve(data)
+    } catch (error) {
+      reject(error)
+    }
+  })
+}
 
 const createTrackDataObject = (players, userId, metadata) => {
   let trackData = {
