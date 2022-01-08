@@ -10,7 +10,7 @@ export default function HomeTrackBar ({ tracks, tag }) {
         <Grid container spacing={2}>
           {tracks.map((track, index) => <Grid item key={index}>
             <CardActionArea>
-              <Card sx={{ maxWidth: 300, height: 200, width: 300 }}>
+              <Card sx={{ height: 200, width: 300 }}>
                 <CardContent>
                   <Typography variant="h6" component="div">
                     {track.meta.trackName}
