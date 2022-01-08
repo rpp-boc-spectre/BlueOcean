@@ -85,6 +85,15 @@ export default function Editor() {
     }
   }, [trackId])
 
+  useEffect(() => {
+    return () => {
+      if (layerStore.player) {
+        layerStore.player.dispose()
+        dispatch(setPlayer(null))
+      }
+    }
+  })
+
   const importHandler = () => {
     setImportModalState(true);
   };
