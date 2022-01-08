@@ -78,7 +78,6 @@ export function getAllPublicTracks() {
   })
 }
 
-
 const createTrackDataObject = (players, userId, metadata) => {
   let trackData = {
     user: userId,
