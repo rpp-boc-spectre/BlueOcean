@@ -1,6 +1,5 @@
 import React from "react";
 import { Typography, Grid, Card, CardContent, CardActionArea, Box } from '@mui/material'
-import { useSnackbar } from "material-ui-snackbar-provider";
 
 export default function HomeTrackBar ({ tracks, tag }) {
   return (

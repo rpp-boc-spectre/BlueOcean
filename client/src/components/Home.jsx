@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom'
 import { getAllPublicTracks } from "../utils/database";
-import { Typography, Button, Alert, Grid, Card, CardContent, CardActionArea, Box } from '@mui/material'
+import { Typography, Button, Alert } from '@mui/material'
 import { useSnackbar } from "material-ui-snackbar-provider";
 import HomeTrackBar from './HomeTrackBar.jsx';
 
