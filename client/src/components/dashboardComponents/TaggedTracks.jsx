@@ -14,7 +14,7 @@ export default function TaggedTracks(props) {
         <Typography align='center' variant='h6'>Tracks Tagged {props.tag}</Typography>
         <List>
           {tracks.map((track, index) => {
-            return <TrackListItem trackId={track.id} meta={track.metadata} key={index} />
+            return <TrackListItem trackId={track.id} meta={track.meta} key={index} />
           })}
         </List>
       </Box>

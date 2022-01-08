@@ -22,11 +22,12 @@ export function saveTrackData(player, userId, metadata) {
       let ref;
 
       if ((userId === player.owner) && player.id) {
-        console.log('update track')
+        // console.log('update track')
         ref = doc(db, "tracks", player.id)
+        trackData.meta = metadata
         await setDoc(ref, trackData)
       } else {
-        console.log('new track')
+        // console.log('new track')
         trackData.user = userId
         trackData.meta = metadata
         console.log(trackData)
