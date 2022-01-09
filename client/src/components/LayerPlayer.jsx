@@ -36,7 +36,7 @@ export default function LayerPlayer({
   const playerRef = useRef(layerStore.player);
   const [allLayersLoaded, setAllLayersLoaded] = useState(false);
   const [globalPitch, setGlobalPitch] = useState(0);
-  const [globalVolume, setGlobalVolume] = useState(0)
+  const [globalVolume, setGlobalVolume] = useState(-20)
   const [globalPlayback,setGlobalPlayback] = useState(1)
 
   const playAllLayers = async () => {
@@ -191,8 +191,8 @@ export default function LayerPlayer({
             </Typography>
             <Typography>Volume</Typography>
           <Slider
-            min={-20}
-            max={20}
+            min={-40}
+            max={5}
             value={globalVolume}
             onChange={changeVolumeValue}
             aria-label='Volume Slider'

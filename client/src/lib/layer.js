@@ -16,7 +16,7 @@ export class Layer {
     this.player = new Tone.GrainPlayer(this.url);
     this.player.playbackRate = playbackRate || 1;
     this.player.detune = pitch || 0;
-    this.volume = new Tone.Volume(volume || 0);
+    this.volume = new Tone.Volume(volume || -20);
     this.waveform = new Tone.Waveform();
     this.solo = new Tone.Solo().toDestination();
     this.layerData = layerData;

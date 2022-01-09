@@ -206,8 +206,8 @@ export default function LayerEditorCopy({ id, player }) {
           </Typography>
           <Typography>Volume</Typography>
           <Slider
-            min={-20}
-            max={20}
+            min={-40}
+            max={5}
             value={volumeSliderValue}
             onChange={changeVolumeValue}
             aria-label='Volume Slider'
