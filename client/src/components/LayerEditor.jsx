@@ -19,8 +19,7 @@ export default function LayerEditorCopy({ id, player }) {
   const [isSolo, setIsSolo] = useState(player._solo);
   const [isMuted, setIsMuted] = useState(player._mute);
   const [duration, setDuration] = useState(false);
-  const [pitchSliderValue, setPitchSliderValue] = useState(player._pitch);
-  const [volumeSliderValue, setVolumeSliderValue] = useState(player._volume);
+  const [volumeSliderValue, setVolumeSliderValue] = useState(Math.round(player._volume));
   const [trimFromStart, setTrimFromStart] = useState(player.trimFromStart);
   const [trimFromEnd, setTrimFromEnd] = useState(player.trimFromEnd);
   const [playerPlaybackRate, setPlayerPlaybackRate] = useState(
@@ -29,7 +28,7 @@ export default function LayerEditorCopy({ id, player }) {
 
   const [playerGrain, setPlayerGrain] = useState(player.player.grainSize);
   const [playerOverlap, setPlayerOverlap] = useState(player.player.overlap);
-  const [playerDetune, setPlayerDetune] = useState(player.player.detune);
+  const [playerDetune, setPlayerDetune] = useState(player.player.detune / 100);
 
   // put page on mousedown listener to get the duration of tracks then immediatly remove it after setting each tracks duration.
   useEffect(() => {
@@ -52,11 +51,6 @@ export default function LayerEditorCopy({ id, player }) {
     player.changeVolumeValue(newValue);
   };
 
-  const changePitchValue = (event, newValue) => {
-    newValue = Math.round(newValue);
-    setPitchSliderValue(newValue);
-    player.changePitchValue(newValue);
-  };
 
   const muteLayer = () => {
     player.toggleMute();
@@ -68,7 +62,6 @@ export default function LayerEditorCopy({ id, player }) {
     setIsSolo(player._solo);
   };
   const trimFromStartTime = (event, newValue) => {
-    // newValue = Number(newValue)
     newValue = Number.parseFloat(newValue).toFixed(2);
     newValue = Number(newValue);
     setTrimFromStart(newValue);
@@ -220,13 +213,13 @@ export default function LayerEditorCopy({ id, player }) {
             aria-label='Volume Slider'
             valueLabelDisplay='auto'
           />
-          <Typography>Pitch</Typography>
+          <Typography> Pitch {playerDetune} </Typography>
           <Slider
             min={-12}
             max={12}
-            value={pitchSliderValue}
-            onChange={changePitchValue}
-            aria-label='Pitch Slider'
+            value={playerDetune}
+            onChange={changeDetune}
+            aria-label='Trim Slider'
             valueLabelDisplay='auto'
           />
 
@@ -288,15 +281,6 @@ export default function LayerEditorCopy({ id, player }) {
             value={playerOverlap}>
             +Overlap Size
           </Button>
-          <Typography> Detune {playerDetune} </Typography>
-          <Slider
-            min={-12}
-            max={12}
-            value={playerDetune}
-            onChange={changeDetune}
-            aria-label='Trim Slider'
-            valueLabelDisplay='auto'
-          />
         </Box>
       </Modal>
     </>

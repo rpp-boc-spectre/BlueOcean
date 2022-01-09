@@ -15,8 +15,8 @@ export class Layer {
     this.url = url;
     this.player = new Tone.GrainPlayer(this.url);
     this.player.playbackRate = playbackRate || 1;
+    this.player.detune = pitch || 0;
     this.volume = new Tone.Volume(volume || 0);
-    this.pitchShift = new Tone.PitchShift(pitch || 0);
     this.waveform = new Tone.Waveform();
     this.solo = new Tone.Solo().toDestination();
     this.layerData = layerData;
@@ -24,7 +24,7 @@ export class Layer {
     this.trimFromEnd = trimFromEnd || Infinity;
     this.trimFromStart = trimFromStart || 0;
     this.playbackRate = playbackRate || 1;
-    this._pitch = this.pitchShift.pitch;
+    this._pitch = pitch ||0
     this._mute = false;
     this._solo = false;
     this._volume = this.volume.volume.value;
@@ -33,8 +33,9 @@ export class Layer {
   connect() {
     this.player.connect(this.volume);
     this.player.connect(this.waveform);
-    this.volume.connect(this.pitchShift);
-    this.pitchShift.connect(this.solo);
+
+    this.volume.connect(this.solo)
+
   }
 
   stop() {
@@ -119,11 +120,9 @@ export class Layer {
   changeTrimFromEnd(newValue) {
     this.trimFromEnd = newValue;
   }
-  changePitchValue(newValue) {
-    this.pitchShift.pitch = newValue;
-  }
-  changeDetuneValue(newValue){
 
+  changeDetuneValue(newValue){
+    this._pitch = newValue
     this.player.detune = newValue
   }
   changeVolumeValue(newValue) {
@@ -149,13 +148,12 @@ changePlaybackRate(newValue) {
     this.player.dispose()
     this.waveform.dispose()
     this.volume.dispose()
-    this.pitchShift.dispose()
     this.solo.dispose()
   }
 
   getLayerData() {
     return {
-      pitch: this.pitchShift.pitch,
+      pitch: this.player.detune,
       volume: this.volume.volume.value,
       url: this.url,
       fileName: this.layerData.fileName,
