@@ -77,7 +77,6 @@ export default function ImportAudio({ userId, currentList, originalList, setPare
   }, [originalChecked]);
 
   const handleOriginalToggle = (value) => (followThrough = true) => {
-    console.log(checkLinks);
     const currentIndex = originalChecked.indexOf(value);
     const newChecked = [...originalChecked];
 
