@@ -117,14 +117,13 @@ export default function ImportAudio({ userId, currentList, originalList, setPare
     checked.forEach((value) => {
       submitList.push(audioLayerList[value])
     })
-    originalChecked.forEach((value, idx) => {
+    originalChecked.forEach((value) => {
       if (submitList.filter(layer => layer.url === originalAudioLayerList[value].url).length === 0) {
         submitList.push(originalAudioLayerList[value]);
       } else {
         console.debug('Ignored original layer ' + originalAudioLayerList[value].fileName);
       }
     })
-    submitList.unique
     if (layerStore.player) {
       layerStore.player.reload(submitList)
     }
