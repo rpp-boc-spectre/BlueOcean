@@ -71,6 +71,9 @@ export class Player {
   }
 
   dispose() {
+    if (this.isPlaying) {
+      this.stop()
+    }
     this.layers.forEach((layer) => {
       layer.dispose();
     });
