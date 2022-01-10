@@ -13,7 +13,7 @@ import { useSnackbar } from 'material-ui-snackbar-provider';
 import { getLayerUrl } from '../utils/storage.js';
 import { useLayerStore } from '../context/LayerContext.js';
 
-export default function ImportAduio({ userId, currentList, setParentLayers, close }) {
+export default function ImportAudio({ userId, currentList, setParentLayers, close }) {
   const [layerStore, dispatch] = useLayerStore();
   const [audioLayerList, setAudioLayerList] = useState([])
   const [loading, setLoading] = useState(true)

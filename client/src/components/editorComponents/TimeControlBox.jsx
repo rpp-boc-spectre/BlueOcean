@@ -40,6 +40,7 @@ const TimeControlBox = (props) => {
     {name: 'Play', handler: props.playAllHandler},
     {name: 'Pause', handler: props.pauseResumeHandler},
     {name: 'Record', handler: props.recordingHandler},
+    {name: 'Import', handler: props.importHandler},
     // {name: 'Beginning', handler: handleBeginning},
     // {name: 'Rewind', handler: handleRewind},
     // {name: 'FastForward', handler: handleFastForward},

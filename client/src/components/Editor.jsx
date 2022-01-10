@@ -13,7 +13,7 @@ import ArrowDownward from '@mui/icons-material/ArrowDownward'
 import { useSnackbar } from "material-ui-snackbar-provider";
 
 import LayerPlayer from "./LayerPlayer";
-import ImportAduio from "./ImportAudio";
+import ImportAudio from "./ImportAudio";
 import Recorder from './Recorder';
 
 import { getTrackData } from "../utils/database";
@@ -114,13 +114,13 @@ export default function Editor() {
         trackId={trackId}
         trackMetadata={trackMetadata}
         recordingHandler={recordingHandler}
-        updateMetadata={setTrackMetadata}
         importHandler={importHandler}
+        updateMetadata={setTrackMetadata}
         uploadHandler={uploadHandler}
         trackData={trackData}
       />
 
-      <Modal open={importModalState} onClose={handleImportClose}>
+      <Drawer open={importModalState} onClose={handleImportClose}>
         <Box sx={{
           backgroundColor: 'white',
           top: 50,
@@ -128,9 +128,9 @@ export default function Editor() {
           overflow: 'auto'
           }}
         >
-          <ImportAduio userId={userData?.user?.uid} currentList={audioLayers} setParentLayers={setAudioLayers} close={handleImportClose} />
+          <ImportAudio userId={userData?.user?.uid} currentList={audioLayers} setParentLayers={setAudioLayers} close={handleImportClose} />
         </Box>
-      </Modal>
+      </Drawer>
       <Drawer
         sx={{
           width: 400,
@@ -150,6 +150,25 @@ export default function Editor() {
         <Divider />
         <Recorder currentList={audioLayers} setAudioLayers={setAudioLayers} />
       </Drawer>
+      {/* <Drawer
+        sx={{
+          width: 400,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: 400,
+            boxSizing: 'border-box',
+          },
+        }}
+        variant="persistent"
+        anchor="bottom"
+        open={recordingModalState}
+      >
+        <IconButton onClick={handleRecorderClose}>
+          <ArrowDownward />
+        </IconButton>
+        <Divider />
+        <Recorder currentList={audioLayers} setAudioLayers={setAudioLayers} />
+      </Drawer> */}
       <Modal open={uploadModalState} onClose={handleUploadClose} >
         <Box sx={{ backgroundColor: 'white', margin: 'auto', top: 50, }}>
           <UploadFile />

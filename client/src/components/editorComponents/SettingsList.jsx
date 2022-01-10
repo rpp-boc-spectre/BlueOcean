@@ -75,7 +75,7 @@ const SettingsList = (props) => {
 
   const settingsArray = [
     { name: 'Save', handler: props.saveHandler },
-    { name: 'New Layer', handler: props.importHandler },
+    // { name: 'New Layer', handler: props.importHandler },
     { name: 'New Audio', handler: newAudioHandler },
     { name: 'Upload', handler: props.uploadHandler }
   ];

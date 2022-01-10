@@ -148,7 +148,6 @@ export default function LayerPlayer({
   return (
     <>
       <SettingsList
-        importHandler={importHandler}
         saveHandler={handleSaveClick}
         uploadHandler={uploadHandler}
         metadata={trackMetadata}
@@ -156,6 +155,7 @@ export default function LayerPlayer({
       />
       <TimeControlBox
         recordingHandler={recordingHandler}
+        importHandler={importHandler}
         playAllHandler={playAllLayers}
         stopAllHandler={stopAllLayers}
         pauseResumeHandler={pauseResumeAllLayers}
