@@ -10,7 +10,8 @@ export class Player {
     this.isPlaying = false;
     this.id = trackData?.id;
 
-    layersData.forEach((layer, index) => {
+    // if layersData exists, create new layers
+    layersData?.forEach((layer, index) => {
       const newLayer = new Layer({ ...layer, id: index, layerData: layer });
       newLayer.connect();
       this.layers.push(newLayer);
