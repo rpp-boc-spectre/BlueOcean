@@ -22,6 +22,8 @@ export default function ImportAudio({ userId, currentList, originalList, setPare
   const [loading, setLoading] = useState(true)
   const [checked, setChecked] = React.useState([]);
   const [originalChecked, setOriginalChecked] = React.useState([]);
+  const [checkLinks, setCheckLinks] = React.useState([]);
+  const [layerMax, setLayerMax] = React.useState(4);
   const snackbar = useSnackbar();
 
   useEffect(() => {
@@ -47,11 +49,20 @@ export default function ImportAudio({ userId, currentList, originalList, setPare
           layer.fileName = itemRef.name
           return layer
         });
-        setAudioLayerList(items)
-      }).then(() => {
+        setAudioLayerList(items);
+        return items;
+      }).then((items) => {
+        let links = [];
         originalList.forEach((itemRef, index) => {
           setOriginalChecked((prev) => [...prev, index])
+          items.forEach((layer, innerIndex) => {
+            const match = itemRef.fileName === layer.fileName && itemRef.parent === layer.parent;
+            if (match) {
+              links.push([index, innerIndex]);
+            }
+          })
         });
+        setCheckLinks(links);
         setOriginalAudioLayerList(originalList);
         setLoading(false)
       }).catch((error) => {
@@ -59,9 +70,32 @@ export default function ImportAudio({ userId, currentList, originalList, setPare
         snackbar.showMessage(<Alert variant='error'>There was an error getting files.</Alert>)
         setLoading(false)
       });
-  }, [])
+  }, []);
 
-  const handleToggle = (value) => () => {
+  useEffect(() => {
+    setLayerMax(4 + originalChecked.length);
+  }, [originalChecked]);
+
+  const handleOriginalToggle = (value) => (followThrough = true) => {
+    console.log(checkLinks);
+    const currentIndex = originalChecked.indexOf(value);
+    const newChecked = [...originalChecked];
+
+    if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+
+    setOriginalChecked(newChecked);
+    if (followThrough) {
+      checkLinks.filter(link => value === link[0]).forEach(link => {
+        handleToggle(link[1])(false);
+      }
+    )};
+  };
+
+  const handleToggle = (value) => (followThrough = true) => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
@@ -72,6 +106,11 @@ export default function ImportAudio({ userId, currentList, originalList, setPare
     }
 
     setChecked(newChecked);
+    if (followThrough) {
+      checkLinks.filter(link => value === link[1]).forEach(link => {
+        handleOriginalToggle(link[0])(false);
+      }
+    )};
   };
 
   const handleSubmit = () => {
@@ -99,10 +138,10 @@ export default function ImportAudio({ userId, currentList, originalList, setPare
               {originalAudioLayerList ? <Typography>Original Layers</Typography> : <></>}
               {originalAudioLayerList.map((item, index) => {
                 const labelId = `checkbox-list-label-${index}`;
-                const disabled = originalChecked.length >= 4 && originalChecked.indexOf(index) === -1
+                const disabled = originalChecked.length + checked.length >= layerMax && originalChecked.indexOf(index) === -1
                 return (
                   <ListItem key={index}>
-                    <ListItemButton role={undefined} onClick={handleToggle(index)} dense disabled={disabled}>
+                    <ListItemButton role={undefined} onClick={handleOriginalToggle(index)} dense disabled={disabled}>
                       <ListItemIcon>
                         <Checkbox
                           edge="start"
@@ -121,7 +160,7 @@ export default function ImportAudio({ userId, currentList, originalList, setPare
               {audioLayerList ? <Typography>Personal Layers</Typography> : <></>}
               {audioLayerList.map((item, index) => {
                 const labelId = `checkbox-list-label-${index}`;
-                const disabled = checked.length >= 4 && checked.indexOf(index) === -1
+                const disabled = originalChecked.length + checked.length >= layerMax && checked.indexOf(index) === -1
                 return (
                   <ListItem key={index}>
                     <ListItemButton role={undefined} onClick={handleToggle(index)} dense disabled={disabled}>
