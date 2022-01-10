@@ -74,10 +74,6 @@ export default function ImportAudio({ userId, currentList, originalList, setPare
       });
   }, []);
 
-  useEffect(() => {
-    setLayerMax(4 + originalChecked.length);
-  }, [originalChecked]);
-
   const handleOriginalToggle = (value) => (followThrough = true) => {
     const currentIndex = originalChecked.indexOf(value);
     const newChecked = [...originalChecked];
@@ -91,6 +87,7 @@ export default function ImportAudio({ userId, currentList, originalList, setPare
     setOriginalChecked(newChecked);
     if (followThrough) {
       checkLinks.filter(link => value === link[0]).forEach(link => {
+        console.log(link);
         handleToggle(link[1])(false);
       }
     )};
@@ -121,9 +118,10 @@ export default function ImportAudio({ userId, currentList, originalList, setPare
       submitList.push(audioLayerList[value])
     })
     originalChecked.forEach((value, idx) => {
-      // only add if there isn't a link to this
-      if (!checkLinks.filter(link => link[0] === value).includes(value)) {
-        submitList.push(originalAudioLayerList[value])
+      if (submitList.filter(layer => layer.url === originalAudioLayerList[value].url).length === 0) {
+        submitList.push(originalAudioLayerList[value]);
+      } else {
+        console.debug('Ignored original layer ' + originalAudioLayerList[value].fileName);
       }
     })
     submitList.unique
@@ -134,6 +132,10 @@ export default function ImportAudio({ userId, currentList, originalList, setPare
     snackbar.showMessage(<Alert variant='success'>{`Imported ${checked.length} item(s)`}</Alert>)
     close()
   }
+
+  useEffect(() => {
+    setLayerMax(4 + originalChecked.length);
+  }, [originalChecked]);
 
   return (
     <>
