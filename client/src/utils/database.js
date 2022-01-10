@@ -34,7 +34,7 @@ export function saveTrackData(player, userId, metadata) {
         ref = doc(collection(db, "tracks"))
         await setDoc(ref, trackData)
       }
-      resolve()
+      resolve(ref.id)
     } catch (error) {
       reject(error)
     }
