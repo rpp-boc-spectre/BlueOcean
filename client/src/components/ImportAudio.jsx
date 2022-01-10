@@ -120,6 +120,13 @@ export default function ImportAudio({ userId, currentList, originalList, setPare
     checked.forEach((value) => {
       submitList.push(audioLayerList[value])
     })
+    originalChecked.forEach((value, idx) => {
+      // only add if there isn't a link to this
+      if (!checkLinks.filter(link => link[0] === value).includes(value)) {
+        submitList.push(originalAudioLayerList[value])
+      }
+    })
+    submitList.unique
     if (layerStore.player) {
       layerStore.player.reload(submitList)
     }
