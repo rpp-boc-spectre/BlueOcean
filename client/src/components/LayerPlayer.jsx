@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as Tone from 'tone';
 
 import { useSnackbar } from 'material-ui-snackbar-provider';
@@ -30,18 +31,19 @@ export default function LayerPlayer({
   trackData,
 }) {
   const [layerStore, dispatch] = useLayerStore();
+  const navigate = useNavigate();
   // const allLayersPlayState = useRef('');
   // const allLayersRef = useRef(layerStore.allLayers);
   const snackbar = useSnackbar();
   const playerRef = useRef(layerStore.player);
   const [allLayersLoaded, setAllLayersLoaded] = useState(false);
   const [globalPitch, setGlobalPitch] = useState(0);
-  const [globalVolume, setGlobalVolume] = useState(0)
-  const [globalPlayback,setGlobalPlayback] = useState(1)
+  const [globalVolume, setGlobalVolume] = useState(20)
+  const [globalPlayback, setGlobalPlayback] = useState(1)
 
   const playAllLayers = async () => {
     if (layerStore.player) {
-      console.log('LAYERPLAYER');
+      console.log('LAYERPLAYER', layerStore.player);
       layerStore.player.start();
     }
   };
@@ -70,8 +72,11 @@ export default function LayerPlayer({
       if (temp.trackName === undefined || temp.trackName === "") {
         snackbar.showMessage(<Alert variant='error'>Please enter a track name</Alert>);
       } else {
-        await saveTrackData(layerStore.player, userId, temp);
+        let id = await saveTrackData(layerStore.player, userId, temp);
         snackbar.showMessage(<Alert variant='success'>Track saved</Alert>);
+        if (!trackId) {
+          navigate(`/edit/${id}`)
+        }
       }
     } catch (error) {
       console.log(error);
@@ -122,16 +127,16 @@ export default function LayerPlayer({
   const changeVolumeValue = (event, newValue) => {
     newValue = Math.round(newValue);
     setGlobalVolume(newValue);
-   layerStore.player.setAllLayersVolume(newValue)
+    layerStore.player.setAllLayersVolume(-40 + newValue)
   };
 
-  const changePlaybackRate = (event,newValue) => {
+  const changePlaybackRate = (event, newValue) => {
 
-    console.log('nev',newValue)
+    console.log('nev', newValue)
     let newPlayback = Number(event.target.value);
-    console.log('Newpl',newPlayback)
-    newPlayback >=0.5 ? newPlayback = Number.parseFloat(newPlayback).toFixed(2):
-    newPlayback = Number.parseFloat(newPlayback + 0.1).toFixed(2);
+    console.log('Newpl', newPlayback)
+    newPlayback >= 0.5 ? newPlayback = Number.parseFloat(newPlayback).toFixed(2) :
+      newPlayback = Number.parseFloat(newPlayback + 0.1).toFixed(2);
 
     newPlayback = Number(newPlayback);
     setGlobalPlayback(newPlayback)
@@ -189,15 +194,15 @@ export default function LayerPlayer({
             <Typography variant='subtitle2' id='modal-edit-title'>
               Edit Layer: {'placeholder'}
             </Typography>
-            <Typography>Volume</Typography>
-          <Slider
-            min={-20}
-            max={20}
-            value={globalVolume}
-            onChange={changeVolumeValue}
-            aria-label='Volume Slider'
-            valueLabelDisplay='auto'
-          />
+            <Typography>Volume: {globalVolume === 40 ? "Max" : globalVolume === 0 ? 'Min' : globalVolume}</Typography>
+            <Slider
+              min={0}
+              max={40}
+              value={globalVolume}
+              onChange={changeVolumeValue}
+              aria-label='Volume Slider'
+              valueLabelDisplay='auto'
+            />
             <Typography> Set Track Pitch {globalPitch} </Typography>
             <Slider
               min={-12}

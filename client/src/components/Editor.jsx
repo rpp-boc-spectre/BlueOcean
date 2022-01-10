@@ -19,6 +19,7 @@ import Recorder from './Recorder';
 
 import { getTrackData } from "../utils/database";
 import { getTrackUrls } from "../utils/storage";
+import { Player } from '../lib/player';
 import UserContext from "../context/UserContext";
 import UploadFile from "./UploadFile.jsx";
 
@@ -83,8 +84,12 @@ export default function Editor() {
         setAudioLayers([])
       }
       if (layerStore.player) {
+        // kill the old players audio
         layerStore.player.dispose()
-        dispatch(setPlayer(null))
+        // make a new blank player
+        const newPlayer = new Player();
+        dispatch(setPlayer(newPlayer))
+
       }
     }
   }, [trackId])
