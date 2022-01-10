@@ -154,25 +154,6 @@ export default function Editor() {
         <Divider />
         <Recorder currentList={audioLayers} setAudioLayers={setAudioLayers} />
       </Drawer>
-      {/* <Drawer
-        sx={{
-          width: 400,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: 400,
-            boxSizing: 'border-box',
-          },
-        }}
-        variant="persistent"
-        anchor="bottom"
-        open={recordingModalState}
-      >
-        <IconButton onClick={handleRecorderClose}>
-          <ArrowDownward />
-        </IconButton>
-        <Divider />
-        <Recorder currentList={audioLayers} setAudioLayers={setAudioLayers} />
-      </Drawer> */}
       <Modal open={uploadModalState} onClose={handleUploadClose} >
         <Box sx={{ backgroundColor: 'white', margin: 'auto', top: 50, }}>
           <UploadFile />
