@@ -31,6 +31,7 @@ export default function Editor() {
   const [recordingModalState, setRecordingModalState] = useState(false);
   const [uploadModalState, setUploadModalState] = useState(false);
   const [audioLayers, setAudioLayers] = useState([]);
+  const [originalAudioLayers, setOriginalAudioLayers] = useState([]);
   const [trackMetadata, setTrackMetadata] = useState({});
   const [trackData, setTrackData] = useState(null)
   const userData = useContext(UserContext);
@@ -68,6 +69,7 @@ export default function Editor() {
           }
           setTrackData(trackWithUrls)
           setAudioLayers(layers)
+          setOriginalAudioLayers(layers)
         })
         .catch(error => {
           console.log(error);
@@ -122,7 +124,13 @@ export default function Editor() {
       />
 
       <Drawer open={importModalState}>
-          <ImportAudio userId={userData?.user?.uid} currentList={audioLayers} setParentLayers={setAudioLayers} close={handleImportClose} />
+          <ImportAudio
+            userId={userData?.user?.uid}
+            originalList={originalAudioLayers}
+            currentList={audioLayers}
+            setParentLayers={setAudioLayers}
+            close={handleImportClose}
+          />
           <IconButton onClick={handleImportClose}>
             <ArrowBack />
           </IconButton>

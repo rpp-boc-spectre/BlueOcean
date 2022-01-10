@@ -9,15 +9,19 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
+import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
 import { useSnackbar } from 'material-ui-snackbar-provider';
 import { getLayerUrl } from '../utils/storage.js';
 import { useLayerStore } from '../context/LayerContext.js';
 
-export default function ImportAudio({ userId, currentList, setParentLayers, close }) {
+export default function ImportAudio({ userId, currentList, originalList, setParentLayers, close }) {
   const [layerStore, dispatch] = useLayerStore();
   const [audioLayerList, setAudioLayerList] = useState([])
+  const [originalAudioLayerList, setOriginalAudioLayerList] = useState([])
   const [loading, setLoading] = useState(true)
   const [checked, setChecked] = React.useState([]);
+  const [originalChecked, setOriginalChecked] = React.useState([]);
   const snackbar = useSnackbar();
 
   useEffect(() => {
@@ -44,8 +48,14 @@ export default function ImportAudio({ userId, currentList, setParentLayers, clos
           return layer
         });
         setAudioLayerList(items)
+      }).then(() => {
+        originalList.forEach((itemRef, index) => {
+          setOriginalChecked((prev) => [...prev, index])
+        });
+        setOriginalAudioLayerList(originalList);
         setLoading(false)
       }).catch((error) => {
+        console.debug(error);
         snackbar.showMessage(<Alert variant='error'>There was an error getting files.</Alert>)
         setLoading(false)
       });
@@ -86,6 +96,29 @@ export default function ImportAudio({ userId, currentList, setParentLayers, clos
         audioLayerList ?
           <>
             <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+              {originalAudioLayerList ? <Typography>Original Layers</Typography> : <></>}
+              {originalAudioLayerList.map((item, index) => {
+                const labelId = `checkbox-list-label-${index}`;
+                const disabled = originalChecked.length >= 4 && originalChecked.indexOf(index) === -1
+                return (
+                  <ListItem key={index}>
+                    <ListItemButton role={undefined} onClick={handleToggle(index)} dense disabled={disabled}>
+                      <ListItemIcon>
+                        <Checkbox
+                          edge="start"
+                          checked={originalChecked.indexOf(index) !== -1}
+                          tabIndex={-1}
+                          disableRipple
+                          inputProps={{ 'aria-labelledby': labelId }}
+                        />
+                      </ListItemIcon>
+                      <ListItemText id={labelId} primary={item.layerName} />
+                    </ListItemButton>
+                  </ListItem>
+                )
+              })}
+              {originalAudioLayerList && audioLayerList ? <Divider /> : <></>}
+              {audioLayerList ? <Typography>Personal Layers</Typography> : <></>}
               {audioLayerList.map((item, index) => {
                 const labelId = `checkbox-list-label-${index}`;
                 const disabled = checked.length >= 4 && checked.indexOf(index) === -1
