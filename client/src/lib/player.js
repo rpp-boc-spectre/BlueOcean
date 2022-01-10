@@ -70,6 +70,9 @@ export class Player {
   }
 
   dispose() {
+    if (this.isPlaying) {
+      this.stop()
+    }
     this.layers.forEach((layer) => {
       layer.dispose();
     });
@@ -88,7 +91,7 @@ export class Player {
   setAllLayersPlaybackRate(newValue) {
 
 
-    this.layers.forEach((layer)=>{
+    this.layers.forEach((layer) => {
       layer.changePlaybackRate(newValue)
 
     })
@@ -107,7 +110,7 @@ export class Player {
     });
   }
 
-  setAllLayersGrainSize() {}
+  setAllLayersGrainSize() { }
 
-  setAllLayersReverse() {}
+  setAllLayersReverse() { }
 }
