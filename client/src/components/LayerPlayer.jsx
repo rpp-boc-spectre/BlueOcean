@@ -74,7 +74,7 @@ export default function LayerPlayer({
       } else {
         let id = await saveTrackData(layerStore.player, userId, temp);
         snackbar.showMessage(<Alert variant='success'>Track saved</Alert>);
-        if (!trackId) {
+        if (!trackId || (layerStore.player.owner !== userId)) {
           navigate(`/edit/${id}`)
         }
       }
