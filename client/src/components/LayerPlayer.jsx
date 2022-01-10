@@ -36,12 +36,12 @@ export default function LayerPlayer({
   const playerRef = useRef(layerStore.player);
   const [allLayersLoaded, setAllLayersLoaded] = useState(false);
   const [globalPitch, setGlobalPitch] = useState(0);
-  const [globalVolume, setGlobalVolume] = useState(-20)
+  const [globalVolume, setGlobalVolume] = useState(20)
   const [globalPlayback,setGlobalPlayback] = useState(1)
 
   const playAllLayers = async () => {
     if (layerStore.player) {
-      console.log('LAYERPLAYER');
+      console.log('LAYERPLAYER',layerStore.player);
       layerStore.player.start();
     }
   };
@@ -122,7 +122,7 @@ export default function LayerPlayer({
   const changeVolumeValue = (event, newValue) => {
     newValue = Math.round(newValue);
     setGlobalVolume(newValue);
-   layerStore.player.setAllLayersVolume(newValue)
+   layerStore.player.setAllLayersVolume(-40 + newValue)
   };
 
   const changePlaybackRate = (event,newValue) => {
@@ -189,10 +189,10 @@ export default function LayerPlayer({
             <Typography variant='subtitle2' id='modal-edit-title'>
               Edit Layer: {'placeholder'}
             </Typography>
-            <Typography>Volume</Typography>
+            <Typography>Volume: {globalVolume === 40 ? "Max" : globalVolume === 0 ? 'Min' : globalVolume}</Typography>
           <Slider
-            min={-40}
-            max={5}
+            min={0}
+            max={40}
             value={globalVolume}
             onChange={changeVolumeValue}
             aria-label='Volume Slider'

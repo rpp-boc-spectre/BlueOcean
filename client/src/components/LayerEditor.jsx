@@ -19,7 +19,9 @@ export default function LayerEditorCopy({ id, player }) {
   const [isSolo, setIsSolo] = useState(player._solo);
   const [isMuted, setIsMuted] = useState(player._mute);
   const [duration, setDuration] = useState(false);
-  const [volumeSliderValue, setVolumeSliderValue] = useState(Math.round(player._volume));
+  const [volumeSliderValue, setVolumeSliderValue] = useState(
+    Math.abs(Math.round( -40 - player._volume))
+  );
   const [trimFromStart, setTrimFromStart] = useState(player.trimFromStart);
   const [trimFromEnd, setTrimFromEnd] = useState(player.trimFromEnd);
   const [playerPlaybackRate, setPlayerPlaybackRate] = useState(
@@ -48,9 +50,8 @@ export default function LayerEditorCopy({ id, player }) {
   const changeVolumeValue = (event, newValue) => {
     newValue = Math.round(newValue);
     setVolumeSliderValue(newValue);
-    player.changeVolumeValue(newValue);
+    player.changeVolumeValue(-40 + newValue);
   };
-
 
   const muteLayer = () => {
     player.toggleMute();
@@ -204,10 +205,17 @@ export default function LayerEditorCopy({ id, player }) {
           <Typography variant='subtitle2' id='modal-edit-title'>
             Edit Layer: {player.name}
           </Typography>
-          <Typography>Volume</Typography>
+          <Typography>
+            Volume:{' '}
+            {volumeSliderValue === 40
+              ? 'Max'
+              : volumeSliderValue === 0
+              ? 'Min'
+              : volumeSliderValue}
+          </Typography>
           <Slider
-            min={-40}
-            max={5}
+            min={0}
+            max={40}
             value={volumeSliderValue}
             onChange={changeVolumeValue}
             aria-label='Volume Slider'
