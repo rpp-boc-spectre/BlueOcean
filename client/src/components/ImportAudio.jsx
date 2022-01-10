@@ -54,7 +54,9 @@ export default function ImportAudio({ userId, currentList, originalList, setPare
       }).then((items) => {
         let links = [];
         originalList.forEach((itemRef, index) => {
-          setOriginalChecked((prev) => [...prev, index])
+          if (currentList.map(layer => layer.fileName).includes(itemRef.fileName)) {
+            setOriginalChecked((prev) => [...prev, index])
+          }
           items.forEach((layer, innerIndex) => {
             const match = itemRef.fileName === layer.fileName && itemRef.parent === layer.parent;
             if (match) {
