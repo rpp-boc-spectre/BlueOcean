@@ -106,3 +106,4 @@ bundle.js.LICENSE.txt
 
 # webpack analyzer
 stats.json
+main.js
