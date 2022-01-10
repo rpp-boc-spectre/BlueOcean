@@ -8,7 +8,8 @@ import Modal from "@mui/material/Modal";
 import Drawer from "@mui/material/Drawer";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import ArrowDownward from '@mui/icons-material/ArrowDownward'
+import ArrowDownward from '@mui/icons-material/ArrowDownward';
+import ArrowBack from '@mui/icons-material/ArrowBack';
 
 import { useSnackbar } from "material-ui-snackbar-provider";
 
@@ -120,16 +121,11 @@ export default function Editor() {
         trackData={trackData}
       />
 
-      <Drawer open={importModalState} onClose={handleImportClose}>
-        <Box sx={{
-          backgroundColor: 'white',
-          top: 50,
-          maxHeight: '100vh',
-          overflow: 'auto'
-          }}
-        >
+      <Drawer open={importModalState}>
           <ImportAudio userId={userData?.user?.uid} currentList={audioLayers} setParentLayers={setAudioLayers} close={handleImportClose} />
-        </Box>
+          <IconButton onClick={handleImportClose}>
+            <ArrowBack />
+          </IconButton>
       </Drawer>
       <Drawer
         sx={{
