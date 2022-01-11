@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { removeTrack } from '../../utils/database'
-import useSnackbar from 'material-ui-snackbar-provider/lib/useSnackbar';
+import toast from 'react-hot-toast';
 
 import Alert from '@mui/material/Alert'
 import Button from '@mui/material/Button';
@@ -21,10 +21,8 @@ import PublicIcon from '@mui/icons-material/Public';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function TrackListItem({ trackId, meta, index, getUserTracks }) {
-  //console.log('META', meta);
   let publicSetting, displayName, tag;
   if (meta && meta.public) {
-    //console.log('PUBLIC SETTING', publicSetting)
     publicSetting = meta.public;
   } else {
     publicSetting = false;
@@ -41,7 +39,6 @@ export default function TrackListItem({ trackId, meta, index, getUserTracks }) {
   }
 
   const [dialogState, setDialogState] = useState(false);
-  const snackbar = useSnackbar();
   const navigate = useNavigate();
 
   const handleNavigation = () => {
@@ -53,10 +50,10 @@ export default function TrackListItem({ trackId, meta, index, getUserTracks }) {
     removeTrack(trackId)
       .then(() => {
         getUserTracks()
-        snackbar.showMessage(<Alert severity='success'>Track Deleted</Alert>)
+        toast.custom(<Alert variant="filled" severity='success' color="primary">Track Deleted</Alert>)
       })
       .catch((error) => {
-        snackbar.showMessage(<Alert severity='error'>Error deleting your track :(</Alert>)
+        toast.custom(<Alert severity='error'>Error deleting your track :(</Alert>)
         console.debug('Dashboard: handleDelete: ', error)
       })
       .finally(() => {
