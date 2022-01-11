@@ -29,7 +29,7 @@ export default function Entry() {
     try {
       const provider = new FacebookAuthProvider();
       let result = await signInWithPopup(auth, provider);
-      toast.custom(<Alert severity="success" color="primary" sx={{ width: '100%' }}>Welcome {result.user.displayName}</Alert>)
+      toast.custom(<Alert variant='filled' severity="success" color="primary">Welcome {result.user.displayName}</Alert>)
       let username = await getUserName(result.user.uid)
       if (!username) {
         setShowUserForm(true)
@@ -37,7 +37,7 @@ export default function Entry() {
         navigate(from, { replace: true });
       }
     } catch (error) {
-      toast.custom(<Alert severity="error" sx={{ width: '100%' }}>{`There was an error signing you in :(`}</Alert>)
+      toast.custom(<Alert variant='filled' severity="error">{`There was an error signing you in :(`}</Alert>)
     }
   }
 
@@ -45,7 +45,7 @@ export default function Entry() {
     try {
       const provider = new GoogleAuthProvider()
       let result = await signInWithPopup(auth, provider)
-      toast.custom(<Alert severity="success" color="primary" sx={{ width: '100%' }}>Welcome {result.user.displayName}</Alert>)
+      toast.custom(<Alert variant='filled' severity="success" color="primary">Welcome {result.user.displayName}</Alert>)
       let username = await getUserName(result.user.uid)
       if (!username) {
         setShowUserForm(true)
@@ -53,17 +53,17 @@ export default function Entry() {
         navigate(from, { replace: true });
       }
     } catch (error) {
-      toast.custom(<Alert severity="error" sx={{ width: '100%' }}>{`There was an error signing you in :(`}</Alert>)
+      toast.custom(<Alert variant='filled' severity="error">{`There was an error signing you in :(`}</Alert>)
     }
   }
 
   const handleSignOut = async () => {
     try {
       await signOut(auth)
-      toast.custom(<Alert severity="success" color="primary" sx={{ width: '100%' }}>Successfully Signed Out</Alert>)
+      toast.custom(<Alert variant='filled' severity="success" color="primary">Successfully Signed Out</Alert>)
       navigate('/');
     } catch (error) {
-      toast.custom(<Alert severity="error" sx={{ width: '100%' }}>{`There was an error signing you out :(`}</Alert>)
+      toast.custom(<Alert variant='filled' severity="error">{`There was an error signing you out :(`}</Alert>)
     }
   }
 
