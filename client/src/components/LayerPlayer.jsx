@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Tone from 'tone';
 
-import { useSnackbar } from 'material-ui-snackbar-provider';
+import toast from 'react-hot-toast';
 import { useLayerStore } from '../context/LayerContext.js';
 
 import Alert from '@mui/material/Alert';
@@ -32,9 +32,6 @@ export default function LayerPlayer({
 }) {
   const [layerStore, dispatch] = useLayerStore();
   const navigate = useNavigate();
-  // const allLayersPlayState = useRef('');
-  // const allLayersRef = useRef(layerStore.allLayers);
-  const snackbar = useSnackbar();
   const playerRef = useRef(layerStore.player);
   const [allLayersLoaded, setAllLayersLoaded] = useState(false);
   const [globalPitch, setGlobalPitch] = useState(0);
@@ -70,17 +67,16 @@ export default function LayerPlayer({
         temp.public = false;
       }
       if (temp.trackName === undefined || temp.trackName === "") {
-        snackbar.showMessage(<Alert variant='error'>Please enter a track name</Alert>);
+        toast.custom(<Alert variant='filled' severity='error'>Please enter a track name</Alert>)
       } else {
         let id = await saveTrackData(layerStore.player, userId, temp);
-        snackbar.showMessage(<Alert variant='success'>Track saved</Alert>);
+        toast.custom(<Alert variant='filled' severity='success'>Track saved</Alert>)
         if (!trackId) {
           navigate(`/edit/${id}`)
         }
       }
     } catch (error) {
-      console.log(error);
-      snackbar.showMessage(<Alert variant='error'>Track failed to save</Alert>);
+      toast.custom(<Alert variant='filled' severity='error'>Track failed to save</Alert>)
     }
   };
 
