@@ -52,9 +52,9 @@ export class Layer {
       .start(
         this.trimFromStart / this.player.playbackRate,
         offset/ this.player.playbackRate,
-       this.trimFromEnd/ this.player.playbackRate - offset
+        this.trimFromEnd /this.player.playbackRate - offset
       )
-      .stop(this.trimFromEnd/this.player.playbackRate -offset);
+      .stop(this.trimFromEnd/this.player.playbackRate);
     this.startWaveform();
   }
   startWaveform() {
