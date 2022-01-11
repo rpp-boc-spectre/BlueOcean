@@ -235,7 +235,7 @@ export default function LayerEditorCopy({ id, player }) {
           <Slider
             min={0}
             max={Number((player.duration() / player.playbackRate).toPrecision(4))}
-            value={trimFromStart}
+            value={Number((trimFromStart / player.playbackRate).toPrecision(4))}
             onChange={trimFromStartTime}
             aria-label='Trim Slider'
             valueLabelDisplay='auto'
@@ -245,7 +245,7 @@ export default function LayerEditorCopy({ id, player }) {
           <Slider
             min={0}
             max={Number((player.duration() / player.playbackRate).toPrecision(4))}
-            value={trimFromEnd}
+            value={Number((trimFromEnd / player.playbackRate).toPrecision(4))}
             onChange={trimFromEndTime}
             aria-label='Trim Slider'
             valueLabelDisplay='auto'
