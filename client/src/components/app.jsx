@@ -7,6 +7,7 @@ import { SnackbarProvider } from 'material-ui-snackbar-provider'
 import { LayerStoreProvider } from "../context/LayerContext.js";
 import { initialState, layerTableReducer } from "../lib/layerTableReducer.js";
 import Paper from '@mui/material/Paper';
+import { Toaster } from 'react-hot-toast';
 
 import Home from "./Home.jsx";
 import NotFound from './NotFound.jsx'
@@ -25,7 +26,7 @@ export default function App() {
       <UserContext.Provider value={userData}>
         <LayerStoreProvider initialState={initialState} reducer={layerTableReducer}>
           <div className="App">
-            <Paper sx={{ bgcolor: 'info.main'}}>
+            <Paper sx={{ bgcolor: 'info.main' }}>
               <ResponsiveHeader />
               <Routes>
                 <Route path="/" element={<Home />} />
@@ -41,6 +42,10 @@ export default function App() {
                 } />
                 <Route path='*' element={<NotFound />} />
               </Routes>
+              <Toaster
+                position="top-center"
+                reverseOrder={false}
+              />
             </Paper>
           </div>
         </LayerStoreProvider>

@@ -5,10 +5,12 @@ import UserContext from "../context/UserContext.js";
 
 import TrackList from "./dashboardComponents/TrackList.jsx";
 
+import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import { useSnackbar } from 'material-ui-snackbar-provider'
+import toast from 'react-hot-toast';
 
 export default function Dashboard() {
 
@@ -29,9 +31,9 @@ export default function Dashboard() {
 
   return (
     <>
-      <Box mx='auto' mt='10px'  sx={{ width: {xs: '100', md: '70vw'}, maxWidth: '1000px', maxHeight: '100vh', overflow:'auto', border: '2px solid black' }}>
+      <Box mx='auto' mt='10px' sx={{ width: { xs: '100', md: '70vw' }, maxWidth: '1000px', maxHeight: '100vh', overflow: 'auto', border: '2px solid black' }}>
         <Typography variant='h3' align='center'>Welcome {userData.username}</Typography>
-        { userData.user && <TrackList userId={userData.user.uid}/> }
+        {userData.user && <TrackList userId={userData.user.uid} />}
       </Box>
     </>
   )
