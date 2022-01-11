@@ -129,7 +129,7 @@ const ResponsiveHeader = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" color="secondary">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -183,7 +183,7 @@ const ResponsiveHeader = () => {
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{ my: 2, color: 'text.primary', display: 'block' }}
               >
                 {page}
               </Button>

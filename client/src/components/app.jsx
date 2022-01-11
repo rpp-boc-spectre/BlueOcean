@@ -6,6 +6,7 @@ import useUserData from '../hooks/useUserData.js';
 import { SnackbarProvider } from 'material-ui-snackbar-provider'
 import { LayerStoreProvider } from "../context/LayerContext.js";
 import { initialState, layerTableReducer } from "../lib/layerTableReducer.js";
+import Paper from '@mui/material/Paper';
 
 import Home from "./Home.jsx";
 import NotFound from './NotFound.jsx'
@@ -24,21 +25,23 @@ export default function App() {
       <UserContext.Provider value={userData}>
         <LayerStoreProvider initialState={initialState} reducer={layerTableReducer}>
           <div className="App">
-            <ResponsiveHeader />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path='login' element={<Entry />} />
-              <Route path='edit/:trackId' element={<Editor />} />
-              <Route path='edit' element={
-                <Editor />
-              } />
-              <Route path='dashboard' element={
-                <RequireAuth>
-                  <Dashboard />
-                </RequireAuth>
-              } />
-              <Route path='*' element={<NotFound />} />
-            </Routes>
+            <Paper sx={{ bgcolor: 'info.main'}}>
+              <ResponsiveHeader />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path='login' element={<Entry />} />
+                <Route path='edit/:trackId' element={<Editor />} />
+                <Route path='edit' element={
+                  <Editor />
+                } />
+                <Route path='dashboard' element={
+                  <RequireAuth>
+                    <Dashboard />
+                  </RequireAuth>
+                } />
+                <Route path='*' element={<NotFound />} />
+              </Routes>
+            </Paper>
           </div>
         </LayerStoreProvider>
       </UserContext.Provider>
