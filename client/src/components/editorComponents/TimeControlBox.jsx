@@ -39,14 +39,17 @@ const TimeControlBox = (props) => {
     {name: 'Stop', handler: props.stopAllHandler},
     {name: 'Play', handler: props.playAllHandler},
     {name: 'Pause', handler: props.pauseResumeHandler},
+    {name: 'Edit', handler: props.editorOpenHandler}
   ];
   return (
     <>
-      <Box sx={{
-        border: 1,
-        gridColumn: {xs: '1', md: '1'},
-        gridRow: {xs: '2', md: '2'}
-      }}>
+      <Box
+        sx={{
+        //   border: 1,
+          gridColumn: {xs: '1', md: '1'},
+        //   gridRow: {xs: '2', md: '2'}
+        }}
+      >
         {buttons.map((button, index) => {
           return <TimeControlButton key={index} button={button} />
         })}

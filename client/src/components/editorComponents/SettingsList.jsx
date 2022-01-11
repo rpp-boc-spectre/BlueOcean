@@ -62,8 +62,7 @@ const SettingsList = (props) => {
   }, [props.metadata]);
 
   const settingsArray = [
-    { name: 'Save', handler: props.saveHandler },
-    { name: 'Upload', handler: props.uploadHandler }
+    { name: 'Save', handler: props.saveHandler }
   ];
 
   return (

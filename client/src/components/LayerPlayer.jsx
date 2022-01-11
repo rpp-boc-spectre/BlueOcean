@@ -10,6 +10,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
+import Container from '@mui/material/Container';
 import { addLayer, removeLayer, setPlayer } from '../lib/layerTableReducer.js';
 import { saveTrackData } from '../utils/database.js';
 import { Player } from '../lib/player.js';
@@ -153,81 +154,105 @@ export default function LayerPlayer({
   };
   return (
     <>
-      <TimeControlBox
-        playAllHandler={playAllLayers}
-        stopAllHandler={stopAllLayers}
-        pauseResumeHandler={pauseResumeAllLayers}
-      />
-      <FileControlBox
-        recordingHandler={recordingHandler}
-        importHandler={importHandler}
-        uploadHandler={uploadHandler}
-        saveHandler={handleSaveClick}
-        metadata={trackMetadata}
-        updateMetadata={updateMetadata}
-      />
-      <TimeControlButton button={{ name: 'Edit', handler: layerEditorOpen }} />
-      <Box
-        sx={{
-          bgcolor: 'background.paper',
-          gridColumn: { xs: '1 / 3', md: '2' },
-          gridRow: { xs: '1', md: '1 / 3' },
-          minHeight: '60vh',
-          maxHeight: '80vh',
-          padding: { xs: '0', md: '10px' },
-        }}>
-        <Modal
-          open={editOpen}
-          onClose={layerEditClose}
-          aria-label='modal-edit-title'>
-          <Box
-            sx={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              width: { xs: '95%', md: 400 },
-              bgcolor: 'background.paper',
-              border: '2px solid #000',
-              boxShadow: 24,
-              p: 4,
-            }}>
-            <Typography variant='subtitle2' id='modal-edit-title'>
-              Edit Layer: {'placeholder'}
-            </Typography>
-            <Typography>Volume: {globalVolume === 40 ? "Max" : globalVolume === 0 ? 'Min' : globalVolume}</Typography>
-            <Slider
-              min={0}
-              max={40}
-              value={globalVolume}
-              onChange={changeVolumeValue}
-              aria-label='Volume Slider'
-              valueLabelDisplay='auto'
-            />
-            <Typography> Set Track Pitch {globalPitch} </Typography>
-            <Slider
-              min={-12}
-              max={12}
-              value={globalPitch}
-              onChange={changeDetune}
-              aria-label='Trim Slider'
-              valueLabelDisplay='auto'
-            />
-            <Typography> Set Track Playback {globalPlayback} </Typography>
-            <Slider
-              min={.50}
-              max={2}
-              step={.10}
-              value={globalPlayback}
-              onChange={changePlaybackRate}
-              aria-label='Trim Slider'
-              valueLabelDisplay='auto'
-            />
-          </Box>
-        </Modal>
+      <Container sx={{
+        display: 'grid',
+        gridRow: {md: '2'}
+      }}>
+        <Container
+          sx={{
+            gridColumn: {md: '1'},
+            gridRow: {md: '2'}
+          }}
+        >
+          <TimeControlBox
+            playAllHandler={playAllLayers}
+            stopAllHandler={stopAllLayers}
+            pauseResumeHandler={pauseResumeAllLayers}
+            editorOpenHandler={layerEditorOpen}
+          />
+        </Container>
+        <Container
+          sx={{
+            gridColumn: {md: '3'},
+            gridRow: {md: '2'}
+          }}
+        >
+          <FileControlBox
+            recordingHandler={recordingHandler}
+            importHandler={importHandler}
+            uploadHandler={uploadHandler}
+            saveHandler={handleSaveClick}
+            metadata={trackMetadata}
+            updateMetadata={updateMetadata}
+          />
+        </Container>
+        <Box
+          sx={{
+            bgcolor: 'background.paper',
+            gridColumn: { xs: '1 / 3', md: '2' },
+            // gridRow: { xs: '1', md: '1 / 3' },
+            minHeight: '60vh',
+            maxHeight: '80vh',
+            // padding: { xs: '0', md: '10px' },
+          }}
+          >
+          <Modal
+            open={editOpen}
+            onClose={layerEditClose}
+            aria-label='modal-edit-title'>
+            <Box
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: { xs: '95%', md: 400 },
+                bgcolor: 'background.paper',
+                border: '2px solid #000',
+                boxShadow: 24,
+                p: 4,
+              }}>
+              <Typography variant='subtitle2' id='modal-edit-title'>
+                Edit Layer: {'placeholder'}
+              </Typography>
+              <Typography>Volume: {globalVolume === 40 ? "Max" : globalVolume === 0 ? 'Min' : globalVolume}</Typography>
+              <Slider
+                min={0}
+                max={40}
+                value={globalVolume}
+                onChange={changeVolumeValue}
+                aria-label='Volume Slider'
+                valueLabelDisplay='auto'
+              />
+              <Typography> Set Track Pitch {globalPitch} </Typography>
+              <Slider
+                min={-12}
+                max={12}
+                value={globalPitch}
+                onChange={changeDetune}
+                aria-label='Trim Slider'
+                valueLabelDisplay='auto'
+              />
+              <Typography> Set Track Playback {globalPlayback} </Typography>
+              <Slider
+                min={.50}
+                max={2}
+                step={.10}
+                value={globalPlayback}
+                onChange={changePlaybackRate}
+                aria-label='Trim Slider'
+                valueLabelDisplay='auto'
+              />
+            </Box>
+          </Modal>
+        </Box>
+      </Container>
+      <Container sx={{
+        gridRow: {md: '1'}
+      }}>
         {(allLayersLoaded && layers) &&
           layers.map((layer, index) => <LayerEditor key={index} id={index} player={layerStore.player.layers[index]} />)}
-      </Box>
+      </Container>
     </>
   );
 }
