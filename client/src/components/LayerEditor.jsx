@@ -239,6 +239,7 @@ export default function LayerEditorCopy({ id, player }) {
             onChange={trimFromStartTime}
             aria-label='Trim Slider'
             valueLabelDisplay='auto'
+            step={.5}
           />
           <Typography>Trim From End</Typography>
           <Slider
@@ -249,6 +250,7 @@ export default function LayerEditorCopy({ id, player }) {
             aria-label='Trim Slider'
             valueLabelDisplay='auto'
             track='inverted'
+            step={.5}
           />
           <Typography>
             Playback Rate {Number(playerPlaybackRate).toFixed(2)}
