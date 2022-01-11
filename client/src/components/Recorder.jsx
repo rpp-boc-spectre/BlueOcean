@@ -15,13 +15,12 @@ import MicIcon from '@mui/icons-material/Mic';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import Switch from '@mui/material/Switch';
 
-import { useSnackbar } from 'material-ui-snackbar-provider';
+import toast from 'react-hot-toast';
 import { getLayerUrl } from '../utils/storage';
 import { Timer } from '../utils/recorder';
 
 export default function RecorderTone({ currentList, setAudioLayers }) {
   const { user, username } = useContext(UserContext);
-  const snackbar = useSnackbar();
   const [url, setUrl] = useState(null);
   const [micRecorder, setMicRecorder] = useState();
   const [userMic, setUserMic] = useState();
@@ -175,7 +174,7 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
     try {
       const mp3StorageRef = ref(storage, `audio/${user.uid}/${recordingName}.webm`)
       await uploadBytes(mp3StorageRef, micRecorder)
-      snackbar.showMessage(<Alert severity="success" sx={{ width: '100%' }}>{`Layer Uploaded :)`}</Alert>)
+      toast.custom(<Alert variant='filled' severity="success">{`Layer Uploaded :)`}</Alert>)
       let url = await getLayerUrl(mp3StorageRef)
       let data = {
         parent: user.uid,
@@ -194,8 +193,7 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
         })
       }
     } catch (error) {
-      console.log('upload ', error)
-      snackbar.showMessage(<Alert severity="error" sx={{ width: '100%' }}>{`There was an error uploading your layer :(`}</Alert>)
+      toast.custom(<Alert variant='filled' severity="error">{`There was an error uploading your layer :(`}</Alert>)
     }
   }
 
