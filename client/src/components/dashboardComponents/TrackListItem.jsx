@@ -104,8 +104,8 @@ export default function TrackListItem({ trackId, meta, index, getUserTracks }) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleDelete} autoFocus>
+          <Button variant='outlined' onClick={handleClose}>Cancel</Button>
+          <Button variant='contained' color="error" onClick={handleDelete} autoFocus>
             Delete
           </Button>
         </DialogActions>
