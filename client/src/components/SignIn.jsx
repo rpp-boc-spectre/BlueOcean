@@ -15,7 +15,7 @@ export default function SignIn() {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, formEmail, formPassword)
       .then((userCredential) => {
-        toast.custom(<Alert variant='filled' severity="success">{`Welcome, ${userCredential.user.displayName}`}</Alert>)
+        toast.custom(<Alert variant='filled' severity="success" color='primary'>{`Welcome, ${userCredential.user.displayName}`}</Alert>)
       })
       .catch((error) => {
         const errorCode = error.code;

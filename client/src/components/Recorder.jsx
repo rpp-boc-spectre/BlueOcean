@@ -174,7 +174,7 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
     try {
       const mp3StorageRef = ref(storage, `audio/${user.uid}/${recordingName}.webm`)
       await uploadBytes(mp3StorageRef, micRecorder)
-      toast.custom(<Alert variant='filled' severity="success">{`Layer Uploaded :)`}</Alert>)
+      toast.custom(<Alert variant='filled' severity="success" color='primary'>{`Layer Uploaded :)`}</Alert>)
       let url = await getLayerUrl(mp3StorageRef)
       let data = {
         parent: user.uid,

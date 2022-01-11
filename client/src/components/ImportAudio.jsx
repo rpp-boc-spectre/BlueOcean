@@ -129,7 +129,7 @@ export default function ImportAudio({ userId, currentList, originalList, setPare
       layerStore.player.reload(submitList)
     }
     setParentLayers(submitList)
-    toast.custom(<Alert variant='filled' severity='success'>{`Imported ${checked.length} item(s)`}</Alert>)
+    toast.custom(<Alert variant='filled' severity='success' color='primary'>{`Imported ${checked.length} item(s)`}</Alert>)
     close()
   }
 
