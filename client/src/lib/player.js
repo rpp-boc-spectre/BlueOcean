@@ -10,7 +10,8 @@ export class Player {
     this.isPlaying = false;
     this.id = trackData?.id;
 
-    layersData.forEach((layer, index) => {
+    // if layersData exists, create new layers
+    layersData?.forEach((layer, index) => {
       const newLayer = new Layer({ ...layer, id: index, layerData: layer });
       newLayer.connect();
       this.layers.push(newLayer);
@@ -23,10 +24,10 @@ export class Player {
         console.log('layerStore/Player.js');
         await Tone.start();
         await Tone.loaded();
+        Tone.Transport.seconds = 0;
         this.layers.forEach((layer) => {
           layer.start();
         });
-        Tone.Transport.seconds = 0;
         Tone.Transport.start();
         this.isPlaying = true;
         resolve(this.isPlaying);
@@ -70,6 +71,9 @@ export class Player {
   }
 
   dispose() {
+    if (this.isPlaying) {
+      this.stop()
+    }
     this.layers.forEach((layer) => {
       layer.dispose();
     });
@@ -88,7 +92,7 @@ export class Player {
   setAllLayersPlaybackRate(newValue) {
 
 
-    this.layers.forEach((layer)=>{
+    this.layers.forEach((layer) => {
       layer.changePlaybackRate(newValue)
 
     })
@@ -107,7 +111,7 @@ export class Player {
     });
   }
 
-  setAllLayersGrainSize() {}
+  setAllLayersGrainSize() { }
 
-  setAllLayersReverse() {}
+  setAllLayersReverse() { }
 }

@@ -8,16 +8,18 @@ import Modal from "@mui/material/Modal";
 import Drawer from "@mui/material/Drawer";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import ArrowDownward from '@mui/icons-material/ArrowDownward'
+import ArrowDownward from '@mui/icons-material/ArrowDownward';
+import ArrowBack from '@mui/icons-material/ArrowBack';
 
 import { useSnackbar } from "material-ui-snackbar-provider";
 
 import LayerPlayer from "./LayerPlayer";
-import ImportAduio from "./ImportAudio";
+import ImportAudio from "./ImportAudio";
 import Recorder from './Recorder';
 
 import { getTrackData } from "../utils/database";
 import { getTrackUrls } from "../utils/storage";
+import { Player } from '../lib/player';
 import UserContext from "../context/UserContext";
 import UploadFile from "./UploadFile.jsx";
 
@@ -30,6 +32,7 @@ export default function Editor() {
   const [recordingModalState, setRecordingModalState] = useState(false);
   const [uploadModalState, setUploadModalState] = useState(false);
   const [audioLayers, setAudioLayers] = useState([]);
+  const [originalAudioLayers, setOriginalAudioLayers] = useState([]);
   const [trackMetadata, setTrackMetadata] = useState({});
   const [trackData, setTrackData] = useState(null)
   const userData = useContext(UserContext);
@@ -67,6 +70,7 @@ export default function Editor() {
           }
           setTrackData(trackWithUrls)
           setAudioLayers(layers)
+          setOriginalAudioLayers(layers)
         })
         .catch(error => {
           console.log(error);
@@ -80,8 +84,12 @@ export default function Editor() {
         setAudioLayers([])
       }
       if (layerStore.player) {
+        // kill the old players audio
         layerStore.player.dispose()
-        dispatch(setPlayer(null))
+        // make a new blank player
+        const newPlayer = new Player();
+        dispatch(setPlayer(newPlayer))
+
       }
     }
   }, [trackId])
@@ -114,23 +122,24 @@ export default function Editor() {
         trackId={trackId}
         trackMetadata={trackMetadata}
         recordingHandler={recordingHandler}
-        updateMetadata={setTrackMetadata}
         importHandler={importHandler}
+        updateMetadata={setTrackMetadata}
         uploadHandler={uploadHandler}
         trackData={trackData}
       />
 
-      <Modal open={importModalState} onClose={handleImportClose}>
-        <Box sx={{
-          backgroundColor: 'white',
-          top: 50,
-          maxHeight: '100vh',
-          overflow: 'auto'
-          }}
-        >
-          <ImportAduio userId={userData?.user?.uid} currentList={audioLayers} setParentLayers={setAudioLayers} close={handleImportClose} />
-        </Box>
-      </Modal>
+      <Drawer open={importModalState}>
+          <ImportAudio
+            userId={userData?.user?.uid}
+            originalList={originalAudioLayers}
+            currentList={audioLayers}
+            setParentLayers={setAudioLayers}
+            close={handleImportClose}
+          />
+          <IconButton onClick={handleImportClose}>
+            <ArrowBack />
+          </IconButton>
+      </Drawer>
       <Drawer
         sx={{
           width: 400,

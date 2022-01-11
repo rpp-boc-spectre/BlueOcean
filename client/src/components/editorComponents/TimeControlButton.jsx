@@ -16,6 +16,7 @@ import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import MusicOffIcon from '@mui/icons-material/MusicOff';
+import ImportExportIcon from '@mui/icons-material/ImportExport';
 
 // import SvgIcon from '@mui/material/SvgIcon';
 import SoloSVG from './S.svg';
@@ -58,6 +59,9 @@ const TimeControlButton = (props) => {
   }
   if (target === 'Delete') {
     button = <Button variant='outlined' onClick={props.button.handler}><DeleteIcon /></Button>
+  }
+  if (target === 'Import') {
+    button = <Button variant='outlined' onClick={props.button.handler}><ImportExportIcon /></Button>
   }
   if (target === 'Mute' && props.button.value === true) {
     button = <ToggleButton value={props.button.value} onChange={props.button.handler}><VolumeOffIcon /></ToggleButton>
