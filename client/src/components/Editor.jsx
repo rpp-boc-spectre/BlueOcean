@@ -106,7 +106,6 @@ export default function Editor() {
   };
 
   return (
-
     <Container className={'Big-container'} sx={{
       border: 1,
       maxHeight: '90vh',
@@ -140,14 +139,14 @@ export default function Editor() {
           </IconButton>
       </Drawer>
       <Drawer
-        sx={{
-          width: 400,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: 400,
-            boxSizing: 'border-box',
-          },
-        }}
+        // sx={{
+        //   width: 400,
+        //   flexShrink: 0,
+        //   '& .MuiDrawer-paper': {
+        //     width: 400,
+        //     boxSizing: 'border-box',
+        //   },
+        // }}
         variant="persistent"
         anchor="bottom"
         open={recordingModalState}
@@ -159,7 +158,8 @@ export default function Editor() {
         <Recorder currentList={audioLayers} setAudioLayers={setAudioLayers} />
       </Drawer>
       <Modal open={uploadModalState} onClose={handleUploadClose} >
-        <Box sx={{ backgroundColor: 'white', margin: 'auto', top: 50, }}>
+        {/* <Box sx={{ backgroundColor: 'white', margin: 'auto', top: 50, }}> */}
+        <Box>
           <UploadFile />
         </Box>
       </Modal>

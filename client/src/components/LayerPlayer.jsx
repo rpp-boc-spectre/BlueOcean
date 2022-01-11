@@ -11,6 +11,7 @@ import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
 import { addLayer, removeLayer, setPlayer } from '../lib/layerTableReducer.js';
 import { saveTrackData } from '../utils/database.js';
 import { Player } from '../lib/player.js';
@@ -155,6 +156,15 @@ export default function LayerPlayer({
   return (
     <>
       <Container sx={{
+        border: 1,
+        gridRow: {md: '1'}
+      }}>
+        {(allLayersLoaded && layers) &&
+          layers.map((layer, index) => <LayerEditor key={index} id={index} player={layerStore.player.layers[index]} />)}
+      </Container>
+      <Divider />
+      <Container sx={{
+        border: 1,
         display: 'grid',
         gridRow: {md: '2'}
       }}>
@@ -189,11 +199,11 @@ export default function LayerPlayer({
         <Box
           sx={{
             bgcolor: 'background.paper',
-            gridColumn: { xs: '1 / 3', md: '2' },
+            // gridColumn: { xs: '1 / 3', md: '2' },
             // gridRow: { xs: '1', md: '1 / 3' },
-            minHeight: '60vh',
+            // minHeight: '60vh',
             maxHeight: '80vh',
-            // padding: { xs: '0', md: '10px' },
+            padding: { xs: '0', md: '10px' },
           }}
           >
           <Modal
@@ -246,12 +256,6 @@ export default function LayerPlayer({
             </Box>
           </Modal>
         </Box>
-      </Container>
-      <Container sx={{
-        gridRow: {md: '1'}
-      }}>
-        {(allLayersLoaded && layers) &&
-          layers.map((layer, index) => <LayerEditor key={index} id={index} player={layerStore.player.layers[index]} />)}
       </Container>
     </>
   );

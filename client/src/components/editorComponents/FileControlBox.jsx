@@ -16,8 +16,8 @@ const FileControlBox = (props) => {
     <>
       <Box
         sx={{
-        //   border: 1,
-          gridColumn: {xs: '1', md: '1'},
+          border: 1,
+          // gridColumn: {xs: '1', md: '1'},
         //   gridRow: {xs: '2', md: '2'}
         }}
       >

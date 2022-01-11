@@ -36,17 +36,17 @@ const handleFastForward = () => {
 const TimeControlBox = (props) => {
 
   const buttons = [
-    {name: 'Stop', handler: props.stopAllHandler},
     {name: 'Play', handler: props.playAllHandler},
     {name: 'Pause', handler: props.pauseResumeHandler},
+    {name: 'Stop', handler: props.stopAllHandler},
     {name: 'Edit', handler: props.editorOpenHandler}
   ];
   return (
     <>
       <Box
         sx={{
-        //   border: 1,
-          gridColumn: {xs: '1', md: '1'},
+          border: 1,
+          // gridColumn: {xs: '1', md: '1'},
         //   gridRow: {xs: '2', md: '2'}
         }}
       >
