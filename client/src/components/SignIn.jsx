@@ -1,26 +1,27 @@
 import React, { useRef, useState } from "react";
-import { useSnackbar } from 'material-ui-snackbar-provider';
-import { Button, TextField, Typography, Alert } from "@mui/material";
+import toast from 'react-hot-toast';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Alert from '@mui/material/Alert';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 
 export default function SignIn() {
-
-  let snackbar = useSnackbar();
-
   const [formEmail, setFormEmail] = useState('');
   const [formPassword, setFormPassword] = useState('');
 
   const handleSubmit = () => {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, formEmail, formPassword)
-    .then((userCredential) => {
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    });
+      .then((userCredential) => {
+        toast.custom(<Alert variant='filled' severity="success">{`Welcome, ${userCredential.user.displayName}`}</Alert>)
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        toast.custom(<Alert variant='filled' severity="error">There was an error signing you in</Alert>)
+      });
   }
 
 
@@ -30,7 +31,7 @@ export default function SignIn() {
       <ValidatorForm onSubmit={handleSubmit}>
         <TextValidator
           label="Email"
-          onChange={e => {setFormEmail(e.target.value)}}
+          onChange={e => { setFormEmail(e.target.value) }}
           name="email"
           value={formEmail}
           validators={['required', 'isEmail']}
@@ -39,7 +40,7 @@ export default function SignIn() {
         <br />
         <TextValidator
           label="Password"
-          onChange={e => {setFormPassword(e.target.value)}}
+          onChange={e => { setFormPassword(e.target.value) }}
           name="password"
           value={formPassword}
           validators={['required']}
