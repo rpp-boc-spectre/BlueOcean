@@ -22,6 +22,7 @@ export class Player {
     return new Promise(async (resolve, reject) => {
       try {
         console.log('layerStore/Player.js');
+        Tone.Transport.stop()
         await Tone.start();
         await Tone.loaded();
         Tone.Transport.seconds = 0;

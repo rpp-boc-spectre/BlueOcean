@@ -12,15 +12,25 @@ export default function TrackList({ userId }) {
 
   const [tracks, setTracks] = useState([])
 
-  useEffect(() => {
+  const getUserTracks = () => {
     getAllTracks(userId)
       .then(data => {
-        console.log('Track Data', data)
         setTracks(data)
       })
       .catch(error => {
-        console.log(error)
+        console.debug(error)
       })
+  }
+
+  const removeUserTrack = (index) => {
+    setTracks((prev) => {
+      prev.splice(index, 1);
+      return prev
+    })
+  }
+
+  useEffect(() => {
+    getUserTracks()
   }, [])
 
   const trackSorter = () => {
@@ -44,7 +54,7 @@ export default function TrackList({ userId }) {
         <Typography align='center' variant='h5'>Your Tracks</Typography>
         <List>
           {tagList.map((tag, index) => {
-            return <TaggedTracks tag={tag} tracks={sortedTracks[tag]} key={index} />
+            return <TaggedTracks tag={tag} tracks={sortedTracks[tag]} key={index} getUserTracks={getUserTracks} />
           })}
         </List>
       </Box>
