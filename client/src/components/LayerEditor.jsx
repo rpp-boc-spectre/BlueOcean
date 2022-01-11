@@ -234,7 +234,7 @@ export default function LayerEditorCopy({ id, player }) {
           <Typography>Trim From Start</Typography>
           <Slider
             min={0}
-            max={player.duration() / player.playbackRate}
+            max={Number((player.duration() / player.playbackRate).toPrecision(4))}
             value={trimFromStart}
             onChange={trimFromStartTime}
             aria-label='Trim Slider'
@@ -243,7 +243,7 @@ export default function LayerEditorCopy({ id, player }) {
           <Typography>Trim From End</Typography>
           <Slider
             min={0}
-            max={player.duration() / player.playbackRate}
+            max={Number((player.duration() / player.playbackRate).toPrecision(4))}
             value={trimFromEnd}
             onChange={trimFromEndTime}
             aria-label='Trim Slider'
