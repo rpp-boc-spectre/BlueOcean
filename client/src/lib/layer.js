@@ -50,11 +50,11 @@ export class Layer {
     this.player
       .sync()
       .start(
-        this.trimFromStart,
-        offset,
-        this.duration() / this.player.playbackRate - offset
+        this.trimFromStart / this.player.playbackRate,
+        offset/ this.player.playbackRate,
+       this.trimFromEnd/ this.player.playbackRate - offset
       )
-      .stop(this.trimFromEnd);
+      .stop(this.trimFromEnd/this.player.playbackRate -offset);
     this.startWaveform();
   }
   startWaveform() {
