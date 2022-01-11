@@ -1,7 +1,7 @@
 import 'regenerator-runtime/runtime'
 import React, { useContext, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Typography, Button, Alert } from '@mui/material'
+import { Typography, Button, Alert, Container, Stack, Divider } from '@mui/material'
 
 import UserContext from "../context/UserContext.js";
 
@@ -89,6 +89,7 @@ export default function Entry() {
       return (
         <>
           {(userData?.user && userData?.username) ?
+<<<<<<< HEAD
             <Button variant="outlined" color="error" onClick={handleSignOut}>
               Signout
             </Button>
@@ -105,6 +106,36 @@ export default function Entry() {
                 </>
               </>
           }
+=======
+          <Button variant="outlined" color="error" onClick={handleSignOut}>
+            Signout
+          </Button>
+          :
+          showUserForm ?
+          <UserForm userId={userData.user.uid}/>
+          :
+          <>
+            <Typography variant='h3'>Welcome Back</Typography>
+            <Stack spacing={{ xs: 1, md: 2 }}>
+              <SignIn navigate={navigate} />
+            </Stack>
+            <>
+              <Stack
+                direction={{ xs: "column", sm: "row" }}
+                divider={<Divider orientation="vertical" flexItem />}
+                spacing={{ xs: 1, md: 2 }}
+              >
+                <Button variant="contained" onClick={handleSignInWithGoogle}>Sign In with Google</Button>
+                <Button variant="contained" onClick={handleSignInWithFacebook}>Sign In with Facebook</Button>
+              </Stack>
+              <Stack spacing={{ xs: 1, md: 2 }}>
+                <Typography variant="subtitle2">Don't have an account?</Typography>
+                <Button variant="outlined" onClick={() => {setSignIn(false)}}>Sign Up</Button>
+              </Stack>
+            </>
+          </>
+        }
+>>>>>>> main
         </>
       )
     } else {
@@ -114,9 +145,18 @@ export default function Entry() {
 
   return (
     <>
-      <Typography variant='h3'>Login Component</Typography>
+      <Container spacing={2}>
+        <Stack
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          spacing={2}
+        >
 
-      {entryType()}
+
+          {entryType()}
+        </Stack>
+      </Container>
     </>
   )
 }
