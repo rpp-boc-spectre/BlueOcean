@@ -44,7 +44,14 @@ export default function TrackListItem({ trackId, meta }) {
 
   return (
     <CardActionArea onClick={handleNavigation} sx={{ p: '2px' }}>
-      <Card sx={{ height: {xs: '35vh', md: '200px'}, width: {xs: '45vw', md: '300px'} }}>
+      <Card sx={{
+        height: {xs: '35vh', md: '200px'},
+        width: {xs: '43vw', md: '250px'},
+        overflowX: 'scroll',
+        '&::-webkit-scrollbar': {
+            display: 'none'
+        },
+      }}>
         <CardContent>
           <Typography variant="h6">{displayName}</Typography>
           <Chip label={tag} />

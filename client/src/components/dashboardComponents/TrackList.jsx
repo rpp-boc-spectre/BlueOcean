@@ -43,7 +43,6 @@ export default function TrackList({ userId }) {
   return (
     <>
       <Box>
-        <Typography align='center' variant='h5'>Your Tracks</Typography>
         {tagList.map((tag, index) => {
           return <TaggedTracks tag={tag} tracks={sortedTracks[tag]} key={index} />
         })}
