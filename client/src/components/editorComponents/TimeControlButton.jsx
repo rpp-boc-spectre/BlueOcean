@@ -17,6 +17,7 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import MusicOffIcon from '@mui/icons-material/MusicOff';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
 
 // import SvgIcon from '@mui/material/SvgIcon';
 import SoloSVG from './S.svg';
@@ -62,6 +63,9 @@ const TimeControlButton = (props) => {
   }
   if (target === 'Import') {
     button = <Button variant='outlined' onClick={props.button.handler}><ImportExportIcon /></Button>
+  }
+  if (target === 'Upload') {
+    button = <Button variant='outlined' onClick={props.button.handler}><UploadFileIcon /></Button>
   }
   if (target === 'Mute' && props.button.value === true) {
     button = <ToggleButton value={props.button.value} onChange={props.button.handler}><VolumeOffIcon /></ToggleButton>

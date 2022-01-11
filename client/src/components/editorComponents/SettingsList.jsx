@@ -15,25 +15,13 @@ import {
   TextField
 } from '@mui/material';
 
+import SaveIcon from '@mui/icons-material/Save';
+
 /*
 Actual settings and their respective functions subject to change, and their
 handlers might need to be moved to the Editor component to properly interact with
 everything else and be passed down as props, but for now, they live here
 */
-
-const saveHandler = () => {
-  console.log('CLICKED SAVE');
-}
-const newLayerHandler = () => {
-  console.log('CLICKED NEW LAYER');
-
-}
-const newAudioHandler = () => {
-  console.log('CLICKED NEW AUDIO');
-}
-const uploadHandler = () => {
-  console.log('CLICKED UPLOAD');
-}
 
 const tagsList = [
   "General",
@@ -75,18 +63,13 @@ const SettingsList = (props) => {
 
   const settingsArray = [
     { name: 'Save', handler: props.saveHandler },
-    { name: 'New Audio', handler: newAudioHandler },
     { name: 'Upload', handler: props.uploadHandler }
   ];
 
   return (
     <>
-      <Button onClick={handleDrawerToggle} sx={{
-        border: 1,
-        gridColumn: { xs: '2', md: '1' },
-        gridRow: { xs: '2', md: '1' }
-      }}>
-        <Typography>Settings</Typography>
+      <Button variant='outlined' onClick={handleDrawerToggle}>
+        <SaveIcon />
       </Button>
       <Drawer container={container}
         variant="temporary"
@@ -108,7 +91,7 @@ const SettingsList = (props) => {
           onChange={handleTrackNameChange}
         />
         <FormControl fullWidth>
-        <InputLabel id="tag-select-label">Tag</InputLabel>
+          <InputLabel id="tag-select-label">Tag</InputLabel>
           <Select
             labelId="tag-select-label"
             id="track-tag-select"
@@ -128,17 +111,6 @@ const SettingsList = (props) => {
           return (<Button variant='outlined' key={index} onClick={setting.handler}>{setting.name}</Button>);
         })}
       </Drawer>
-      {/* <Box
-      sx={{
-        display: {xs: 'none', md: 'block'},
-        border: 1,
-        gridColumn: {xs: '3', md: '3'},
-        gridRow: {xs: '4', md: '2 / 4'}
-      }}>
-        {settingsArray.map((setting, index) => {
-          return (<Button variant='outlined' key={index} onClick={setting.handler}>{setting.name}</Button>);
-        })}
-      </Box> */}
     </>
   );
 };

@@ -17,7 +17,8 @@ import { Player } from '../lib/player.js';
 import LayerEditor from './LayerEditor.jsx';
 import TimeControlBox from './editorComponents/TimeControlBox.jsx';
 import TimeControlButton from './editorComponents/TimeControlButton.jsx';
-import SettingsList from './editorComponents/SettingsList.jsx';
+import FileControlBox from './editorComponents/FileControlBox.jsx';
+import FileControlButton from './editorComponents/FileControlButton.jsx';
 
 export default function LayerPlayer({
   layers,
@@ -152,18 +153,18 @@ export default function LayerPlayer({
   };
   return (
     <>
-      <SettingsList
-        saveHandler={handleSaveClick}
-        uploadHandler={uploadHandler}
-        metadata={trackMetadata}
-        updateMetadata={updateMetadata}
-      />
       <TimeControlBox
-        recordingHandler={recordingHandler}
-        importHandler={importHandler}
         playAllHandler={playAllLayers}
         stopAllHandler={stopAllLayers}
         pauseResumeHandler={pauseResumeAllLayers}
+      />
+      <FileControlBox
+        recordingHandler={recordingHandler}
+        importHandler={importHandler}
+        uploadHandler={uploadHandler}
+        saveHandler={handleSaveClick}
+        metadata={trackMetadata}
+        updateMetadata={updateMetadata}
       />
       <TimeControlButton button={{ name: 'Edit', handler: layerEditorOpen }} />
       <Box
