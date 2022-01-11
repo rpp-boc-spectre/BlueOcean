@@ -46,53 +46,47 @@ export default function SignUp({ navigate }) {
         alignItems="center"
         spacing={{ xs: 1, md: 2 }}
       >
-      <ValidatorForm ref={formRef} onSubmit={handleSubmit}>
-        <TextValidator
-          label="Email"
-          onChange={e => { setFormEmail(e.target.value) }}
-          name="email"
-          value={formEmail}
-          validators={['required', 'isEmail']}
-          errorMessages={['this field is required', 'email is not valid']}
-        />
-        <TextValidator
-          label="Username"
-          onChange={e => { setFormUsername(e.target.value) }}
-          name="username"
-          value={formUsername}
-          validators={['required']}
-          errorMessages={['this field is required']}
-        />
-        <br />
-        <TextValidator
-          label="Password"
-          onChange={e => { setFormPassword(e.target.value) }}
-          name="password"
-          type="password"
-          validators={['required']}
-          errorMessages={['this field is required']}
-          value={formPassword}
-        />
-        <TextValidator
-          label="Repeat password"
-          onChange={e => { setFormRePassword(e.target.value) }}
-          name="repeatPassword"
-          type="password"
-          validators={['isPasswordMatch', 'required']}
-          errorMessages={['password mismatch', 'this field is required']}
-          value={formRePassword}
-        />
-<<<<<<< HEAD
-        <br />
-        <Button variant="contained" type="submit">Submit</Button>
-=======
-
-        <br/>
-        <Box textAlign="center">
-          <Button variant="contained" type="submit">Submit</Button>
-        </Box>
->>>>>>> main
-      </ValidatorForm>
+        <ValidatorForm ref={formRef} onSubmit={handleSubmit}>
+          <TextValidator
+            label="Email"
+            onChange={e => { setFormEmail(e.target.value) }}
+            name="email"
+            value={formEmail}
+            validators={['required', 'isEmail']}
+            errorMessages={['this field is required', 'email is not valid']}
+          />
+          <TextValidator
+            label="Username"
+            onChange={e => { setFormUsername(e.target.value) }}
+            name="username"
+            value={formUsername}
+            validators={['required']}
+            errorMessages={['this field is required']}
+          />
+          <br />
+          <TextValidator
+            label="Password"
+            onChange={e => { setFormPassword(e.target.value) }}
+            name="password"
+            type="password"
+            validators={['required']}
+            errorMessages={['this field is required']}
+            value={formPassword}
+          />
+          <TextValidator
+            label="Repeat password"
+            onChange={e => { setFormRePassword(e.target.value) }}
+            name="repeatPassword"
+            type="password"
+            validators={['isPasswordMatch', 'required']}
+            errorMessages={['password mismatch', 'this field is required']}
+            value={formRePassword}
+          />
+          <br />
+          <Box textAlign="center">
+            <Button variant="contained" type="submit">Submit</Button>
+          </Box>
+        </ValidatorForm>
       </Stack>
     </>
   )
