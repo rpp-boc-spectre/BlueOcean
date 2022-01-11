@@ -22,7 +22,7 @@ export default function SignUp({ navigate }) {
         return setDoc(doc(db, 'users', user.uid), { username: formUsername })
       })
       .then(() => {
-        toast.custom(<Alert variant="filled" severity="success">User Created</Alert>)
+        toast.custom(<Alert variant="filled" severity="success" color='primary'>User Created</Alert>)
         navigate('/dashboard')
       })
       .catch(error => {
