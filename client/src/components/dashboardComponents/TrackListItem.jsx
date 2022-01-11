@@ -14,7 +14,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import PublicIcon from '@mui/icons-material/Public';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-export default function TrackListItem({ trackId, meta }) {
+export default function TrackListItem({ trackId, meta, index, getUserTracks }) {
   //console.log('META', meta);
   let publicSetting, displayName, tag;
   if (meta && meta.public) {
@@ -45,10 +45,12 @@ export default function TrackListItem({ trackId, meta }) {
     console.debug('Delete clicked! ', trackId)
     removeTrack(trackId)
       .then(() => {
+        getUserTracks()
         snackbar.showMessage(<Alert severity='success'>Track Deleted</Alert>)
       })
       .catch((error) => {
         snackbar.showMessage(<Alert severity='error'>Error deleting your track :(</Alert>)
+        console.debug('Dashboard: handleDelete: ', error)
       });
   }
 
