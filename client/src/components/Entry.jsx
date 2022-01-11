@@ -89,7 +89,6 @@ export default function Entry() {
       return (
         <>
           {(userData?.user && userData?.username) ?
-<<<<<<< HEAD
             <Button variant="outlined" color="error" onClick={handleSignOut}>
               Signout
             </Button>
@@ -98,44 +97,26 @@ export default function Entry() {
               <UserForm userId={userData.user.uid} />
               :
               <>
-                <SignIn />
+                <Typography variant='h3'>Welcome Back</Typography>
+                <Stack spacing={{ xs: 1, md: 2 }}>
+                  <SignIn navigate={navigate} />
+                </Stack>
                 <>
-                  <Button variant="contained" onClick={handleSignInWithGoogle}>Sign In with Google</Button>
-                  <Button variant="contained" onClick={handleSignInWithFacebook}>Sign In with Facebook</Button>
-                  <Button variant="outlined" onClick={() => { setSignIn(false) }}>Sign Up</Button>
+                  <Stack
+                    direction={{ xs: "column", sm: "row" }}
+                    divider={<Divider orientation="vertical" flexItem />}
+                    spacing={{ xs: 1, md: 2 }}
+                  >
+                    <Button variant="contained" onClick={handleSignInWithGoogle}>Sign In with Google</Button>
+                    <Button variant="contained" onClick={handleSignInWithFacebook}>Sign In with Facebook</Button>
+                  </Stack>
+                  <Stack spacing={{ xs: 1, md: 2 }}>
+                    <Typography variant="subtitle2">Don't have an account?</Typography>
+                    <Button variant="outlined" onClick={() => { setSignIn(false) }}>Sign Up</Button>
+                  </Stack>
                 </>
               </>
           }
-=======
-          <Button variant="outlined" color="error" onClick={handleSignOut}>
-            Signout
-          </Button>
-          :
-          showUserForm ?
-          <UserForm userId={userData.user.uid}/>
-          :
-          <>
-            <Typography variant='h3'>Welcome Back</Typography>
-            <Stack spacing={{ xs: 1, md: 2 }}>
-              <SignIn navigate={navigate} />
-            </Stack>
-            <>
-              <Stack
-                direction={{ xs: "column", sm: "row" }}
-                divider={<Divider orientation="vertical" flexItem />}
-                spacing={{ xs: 1, md: 2 }}
-              >
-                <Button variant="contained" onClick={handleSignInWithGoogle}>Sign In with Google</Button>
-                <Button variant="contained" onClick={handleSignInWithFacebook}>Sign In with Facebook</Button>
-              </Stack>
-              <Stack spacing={{ xs: 1, md: 2 }}>
-                <Typography variant="subtitle2">Don't have an account?</Typography>
-                <Button variant="outlined" onClick={() => {setSignIn(false)}}>Sign Up</Button>
-              </Stack>
-            </>
-          </>
-        }
->>>>>>> main
         </>
       )
     } else {
@@ -152,8 +133,6 @@ export default function Entry() {
           alignItems="center"
           spacing={2}
         >
-
-
           {entryType()}
         </Stack>
       </Container>
