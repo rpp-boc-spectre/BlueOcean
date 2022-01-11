@@ -11,7 +11,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import { useSnackbar } from 'material-ui-snackbar-provider';
+import toast from 'react-hot-toast';
 import { getLayerUrl } from '../utils/storage.js';
 import { useLayerStore } from '../context/LayerContext.js';
 
@@ -24,7 +24,6 @@ export default function ImportAudio({ userId, currentList, originalList, setPare
   const [originalChecked, setOriginalChecked] = React.useState([]);
   const [checkLinks, setCheckLinks] = React.useState([]);
   const [layerMax, setLayerMax] = React.useState(4);
-  const snackbar = useSnackbar();
 
   useEffect(() => {
     const listRef = ref(storage, `audio/${userId}`);
@@ -69,7 +68,7 @@ export default function ImportAudio({ userId, currentList, originalList, setPare
         setLoading(false)
       }).catch((error) => {
         console.debug(error);
-        snackbar.showMessage(<Alert variant='error'>There was an error getting files.</Alert>)
+        toast.custom(<Alert variant='filled' severity='error'>There was an error getting files.</Alert>)
         setLoading(false)
       });
   }, []);
@@ -90,7 +89,8 @@ export default function ImportAudio({ userId, currentList, originalList, setPare
         console.log(link);
         handleToggle(link[1])(false);
       }
-    )};
+      )
+    };
   };
 
   const handleToggle = (value) => (followThrough = true) => {
@@ -108,7 +108,8 @@ export default function ImportAudio({ userId, currentList, originalList, setPare
       checkLinks.filter(link => value === link[1]).forEach(link => {
         handleOriginalToggle(link[0])(false);
       }
-    )};
+      )
+    };
   };
 
   const handleSubmit = () => {
@@ -128,7 +129,7 @@ export default function ImportAudio({ userId, currentList, originalList, setPare
       layerStore.player.reload(submitList)
     }
     setParentLayers(submitList)
-    snackbar.showMessage(<Alert variant='success'>{`Imported ${checked.length} item(s)`}</Alert>)
+    toast.custom(<Alert variant='filled' severity='success'>{`Imported ${checked.length} item(s)`}</Alert>)
     close()
   }
 
