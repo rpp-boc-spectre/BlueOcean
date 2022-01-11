@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useSnackbar } from 'material-ui-snackbar-provider';
-import { Button, TextField, Typography, Alert } from "@mui/material";
+import { Button, TextField, Typography, Alert, Stack, Box } from "@mui/material";
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
@@ -21,14 +21,19 @@ export default function SignIn({navigate}) {
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      console.log('ERROR SIGNIN', error);
+      console.log('ERROR SIGNIN', error.message);
     });
   }
 
 
   return (
     <>
-      <Typography variant="subtitle2">Email Address:</Typography>
+      <Stack
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        spacing={{ xs: 1, md: 2 }}
+      >
       <ValidatorForm onSubmit={handleSubmit}>
         <TextValidator
           label="Email"
@@ -39,7 +44,6 @@ export default function SignIn({navigate}) {
           errorMessages={['Email is required', 'Email is not valid']}
         />
         <br />
-        <Typography variant="subtitle2">Password:</Typography>
         <TextValidator
           label="Password"
           type="password"
@@ -50,8 +54,11 @@ export default function SignIn({navigate}) {
           errorMessages={['Password is required']}
         />
         <br />
-        <Button variant="contained" type="submit">Submit</Button>
+        <Box textAlign="center">
+          <Button variant="contained" type="submit">Submit</Button>
+        </Box>
       </ValidatorForm>
+      </Stack>
     </>
   )
 }

@@ -1,4 +1,4 @@
-import { Button, TextField, Typography, Alert } from "@mui/material";
+import { Button, TextField, Typography, Alert, Stack, Box } from "@mui/material";
 import React, { useRef, useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../lib/firebase'
@@ -42,7 +42,13 @@ export default function SignUp({ navigate }) {
 
   return (
     <>
-      <Typography variant="h3">SignUp Component</Typography>
+      <Typography variant="h3">Create an Account</Typography>
+      <Stack
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        spacing={{ xs: 1, md: 2 }}
+      >
       <ValidatorForm ref={formRef} onSubmit={handleSubmit}>
         <TextValidator
           label="Email"
@@ -79,9 +85,13 @@ export default function SignUp({ navigate }) {
           errorMessages={['password mismatch', 'this field is required']}
           value={formRePassword}
         />
+
         <br/>
-        <Button variant="contained" type="submit">Submit</Button>
+        <Box textAlign="center">
+          <Button variant="contained" type="submit">Submit</Button>
+        </Box>
       </ValidatorForm>
+      </Stack>
     </>
   )
 }
