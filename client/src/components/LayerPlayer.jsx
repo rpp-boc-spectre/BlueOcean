@@ -70,7 +70,7 @@ export default function LayerPlayer({
         toast.custom(<Alert variant='filled' severity='error'>Please enter a track name</Alert>)
       } else {
         let id = await saveTrackData(layerStore.player, userId, temp);
-        toast.custom(<Alert variant='filled' severity='success'>Track saved</Alert>)
+        toast.custom(<Alert variant='filled' severity='success' color='primary'>Track saved</Alert>)
         if (!trackId) {
           navigate(`/edit/${id}`)
         }

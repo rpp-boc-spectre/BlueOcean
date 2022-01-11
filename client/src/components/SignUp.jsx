@@ -2,7 +2,7 @@ import { Button, TextField, Typography, Alert } from "@mui/material";
 import React, { useRef, useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../lib/firebase'
-import toast from 'react-hot-toast;'
+import toast from 'react-hot-toast';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { db } from '../lib/firebase.js';
 import { doc, setDoc } from 'firebase/firestore'
