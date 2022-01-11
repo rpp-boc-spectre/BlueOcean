@@ -94,6 +94,12 @@ export default function TrackListItem({ trackId, meta, index, getUserTracks }) {
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        PaperProps={{
+          style: {
+            backgroundColor: 'white',
+            boxShadow: 'none',
+          }
+        }}
       >
         <DialogTitle id="alert-dialog-title">
           {`Are you sure you want to delete ${displayName}?`}
