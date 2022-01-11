@@ -1,5 +1,5 @@
 import { db } from '../lib/firebase'
-import { doc, getDoc, setDoc, collection, getDocs, where, query } from 'firebase/firestore'
+import { doc, getDoc, setDoc, collection, getDocs, where, query, deleteDoc } from 'firebase/firestore'
 
 export function getTrackData(trackId) {
   return new Promise(async (resolve, reject) => {
@@ -96,4 +96,15 @@ const createTrackDataObject = (players, userId, metadata) => {
   }
 
   return trackData
+}
+
+export const removeTrack = (trackId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await deleteDoc(doc(db, 'tracks', trackId))
+      resolve()
+    } catch (error) {
+      reject(error)
+    }
+  })
 }
