@@ -23,7 +23,7 @@ import { Player } from '../lib/player';
 import UserContext from "../context/UserContext";
 import UploadFile from "./UploadFile.jsx";
 
-import { addLayer, removeLayer, setPlayer } from '../lib/layerTableReducer.js';
+import { setPlayer } from '../lib/layerTableReducer.js';
 import { useLayerStore } from '../context/LayerContext.js'
 
 export default function Editor() {
@@ -72,7 +72,7 @@ export default function Editor() {
           setOriginalAudioLayers(layers)
         })
         .catch(error => {
-          toast.custom(<Alert variant='error'>There was an error getting your track</Alert>)
+          toast.custom(<Alert variant="filled" severity="error">There was an error getting your track</Alert>)
         })
     }
 
