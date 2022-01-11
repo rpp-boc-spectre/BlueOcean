@@ -101,9 +101,7 @@ export default function Entry() {
           <UserForm userId={userData.user.uid}/>
           :
           <>
-
-              <SignIn />
-
+            <SignIn navigate={navigate}/>
             <>
               <Button variant="contained" onClick={handleSignInWithGoogle}>Sign In with Google</Button>
               <Button variant="contained" onClick={handleSignInWithFacebook}>Sign In with Facebook</Button>
@@ -120,7 +118,7 @@ export default function Entry() {
 
   return (
     <>
-      <Typography variant='h3'>Login Component</Typography>
+      <Typography variant='h3'>Welcome Back</Typography>
 
       {entryType()}
     </>

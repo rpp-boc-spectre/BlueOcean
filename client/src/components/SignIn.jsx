@@ -5,7 +5,7 @@ import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 
-export default function SignIn() {
+export default function SignIn({navigate}) {
 
   let snackbar = useSnackbar();
 
@@ -16,17 +16,19 @@ export default function SignIn() {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, formEmail, formPassword)
     .then((userCredential) => {
+      navigate('/dashboard');
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
+      console.log('ERROR SIGNIN', error);
     });
   }
 
 
   return (
     <>
-      <Typography>SignIn Component</Typography>
+      <Typography variant="subtitle2">Email Address:</Typography>
       <ValidatorForm onSubmit={handleSubmit}>
         <TextValidator
           label="Email"
@@ -34,16 +36,18 @@ export default function SignIn() {
           name="email"
           value={formEmail}
           validators={['required', 'isEmail']}
-          errorMessages={['this field is required', 'email is not valid']}
+          errorMessages={['Email is required', 'Email is not valid']}
         />
         <br />
+        <Typography variant="subtitle2">Password:</Typography>
         <TextValidator
           label="Password"
+          type="password"
           onChange={e => {setFormPassword(e.target.value)}}
           name="password"
           value={formPassword}
           validators={['required']}
-          errorMessages={['this field is required']}
+          errorMessages={['Password is required']}
         />
         <br />
         <Button variant="contained" type="submit">Submit</Button>
