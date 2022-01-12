@@ -13,7 +13,7 @@ export default function SignIn({ navigate }) {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, formEmail, formPassword)
       .then((userCredential) => {
-        toast.custom(<Alert variant='filled' severity="success" color='primary'>{`Welcome, ${userCredential.user.displayName}`}</Alert>)
+        toast.custom(<Alert variant='filled' severity="success" color='primary'>Welcome!</Alert>)
         navigate('/dashboard');
       })
       .catch((error) => {
