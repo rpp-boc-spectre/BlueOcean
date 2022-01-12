@@ -8,7 +8,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Modal from '@mui/material/Modal';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Box';
-
+// Number((player.trimFromStart / player.playbackRate).toFixed(2))
 import { useLayerStore } from '../context/LayerContext.js';
 
 import TimeControlButton from './editorComponents/TimeControlButton.jsx';
@@ -20,7 +20,7 @@ export default function LayerEditorCopy({ id, player }) {
   const [isMuted, setIsMuted] = useState(player._mute);
   const [duration, setDuration] = useState(false);
   const [volumeSliderValue, setVolumeSliderValue] = useState(
-    Math.abs(Math.round( -40 - player._volume))
+    Math.abs(Math.round(-40 - player._volume))
   );
   const [trimFromStart, setTrimFromStart] = useState(player.trimFromStart);
   const [trimFromEnd, setTrimFromEnd] = useState(player.trimFromEnd);
@@ -31,7 +31,7 @@ export default function LayerEditorCopy({ id, player }) {
   const [playerGrain, setPlayerGrain] = useState(player.player.grainSize);
   const [playerOverlap, setPlayerOverlap] = useState(player.player.overlap);
   const [playerDetune, setPlayerDetune] = useState(player.player.detune / 100);
-
+console.log('PlayerDuration on load', player.player.extraProp)
   // put page on mousedown listener to get the duration of tracks then immediatly remove it after setting each tracks duration.
   useEffect(() => {
     const mouse = async () => {
@@ -48,6 +48,8 @@ export default function LayerEditorCopy({ id, player }) {
   }, [duration]);
 
   const changeVolumeValue = (event, newValue) => {
+    let test = document.getElementById(id+'trimEnd')
+    console.log(test,'TEST TEST ++++++')
     newValue = Math.round(newValue);
     setVolumeSliderValue(newValue);
     player.changeVolumeValue(-40 + newValue);
@@ -63,32 +65,64 @@ export default function LayerEditorCopy({ id, player }) {
     setIsSolo(player._solo);
   };
   const trimFromStartTime = (event, newValue) => {
-    newValue = Number.parseFloat(newValue).toFixed(2);
-    newValue = Number(newValue);
+    setDuration(Number((player.duration() / player.playbackRate).toFixed(2)));
+    newValue = Number(parseFloat(newValue).toFixed(2));
+    let divided = Number((newValue / playerPlaybackRate).toFixed(2));
+    console.log('START DIVIDED', divided, 'start new value', newValue);
     setTrimFromStart(newValue);
     player.changeTrimFromStart(newValue);
   };
   const trimFromEndTime = (event, newValue) => {
-    newValue = Number.parseFloat(newValue).toFixed(2);
-    newValue = Number(newValue);
-    setTrimFromEnd(newValue);
-    player.changeTrimFromEnd(newValue);
+    // console.log('SLIDER EVENT', event.target.value, 'newValue', newValue);
+
+console.log('trim from end event',event.target, newValue)
+    // let test  = Number.parseFloat(newValue).toFixed(3);
+    // test = Number(newValue);
+   let test = newValue
+
+
+    newValue = Number(parseFloat(newValue).toFixed(2));
+
+// console.log("TESTING TESTING TESTING:", test, newValue)
+
+    let divided = Number((newValue / playerPlaybackRate).toFixed(2));
+    // Number((player.duration() / player.playbackRate).toFixed(14))
+    // setDuration((oldduration) => player.duration() / player.playbackRate);
+    // console.log('end divided', divided, 'end new value ', newValue);
+
+    // console.log(
+    //   'player duration ',
+    //   player.duration() / player.playbackRate,
+    //   'component duration',
+    //   duration,
+    //   'playerbuf',player.bufferDuration
+    // );
+
+    setTrimFromEnd(divided);
+    player.changeTrimFromEnd(divided);
+    console.log('trimfromComp',trimFromEnd)
   };
   const increasePlayback = (event, newValue) => {
-    event.preventDefault();
+    // event.preventDefault();
+
+    setDuration(Number((player.duration() / player.playbackRate).toPrecision(2)));
     let newPlayback = Number(event.target.value);
     newPlayback = Number.parseFloat(newPlayback + 0.1).toFixed(2);
     newPlayback = Number(newPlayback);
+    event.currentTarget.value = newPlayback;
+    console.log('eventCurrent', event);
     player.increasePlaybackRate(newPlayback);
     setPlayerPlaybackRate(newPlayback);
   };
   const decreasePlayback = (event) => {
-    event.preventDefault();
+    // event.preventDefault();
     let newPlayback = Number(event.target.value);
 
+
+    setDuration(Number((player.duration() / player.playbackRate).toFixed(2)));
     newPlayback = Number.parseFloat(newPlayback - 0.1).toFixed(2);
     newPlayback = Number(newPlayback);
-    console.log('type', typeof newPlayback, Number(newPlayback));
+
     player.decreasePlaybackRate(newPlayback);
     setPlayerPlaybackRate(newPlayback);
   };
@@ -234,26 +268,36 @@ export default function LayerEditorCopy({ id, player }) {
           <Typography>Trim From Start</Typography>
           <Slider
             min={0}
-            max={Number((player.duration() / player.playbackRate).toPrecision(4))}
-            value={Number((trimFromStart / player.playbackRate).toPrecision(4))}
+            max={duration}
+            value={trimFromStart}
             onChange={trimFromStartTime}
             aria-label='Trim Slider'
             valueLabelDisplay='auto'
-            step={.5}
+            step={.1}
           />
           <Typography>Trim From End</Typography>
           <Slider
             min={0}
-            max={Number((player.duration() / player.playbackRate).toPrecision(4))}
-            value={Number((trimFromEnd / player.playbackRate).toPrecision(4))}
+            max={player.duration()}
+            value={trimFromEnd}
             onChange={trimFromEndTime}
+            id={id+'trimEnd'}
+            name={'trimFromEnd'}
             aria-label='Trim Slider'
             valueLabelDisplay='auto'
             track='inverted'
-            step={.5}
+            size='large'
+            step={.1}
           />
           <Typography>
             Playback Rate {Number(playerPlaybackRate).toFixed(2)}
+          </Typography>
+          <Typography value={player.duration() / player.playbackRate}>
+            PlayerDuration func / player.playbackrate{' '}
+            {player.duration() / player.playbackRate}
+            <br></br>
+            to fixed 2 player duration func / component set playbackrate{' '}
+            {player.duration()}
           </Typography>
           <Button
             name='decreasePlayback'

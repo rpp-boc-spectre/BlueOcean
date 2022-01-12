@@ -13,7 +13,19 @@ export class Layer {
   }) {
     this.id = id;
     this.url = url;
-    this.player = new Tone.GrainPlayer(this.url);
+    this.bufferDuration
+    this.player = new Tone.GrainPlayer(this.url ,async() =>{
+
+      await this.player.loaded === true
+
+    this.bufferDuration = this.player.buffer.duration
+     this.player.extraProp = this.player.buffer.duration
+     console.log("DU",this)
+      console.log(this.bufferDuration,'++++++++')
+    });
+
+
+
     this.player.playbackRate = playbackRate || 1;
     this.player.detune = pitch || 0;
     this.volume = new Tone.Volume(volume || -20);
@@ -28,6 +40,9 @@ export class Layer {
     this._mute = false;
     this._solo = false;
     this._volume = this.volume.volume.value;
+
+
+    console.log('SDFSDFSDF',this.bufferDuration)
   }
 
   connect() {
@@ -46,13 +61,18 @@ export class Layer {
   start() {
     let offset = this.trimFromStart;
 
+
+    // console.log('TRIM FROM START',this.trimFromStart, "TRIM FROM END",this.trimFromEnd)
+    // console.log('TRIM FROM STARTD',this.trimFromStart/ this.playbackRate, "TRIM FROM ENDd",this.trimFromEnd/this.playbackRate)
+
+    console.log("INCLASS'", Number((this.trimFromStart/this.playbackRate)))
     this.player.unsync().stop();
     this.player
       .sync()
       .start(
-        this.trimFromStart / this.player.playbackRate,
-        offset/ this.player.playbackRate,
-        this.trimFromEnd /this.player.playbackRate - offset
+        this.trimFromStart / this.playbackRate,
+        offset/ this.playbackRate,
+       ( this.trimFromEnd /this.playbackRate) - (offset / this.playbackRate)
       )
       .stop(this.trimFromEnd/this.player.playbackRate);
     this.startWaveform();
@@ -118,6 +138,8 @@ export class Layer {
     this.trimFromStart = newValue;
   }
   changeTrimFromEnd(newValue) {
+
+    console.log('TRIM FROM CLASS',newValue)
     this.trimFromEnd = newValue;
   }
 
@@ -129,6 +151,8 @@ export class Layer {
     this.volume.volume.value = newValue;
   }
   increasePlaybackRate(newValue) {
+
+    console.log("increase class",newValue)
     this.playbackRate = Number(newValue);
     this.player.playbackRate = Number(newValue);
   }
@@ -141,7 +165,9 @@ changePlaybackRate(newValue) {
     this.player.playbackRate = Number(newValue);
   }
   duration() {
-    return this.player.buffer.duration;
+
+    console.log('called me', this.player.buffer.duration / this.playbackRate)
+    return this.player.buffer.duration / this.playbackRate
   }
 
   dispose() {
