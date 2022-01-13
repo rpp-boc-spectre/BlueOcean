@@ -2,47 +2,35 @@ import createTheme from '@mui/material/styles/createTheme';
 
 const theme = createTheme({
   palette: {
-    secondary: {
-      main: '#ffd900',
-      light: '#fffc72',
-      dark: '#ccae00',
+    // green
+    primary: {
+      main: '#79b4a9',
+      light: '#94c3ba',
+      dark: '#619087',
       contrastText: '#000'
     },
-    primary: {
-      main: '#648e37',
-      light: '#7fa35c',
-      dark: '#50722c',
-      contrastText: '#fff'
-    },
-    success: {
-      main: '#b2c79b',
-      light: '#d1ddc3',
-      dark: '#93b073',
-      contrastText: '#fff'
-    },
-    info: {
-      main: '#6b6e6b',
-      light: '#b5b7b5',
-      dark: '#080e09',
+    // yellow
+    secondary: {
+      main: '#f5cb5c',
+      light: '#F8DB8C',
+      dark: '#AB8F41',
       contrastText: '#000'
     },
     grey: {
-      50: '#e6e7e6',
-      100: '#cecfce',
-      200: '#b5b7b5',
-      300: '#9c9f9d',
-      400: '#848784',
-      500: '#6b6e6b',
-      600: '#525653',
-      700: '#393e3a',
-      800: '#212622',
-      900: '#080e09'
+      50: '#e9e9e9',
+      100: '#d3d3d3',
+      200: '#bdbdbd',
+      300: '#a7a7a7',
+      400: '#919191',
+      500: '#7b7b7b',
+      600: '#656565',
+      700: '#505050',
+      800: '#3a3a3a',
+      900: '#242424'
     },
     background: {
-      paper: '#fffc72',
-      default: '#fffc72'
+      paper: '#FAE9B8',
+      default: '#d3d3d3'
     }
   }
 });
-
-export default theme;
