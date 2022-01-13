@@ -8,7 +8,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Modal from '@mui/material/Modal';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Box';
-// Number((player.trimFromStart / player.playbackRate).toFixed(2))
 import { useLayerStore } from '../context/LayerContext.js';
 
 import TimeControlButton from './editorComponents/TimeControlButton.jsx';
@@ -31,7 +30,7 @@ export default function LayerEditorCopy({ id, player }) {
   const [playerGrain, setPlayerGrain] = useState(player.player.grainSize);
   const [playerOverlap, setPlayerOverlap] = useState(player.player.overlap);
   const [playerDetune, setPlayerDetune] = useState(player.player.detune / 100);
-console.log('PlayerDuration on load', player.player.extraProp)
+
   // put page on mousedown listener to get the duration of tracks then immediatly remove it after setting each tracks duration.
   useEffect(() => {
     const mouse = async () => {
@@ -48,8 +47,6 @@ console.log('PlayerDuration on load', player.player.extraProp)
   }, [duration]);
 
   const changeVolumeValue = (event, newValue) => {
-    let test = document.getElementById(id+'trimEnd')
-    console.log(test,'TEST TEST ++++++')
     newValue = Math.round(newValue);
     setVolumeSliderValue(newValue);
     player.changeVolumeValue(-40 + newValue);
@@ -65,60 +62,25 @@ console.log('PlayerDuration on load', player.player.extraProp)
     setIsSolo(player._solo);
   };
   const trimFromStartTime = (event, newValue) => {
-    setDuration(Number((player.duration() / player.playbackRate).toFixed(2)));
-    newValue = Number(parseFloat(newValue).toFixed(2));
-    let divided = Number((newValue / playerPlaybackRate).toFixed(2));
-    console.log('START DIVIDED', divided, 'start new value', newValue);
     setTrimFromStart(newValue);
     player.changeTrimFromStart(newValue);
   };
   const trimFromEndTime = (event, newValue) => {
-    // console.log('SLIDER EVENT', event.target.value, 'newValue', newValue);
+    player.changeTrimFromEnd(newValue);
+    setTrimFromEnd((prevTrimFromEnd)=>newValue);
 
-console.log('trim from end event',event.target, newValue)
-    // let test  = Number.parseFloat(newValue).toFixed(3);
-    // test = Number(newValue);
-   let test = newValue
-
-
-    newValue = Number(parseFloat(newValue).toFixed(2));
-
-// console.log("TESTING TESTING TESTING:", test, newValue)
-
-    let divided = Number((newValue / playerPlaybackRate).toFixed(2));
-    // Number((player.duration() / player.playbackRate).toFixed(14))
-    // setDuration((oldduration) => player.duration() / player.playbackRate);
-    // console.log('end divided', divided, 'end new value ', newValue);
-
-    // console.log(
-    //   'player duration ',
-    //   player.duration() / player.playbackRate,
-    //   'component duration',
-    //   duration,
-    //   'playerbuf',player.bufferDuration
-    // );
-
-    setTrimFromEnd(divided);
-    player.changeTrimFromEnd(divided);
-    console.log('trimfromComp',trimFromEnd)
   };
   const increasePlayback = (event, newValue) => {
-    // event.preventDefault();
-
-    setDuration(Number((player.duration() / player.playbackRate).toPrecision(2)));
+    event.preventDefault();
     let newPlayback = Number(event.target.value);
     newPlayback = Number.parseFloat(newPlayback + 0.1).toFixed(2);
     newPlayback = Number(newPlayback);
-    event.currentTarget.value = newPlayback;
-    console.log('eventCurrent', event);
     player.increasePlaybackRate(newPlayback);
     setPlayerPlaybackRate(newPlayback);
   };
   const decreasePlayback = (event) => {
-    // event.preventDefault();
+    event.preventDefault();
     let newPlayback = Number(event.target.value);
-
-
     setDuration(Number((player.duration() / player.playbackRate).toFixed(2)));
     newPlayback = Number.parseFloat(newPlayback - 0.1).toFixed(2);
     newPlayback = Number(newPlayback);
@@ -133,18 +95,14 @@ console.log('trim from end event',event.target, newValue)
     newGrain = Number.parseFloat(newGrain + 0.01).toFixed(2);
     newGrain = Number(newGrain);
 
-    console.log('NEWGRAIN', newGrain);
     player.player.grainSize = newGrain;
     setPlayerGrain(newGrain);
   };
 
   const decreaseGrain = (event) => {
     let newGrain = Number(event.target.value);
-
     newGrain = Number.parseFloat(newGrain - 0.01).toFixed(2);
     newGrain = Number(newGrain);
-
-    console.log('NEWGRAIN', newGrain);
     player.player.grainSize = newGrain;
     setPlayerGrain(newGrain);
   };
@@ -152,11 +110,8 @@ console.log('trim from end event',event.target, newValue)
   const increaseOverlap = (event) => {
     let newOverlap = Number(event.target.value);
     newOverlap = Number.parseFloat(newOverlap + 0.01).toFixed(2);
-
     newOverlap = Number(newOverlap);
-
     player.player.overlap = newOverlap;
-
     setPlayerOverlap(newOverlap);
   };
 
@@ -240,6 +195,9 @@ console.log('trim from end event',event.target, newValue)
             Edit Layer: {player.name}
           </Typography>
           <Typography>
+            Track Duration {Number(player.duration().toFixed(2))}
+          </Typography>
+          <Typography>
             Volume:{' '}
             {volumeSliderValue === 40
               ? 'Max'
@@ -268,12 +226,12 @@ console.log('trim from end event',event.target, newValue)
           <Typography>Trim From Start</Typography>
           <Slider
             min={0}
-            max={duration}
+            max={player.duration()}
             value={trimFromStart}
             onChange={trimFromStartTime}
             aria-label='Trim Slider'
             valueLabelDisplay='auto'
-            step={.1}
+            step={0.1}
           />
           <Typography>Trim From End</Typography>
           <Slider
@@ -281,24 +239,13 @@ console.log('trim from end event',event.target, newValue)
             max={player.duration()}
             value={trimFromEnd}
             onChange={trimFromEndTime}
-            id={id+'trimEnd'}
-            name={'trimFromEnd'}
             aria-label='Trim Slider'
             valueLabelDisplay='auto'
             track='inverted'
-            size='large'
-            step={.1}
+            step={0.1}
           />
-          <Typography>
-            Playback Rate {Number(playerPlaybackRate).toFixed(2)}
-          </Typography>
-          <Typography value={player.duration() / player.playbackRate}>
-            PlayerDuration func / player.playbackrate{' '}
-            {player.duration() / player.playbackRate}
-            <br></br>
-            to fixed 2 player duration func / component set playbackrate{' '}
-            {player.duration()}
-          </Typography>
+          <Typography>Playback Rate {playerPlaybackRate}</Typography>
+
           <Button
             name='decreasePlayback'
             onClick={decreasePlayback}

@@ -13,19 +13,8 @@ export class Layer {
   }) {
     this.id = id;
     this.url = url;
-    this.bufferDuration
-    this.player = new Tone.GrainPlayer(this.url ,async() =>{
-
-      await this.player.loaded === true
-
-    this.bufferDuration = this.player.buffer.duration
-     this.player.extraProp = this.player.buffer.duration
-     console.log("DU",this)
-      console.log(this.bufferDuration,'++++++++')
-    });
-
-
-
+    this.bufferDuration;
+    this.player = new Tone.GrainPlayer(this.url);
     this.player.playbackRate = playbackRate || 1;
     this.player.detune = pitch || 0;
     this.volume = new Tone.Volume(volume || -20);
@@ -36,21 +25,17 @@ export class Layer {
     this.trimFromEnd = trimFromEnd || Infinity;
     this.trimFromStart = trimFromStart || 0;
     this.playbackRate = playbackRate || 1;
-    this._pitch = pitch ||0
+    this._pitch = pitch || 0;
     this._mute = false;
     this._solo = false;
     this._volume = this.volume.volume.value;
-
-
-    console.log('SDFSDFSDF',this.bufferDuration)
   }
 
   connect() {
     this.player.connect(this.volume);
     this.player.connect(this.waveform);
-    this.waveform.connect(this.volume)
-    this.volume.connect(this.solo)
-
+    this.waveform.connect(this.volume);
+    this.volume.connect(this.solo);
   }
 
   stop() {
@@ -59,22 +44,10 @@ export class Layer {
   }
 
   start() {
-    let offset = this.trimFromStart;
-
-
-    // console.log('TRIM FROM START',this.trimFromStart, "TRIM FROM END",this.trimFromEnd)
-    // console.log('TRIM FROM STARTD',this.trimFromStart/ this.playbackRate, "TRIM FROM ENDd",this.trimFromEnd/this.playbackRate)
-
-    console.log("INCLASS'", Number((this.trimFromStart/this.playbackRate)))
     this.player.unsync().stop();
-    this.player
-      .sync()
-      .start(
-        this.trimFromStart / this.playbackRate,
-        offset/ this.playbackRate,
-       ( this.trimFromEnd /this.playbackRate) - (offset / this.playbackRate)
-      )
-      .stop(this.trimFromEnd/this.player.playbackRate);
+    let startTime = this.trimFromStart / this.player.playbackRate;
+    let offsetTime = startTime;
+    this.player.sync().start(startTime, offsetTime).stop(this.trimFromEnd);
     this.startWaveform();
   }
   startWaveform() {
@@ -138,21 +111,17 @@ export class Layer {
     this.trimFromStart = newValue;
   }
   changeTrimFromEnd(newValue) {
-
-    console.log('TRIM FROM CLASS',newValue)
     this.trimFromEnd = newValue;
   }
 
-  changeDetuneValue(newValue){
-    this._pitch = newValue
-    this.player.detune = newValue
+  changeDetuneValue(newValue) {
+    this._pitch = newValue;
+    this.player.detune = newValue;
   }
   changeVolumeValue(newValue) {
     this.volume.volume.value = newValue;
   }
   increasePlaybackRate(newValue) {
-
-    console.log("increase class",newValue)
     this.playbackRate = Number(newValue);
     this.player.playbackRate = Number(newValue);
   }
@@ -160,21 +129,19 @@ export class Layer {
     this.playbackRate = Number(newValue);
     this.player.playbackRate = Number(newValue);
   }
-changePlaybackRate(newValue) {
+  changePlaybackRate(newValue) {
     this.playbackRate = Number(newValue);
     this.player.playbackRate = Number(newValue);
   }
   duration() {
-
-    console.log('called me', this.player.buffer.duration / this.playbackRate)
-    return this.player.buffer.duration / this.playbackRate
+    return this.player.buffer.duration / this.playbackRate;
   }
 
   dispose() {
-    this.player.dispose()
-    this.waveform.dispose()
-    this.volume.dispose()
-    this.solo.dispose()
+    this.player.dispose();
+    this.waveform.dispose();
+    this.volume.dispose();
+    this.solo.dispose();
   }
 
   getLayerData() {
