@@ -26,9 +26,6 @@ export default function LayerEditorCopy({ id, player }) {
   const [playerPlaybackRate, setPlayerPlaybackRate] = useState(
     player.playbackRate
   );
-
-  const [playerGrain, setPlayerGrain] = useState(player.player.grainSize);
-  const [playerOverlap, setPlayerOverlap] = useState(player.player.overlap);
   const [playerDetune, setPlayerDetune] = useState(player.player.detune / 100);
 
   // put page on mousedown listener to get the duration of tracks then immediatly remove it after setting each tracks duration.
@@ -62,9 +59,8 @@ export default function LayerEditorCopy({ id, player }) {
     setIsSolo(player._solo);
   };
   const trimFromStartTime = (event, newValue) => {
-      player.changeTrimFromStart(newValue);
-    setTrimFromStart((prevTrimFromStart)=> newValue);
-
+    player.changeTrimFromStart(newValue);
+    setTrimFromStart((prevTrimFromStart) => newValue);
   };
   const trimFromEndTime = (event, newValue) => {
     player.changeTrimFromEnd(newValue);
@@ -72,46 +68,8 @@ export default function LayerEditorCopy({ id, player }) {
   };
 
   const changePlaybackRate = (event, newValue) => {
-   setPlayerPlaybackRate(newValue)
-  player.changePlaybackRate(newValue)
-
-  }
-
-  const increaseGrain = (event) => {
-    let newGrain = Number(event.target.value);
-
-    newGrain = Number.parseFloat(newGrain + 0.01).toFixed(2);
-    newGrain = Number(newGrain);
-
-    player.player.grainSize = newGrain;
-    setPlayerGrain(newGrain);
-  };
-
-  const decreaseGrain = (event) => {
-    let newGrain = Number(event.target.value);
-    newGrain = Number.parseFloat(newGrain - 0.01).toFixed(2);
-    newGrain = Number(newGrain);
-    player.player.grainSize = newGrain;
-    setPlayerGrain(newGrain);
-  };
-
-  const increaseOverlap = (event) => {
-    let newOverlap = Number(event.target.value);
-    newOverlap = Number.parseFloat(newOverlap + 0.01).toFixed(2);
-    newOverlap = Number(newOverlap);
-    player.player.overlap = newOverlap;
-    setPlayerOverlap(newOverlap);
-  };
-
-  const decreaseOverlap = (event) => {
-    let newOverlap = Number(event.target.value);
-    newOverlap = Number.parseFloat(newOverlap - 0.01).toFixed(2);
-
-    newOverlap = Number(newOverlap);
-
-    player.player.overlap = newOverlap;
-
-    setPlayerOverlap(newOverlap);
+    setPlayerPlaybackRate(newValue);
+    player.changePlaybackRate(newValue);
   };
 
   const changeDetune = (event, newValue) => {
@@ -243,31 +201,6 @@ export default function LayerEditorCopy({ id, player }) {
             aria-label='Trim Slider'
             valueLabelDisplay='auto'
           />
-
-
-          <Typography>Grain Size {playerGrain}</Typography>
-
-          <Button name='testGrain' onClick={decreaseGrain} value={playerGrain}>
-            -GrainSize
-          </Button>
-
-          <Button name='testGrain' onClick={increaseGrain} value={playerGrain}>
-            +GrainSize
-          </Button>
-
-          <Typography>Overlap/Crossfade {playerOverlap}</Typography>
-          <Button
-            name='decreaseOverlap'
-            onClick={decreaseOverlap}
-            value={playerOverlap}>
-            -Overlap Size
-          </Button>
-          <Button
-            name='increaseOverlap'
-            onClick={increaseOverlap}
-            value={playerOverlap}>
-            +Overlap Size
-          </Button>
         </Box>
       </Modal>
     </>
