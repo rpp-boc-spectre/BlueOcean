@@ -124,7 +124,6 @@ export class Layer {
   changeVolumeValue(newValue) {
     this.volume.volume.value = newValue;
   }
-
   changePlaybackRate(newValue) {
     this.playbackRate = Number(newValue);
     this.player.playbackRate = Number(newValue);
