@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link } from 'react-router-dom'
 import { getAllPublicTracks } from "../utils/database";
-import { Typography, Button, Alert } from '@mui/material'
-import { useSnackbar } from "material-ui-snackbar-provider";
+import { Alert } from '@mui/material'
+import toast from 'react-hot-toast';
+
 import HomeTrackBar from './HomeTrackBar.jsx';
 
 export default function Home() {
   const [tracks, setTracks] = useState([])
   const [tagTypes, setTagTypes] = useState([])
-  const snackbar = useSnackbar();
 
   const getPublicTracks = () => {
     getAllPublicTracks()
@@ -23,8 +22,7 @@ export default function Home() {
         setTagTypes(tags);
       })
       .catch((error) => {
-        console.log(error)
-        snackbar.showMessage(<Alert severity="error">Unable to get tracks</Alert>)
+        toast.custom(<Alert variant="filled" severity="error">Unable to get tracks</Alert>)
       })
   }
 
@@ -42,7 +40,7 @@ export default function Home() {
           tempTracks = tracks.filter(track => track.meta.tag === tag);
         }
         tempTracks = tempTracks.slice(0, 5); // Only get the first 5 for now
-        return (<HomeTrackBar tracks={tempTracks} tag={tag} key={idx}/>);
+        return (<HomeTrackBar tracks={tempTracks} tag={tag} key={idx} />);
       })}
     </div>
   )

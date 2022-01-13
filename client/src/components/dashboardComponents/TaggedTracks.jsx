@@ -7,8 +7,7 @@ import Typography from "@mui/material/Typography";
 
 import TrackListItem from './TrackListItem.jsx';
 
-export default function TaggedTracks(props) {
-  const tracks = props.tracks;
+export default function TaggedTracks({ tag, tracks, getUserTracks }) {
   return (
     <>
       <Box>
@@ -24,4 +23,4 @@ export default function TaggedTracks(props) {
       </Box>
     </>
   )
-}
+};

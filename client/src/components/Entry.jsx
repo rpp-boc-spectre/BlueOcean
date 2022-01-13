@@ -1,16 +1,16 @@
 import 'regenerator-runtime/runtime'
 import React, { useContext, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Typography, Button, Alert } from '@mui/material'
+import { Typography, Button, Alert, Container, Stack, Divider } from '@mui/material'
 
 import UserContext from "../context/UserContext.js";
 
 import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, signOut, getAuth } from "firebase/auth";
 import { auth } from '../lib/firebase.js'
-import { useSnackbar } from 'material-ui-snackbar-provider';
+import toast from 'react-hot-toast';
 
 import { db } from '../lib/firebase.js';
-import { doc, getDoc} from 'firebase/firestore'
+import { doc, getDoc } from 'firebase/firestore'
 import UserForm from './UserForm.jsx';
 import SignUp from './SignUp.jsx';
 import SignIn from './SignIn.jsx';
@@ -22,7 +22,6 @@ export default function Entry() {
 
   let navigate = useNavigate();
   let location = useLocation();
-  let snackbar = useSnackbar();
 
   let from = location.state?.from?.pathname || "/dashboard";
 
@@ -30,7 +29,7 @@ export default function Entry() {
     try {
       const provider = new FacebookAuthProvider();
       let result = await signInWithPopup(auth, provider);
-      snackbar.showMessage(<Alert severity="success" sx={{ width: '100%' }}>Welcome {result.user.displayName}</Alert>)
+      toast.custom(<Alert variant='filled' severity="success" color="primary">Welcome {result.user.displayName}</Alert>)
       let username = await getUserName(result.user.uid)
       if (!username) {
         setShowUserForm(true)
@@ -38,8 +37,7 @@ export default function Entry() {
         navigate(from, { replace: true });
       }
     } catch (error) {
-      console.log(error)
-      snackbar.showMessage(<Alert severity="error" sx={{ width: '100%' }}>{`There was an error signing you in :(`}</Alert>)
+      toast.custom(<Alert variant='filled' severity="error">{`There was an error signing you in :(`}</Alert>)
     }
   }
 
@@ -47,7 +45,7 @@ export default function Entry() {
     try {
       const provider = new GoogleAuthProvider()
       let result = await signInWithPopup(auth, provider)
-      snackbar.showMessage(<Alert severity="success" sx={{ width: '100%' }}>Welcome {result.user.displayName}</Alert>)
+      toast.custom(<Alert variant='filled' severity="success" color="primary">Welcome {result.user.displayName}</Alert>)
       let username = await getUserName(result.user.uid)
       if (!username) {
         setShowUserForm(true)
@@ -55,19 +53,17 @@ export default function Entry() {
         navigate(from, { replace: true });
       }
     } catch (error) {
-      console.log('Google Signon Error:', error)
-      snackbar.showMessage(<Alert severity="error" sx={{ width: '100%' }}>{`There was an error signing you in :(`}</Alert>)
+      toast.custom(<Alert variant='filled' severity="error">{`There was an error signing you in :(`}</Alert>)
     }
   }
 
   const handleSignOut = async () => {
     try {
       await signOut(auth)
-      snackbar.showMessage(<Alert severity="success" sx={{ width: '100%' }}>Successfully Signed Out</Alert>)
+      toast.custom(<Alert variant='filled' severity="success" color="primary">Successfully Signed Out</Alert>)
       navigate('/');
     } catch (error) {
-      console.log(error)
-      snackbar.showMessage(<Alert severity="error" sx={{ width: '100%' }}>{`There was an error signing you out :(`}</Alert>)
+      toast.custom(<Alert variant='filled' severity="error">{`There was an error signing you out :(`}</Alert>)
     }
   }
 
@@ -82,7 +78,7 @@ export default function Entry() {
         } else {
           resolve(null)
         }
-      } catch(error) {
+      } catch (error) {
         reject(error)
       }
     })
@@ -93,24 +89,34 @@ export default function Entry() {
       return (
         <>
           {(userData?.user && userData?.username) ?
-          <Button variant="outlined" color="error" onClick={handleSignOut}>
-            Signout
-          </Button>
-          :
-          showUserForm ?
-          <UserForm userId={userData.user.uid}/>
-          :
-          <>
-
-              <SignIn />
-
-            <>
-              <Button variant="contained" onClick={handleSignInWithGoogle}>Sign In with Google</Button>
-              <Button variant="contained" onClick={handleSignInWithFacebook}>Sign In with Facebook</Button>
-              <Button variant="outlined" onClick={() => {setSignIn(false)}}>Sign Up</Button>
-            </>
-          </>
-        }
+            <Button variant="outlined" color="error" onClick={handleSignOut}>
+              Signout
+            </Button>
+            :
+            showUserForm ?
+              <UserForm userId={userData.user.uid} />
+              :
+              <>
+                <Typography variant='h3'>Welcome Back</Typography>
+                <Stack spacing={{ xs: 1, md: 2 }}>
+                  <SignIn navigate={navigate} />
+                </Stack>
+                <>
+                  <Stack
+                    direction={{ xs: "column", sm: "row" }}
+                    divider={<Divider orientation="vertical" flexItem />}
+                    spacing={{ xs: 1, md: 2 }}
+                  >
+                    <Button variant="contained" onClick={handleSignInWithGoogle}>Sign In with Google</Button>
+                    <Button variant="contained" onClick={handleSignInWithFacebook}>Sign In with Facebook</Button>
+                  </Stack>
+                  <Stack spacing={{ xs: 1, md: 2 }}>
+                    <Typography variant="subtitle2">Don't have an account?</Typography>
+                    <Button variant="outlined" onClick={() => { setSignIn(false) }}>Sign Up</Button>
+                  </Stack>
+                </>
+              </>
+          }
         </>
       )
     } else {
@@ -120,9 +126,16 @@ export default function Entry() {
 
   return (
     <>
-      <Typography variant='h3'>Login Component</Typography>
-
-      {entryType()}
+      <Container spacing={2}>
+        <Stack
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          spacing={2}
+        >
+          {entryType()}
+        </Stack>
+      </Container>
     </>
   )
 }

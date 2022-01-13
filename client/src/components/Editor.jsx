@@ -11,7 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import ArrowDownward from '@mui/icons-material/ArrowDownward';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 
-import { useSnackbar } from "material-ui-snackbar-provider";
+import toast from 'react-hot-toast';
 
 import LayerPlayer from "./LayerPlayer";
 import ImportAudio from "./ImportAudio";
@@ -23,7 +23,7 @@ import { Player } from '../lib/player';
 import UserContext from "../context/UserContext";
 import UploadFile from "./UploadFile.jsx";
 
-import { addLayer, removeLayer, setPlayer } from '../lib/layerTableReducer.js';
+import { setPlayer } from '../lib/layerTableReducer.js';
 import { useLayerStore } from '../context/LayerContext.js'
 
 export default function Editor() {
@@ -36,7 +36,6 @@ export default function Editor() {
   const [trackMetadata, setTrackMetadata] = useState({});
   const [trackData, setTrackData] = useState(null)
   const userData = useContext(UserContext);
-  const snackbar = useSnackbar();
   const { trackId } = useParams();
   const playerRef = useRef();
 
@@ -73,8 +72,7 @@ export default function Editor() {
           setOriginalAudioLayers(layers)
         })
         .catch(error => {
-          console.log(error);
-          snackbar.showMessage(<Alert variant='error'>There was an error getting your track</Alert>)
+          toast.custom(<Alert variant="filled" severity="error">There was an error getting your track</Alert>)
         })
     }
 
@@ -129,16 +127,16 @@ export default function Editor() {
       />
 
       <Drawer open={importModalState}>
-          <ImportAudio
-            userId={userData?.user?.uid}
-            originalList={originalAudioLayers}
-            currentList={audioLayers}
-            setParentLayers={setAudioLayers}
-            close={handleImportClose}
-          />
-          <IconButton onClick={handleImportClose}>
-            <ArrowBack />
-          </IconButton>
+        <ImportAudio
+          userId={userData?.user?.uid}
+          originalList={originalAudioLayers}
+          currentList={audioLayers}
+          setParentLayers={setAudioLayers}
+          close={handleImportClose}
+        />
+        <IconButton onClick={handleImportClose}>
+          <ArrowBack />
+        </IconButton>
       </Drawer>
       <Drawer
         sx={{

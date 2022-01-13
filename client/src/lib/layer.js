@@ -33,7 +33,7 @@ export class Layer {
   connect() {
     this.player.connect(this.volume);
     this.player.connect(this.waveform);
-
+    this.waveform.connect(this.volume)
     this.volume.connect(this.solo)
 
   }

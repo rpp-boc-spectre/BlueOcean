@@ -12,15 +12,25 @@ export default function TrackList({ userId }) {
 
   const [tracks, setTracks] = useState([])
 
-  useEffect(() => {
+  const getUserTracks = () => {
     getAllTracks(userId)
       .then(data => {
-        console.log('Track Data', data)
         setTracks(data)
       })
       .catch(error => {
-        console.log(error)
+        console.debug(error)
       })
+  }
+
+  const removeUserTrack = (index) => {
+    setTracks((prev) => {
+      prev.splice(index, 1);
+      return prev
+    })
+  }
+
+  useEffect(() => {
+    getUserTracks()
   }, [])
 
   let sortedTracks = {

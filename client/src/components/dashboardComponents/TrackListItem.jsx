@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { removeTrack } from '../../utils/database'
+import toast from 'react-hot-toast';
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -9,12 +11,11 @@ import Typography from '@mui/material/Typography';
 
 import LockIcon from '@mui/icons-material/Lock';
 import PublicIcon from '@mui/icons-material/Public';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-export default function TrackListItem({ trackId, meta }) {
-  //console.log('META', meta);
+export default function TrackListItem({ trackId, meta, index, getUserTracks }) {
   let publicSetting, displayName, tag;
   if (meta && meta.public) {
-    //console.log('PUBLIC SETTING', publicSetting)
     publicSetting = meta.public;
   } else {
     publicSetting = false;
@@ -30,12 +31,32 @@ export default function TrackListItem({ trackId, meta }) {
     tag = 'General';
   }
 
-
+  const [dialogState, setDialogState] = useState(false);
   const navigate = useNavigate();
 
   const handleNavigation = () => {
     navigate(`/edit/${trackId}`)
   };
+
+  const handleDelete = () => {
+    console.debug('Delete clicked! ', trackId)
+    removeTrack(trackId)
+      .then(() => {
+        getUserTracks()
+        toast.custom(<Alert variant="filled" severity='success' color="primary">Track Deleted</Alert>)
+      })
+      .catch((error) => {
+        toast.custom(<Alert severity='error'>Error deleting your track :(</Alert>)
+        console.debug('Dashboard: handleDelete: ', error)
+      })
+      .finally(() => {
+        handleClose();
+      });
+  }
+
+  const handleClose = () => {
+    setDialogState(false)
+  }
 
   let icon = <LockIcon />;
   if (publicSetting) {
