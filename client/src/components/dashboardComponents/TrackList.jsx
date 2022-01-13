@@ -54,7 +54,7 @@ export default function TrackList({ userId }) {
     <>
       <Box>
         {tagList.map((tag, index) => {
-          return <TaggedTracks tag={tag} tracks={sortedTracks[tag]} key={index} />
+          return <TaggedTracks tag={tag} tracks={sortedTracks[tag]} key={index} getTracks={getUserTracks} removedTrack={removeUserTrack} />
         })}
       </Box>
     </>
