@@ -101,6 +101,7 @@ export default function TrackListItem({ trackId, meta, getTracks, removedTrack, 
           >
           <DeleteIcon/>
         </IconButton>
+        <Chip label={tag} />
         {icon}
       </CardActions>
     </Card>
