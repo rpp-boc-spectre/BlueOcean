@@ -69,15 +69,18 @@ export default function TrackListItem({ trackId, meta, getTracks, removedTrack, 
   }
 
   return (
-    <Card sx={{
-      height: {xs: '35vh', md: '200px'},
-      width: {xs: '43vw', md: '250px'},
-      overflowX: 'scroll',
-      '&::-webkit-scrollbar': {
-        display: 'none'
-        },
-      position: 'relative'
-      }}>
+    <Card
+      sx={{
+        height: {xs: '35vh', md: '200px'},
+        width: {xs: '43vw', md: '250px'},
+        overflowX: 'scroll',
+        '&::-webkit-scrollbar': {
+          display: 'none'
+          },
+        position: 'relative',
+        bgcolor: "background.paper"
+        }}
+      >
       <CardActionArea onClick={handleNavigation} sx={{ p: '2px', height: '300px', maxHeight: '100%' }}>
         <CardContent sx={{position: 'absolute', top: '10px'}}>
           <Typography variant="h6">{displayName}</Typography>

@@ -40,7 +40,7 @@ export default function Home() {
         width: {xs: '100', md: '70vw'},
         maxWidth: '1000px',
         maxHeight: {xs: '84vh', md:'87vh'},
-        bgcolor: 'success.light',
+        bgcolor: 'primary.light',
         overflowY: 'scroll',
         '&::-webkit-scrollbar': {
             display: 'none'
