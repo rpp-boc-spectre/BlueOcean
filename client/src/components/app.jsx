@@ -28,9 +28,15 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path='login' element={<Entry />} />
-              <Route path='edit/:trackId' element={<Editor />} />
+              <Route path='edit/:trackId' element={
+                <RequireAuth>
+                  <Editor />
+                </RequireAuth>
+              } />
               <Route path='edit' element={
-                <Editor />
+                <RequireAuth>
+                  <Editor />
+                </RequireAuth>
               } />
               <Route path='dashboard' element={
                 <RequireAuth>
