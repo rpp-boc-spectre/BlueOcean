@@ -3,7 +3,8 @@ import { Navigate, useLocation } from "react-router-dom";
 import { auth, db } from '../lib/firebase';
 import { doc, getDoc } from 'firebase/firestore'
 import { useAuthState } from 'react-firebase-hooks/auth';
-import Entry from "./Entry";
+import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
 
 export default function RequireAuth({ children }) {
   let location = useLocation();
@@ -51,8 +52,8 @@ export default function RequireAuth({ children }) {
   }
 
   return (
-    <>
-      loading...
-    </>
+    <Box sx={{ width: '100%', minHeight: {md: '91.2vh', xs: '89vh'} }}>
+      <LinearProgress />
+    </Box>
   )
 }
