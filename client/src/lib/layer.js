@@ -13,6 +13,7 @@ export class Layer {
   }) {
     this.id = id;
     this.url = url;
+    this.bufferDuration;
     this.player = new Tone.GrainPlayer(this.url);
     this.player.playbackRate = playbackRate || 1;
     this.player.detune = pitch || 0;
@@ -24,7 +25,7 @@ export class Layer {
     this.trimFromEnd = trimFromEnd || Infinity;
     this.trimFromStart = trimFromStart || 0;
     this.playbackRate = playbackRate || 1;
-    this._pitch = pitch ||0
+    this._pitch = pitch || 0;
     this._mute = false;
     this._solo = false;
     this._volume = this.volume.volume.value;
@@ -33,9 +34,8 @@ export class Layer {
   connect() {
     this.player.connect(this.volume);
     this.player.connect(this.waveform);
-    this.waveform.connect(this.volume)
-    this.volume.connect(this.solo)
-
+    this.waveform.connect(this.volume);
+    this.volume.connect(this.solo);
   }
 
   stop() {
@@ -44,17 +44,13 @@ export class Layer {
   }
 
   start() {
-    let offset = this.trimFromStart;
-
+    this.player.playbackRate <= 0.7
+      ? (this.player.grainSize = 0.05)
+      : (this.player.grainSize = 0.2);
     this.player.unsync().stop();
-    this.player
-      .sync()
-      .start(
-        this.trimFromStart,
-        offset,
-        this.duration() / this.player.playbackRate - offset
-      )
-      .stop(this.trimFromEnd);
+    let startTime = this.trimFromStart / this.player.playbackRate;
+    let offsetTime = startTime;
+    this.player.sync().start(startTime, offsetTime).stop(this.trimFromEnd);
     this.startWaveform();
   }
   startWaveform() {
@@ -121,34 +117,27 @@ export class Layer {
     this.trimFromEnd = newValue;
   }
 
-  changeDetuneValue(newValue){
-    this._pitch = newValue
-    this.player.detune = newValue
+  changeDetuneValue(newValue) {
+    this._pitch = newValue;
+    this.player.detune = newValue;
   }
   changeVolumeValue(newValue) {
     this.volume.volume.value = newValue;
   }
-  increasePlaybackRate(newValue) {
-    this.playbackRate = Number(newValue);
-    this.player.playbackRate = Number(newValue);
-  }
-  decreasePlaybackRate(newValue) {
-    this.playbackRate = Number(newValue);
-    this.player.playbackRate = Number(newValue);
-  }
-changePlaybackRate(newValue) {
+
+  changePlaybackRate(newValue) {
     this.playbackRate = Number(newValue);
     this.player.playbackRate = Number(newValue);
   }
   duration() {
-    return this.player.buffer.duration;
+    return this.player.buffer.duration / this.playbackRate;
   }
 
   dispose() {
-    this.player.dispose()
-    this.waveform.dispose()
-    this.volume.dispose()
-    this.solo.dispose()
+    this.player.dispose();
+    this.waveform.dispose();
+    this.volume.dispose();
+    this.solo.dispose();
   }
 
   getLayerData() {

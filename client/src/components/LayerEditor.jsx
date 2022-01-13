@@ -8,7 +8,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Modal from '@mui/material/Modal';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Box';
-
 import { useLayerStore } from '../context/LayerContext.js';
 
 import TimeControlButton from './editorComponents/TimeControlButton.jsx';
@@ -20,7 +19,7 @@ export default function LayerEditorCopy({ id, player }) {
   const [isMuted, setIsMuted] = useState(player._mute);
   const [duration, setDuration] = useState(false);
   const [volumeSliderValue, setVolumeSliderValue] = useState(
-    Math.abs(Math.round( -40 - player._volume))
+    Math.abs(Math.round(-40 - player._volume))
   );
   const [trimFromStart, setTrimFromStart] = useState(player.trimFromStart);
   const [trimFromEnd, setTrimFromEnd] = useState(player.trimFromEnd);
@@ -63,35 +62,20 @@ export default function LayerEditorCopy({ id, player }) {
     setIsSolo(player._solo);
   };
   const trimFromStartTime = (event, newValue) => {
-    newValue = Number.parseFloat(newValue).toFixed(2);
-    newValue = Number(newValue);
-    setTrimFromStart(newValue);
-    player.changeTrimFromStart(newValue);
+      player.changeTrimFromStart(newValue);
+    setTrimFromStart((prevTrimFromStart)=> newValue);
+
   };
   const trimFromEndTime = (event, newValue) => {
-    newValue = Number.parseFloat(newValue).toFixed(2);
-    newValue = Number(newValue);
-    setTrimFromEnd(newValue);
     player.changeTrimFromEnd(newValue);
+    setTrimFromEnd((prevTrimFromEnd) => newValue);
   };
-  const increasePlayback = (event, newValue) => {
-    event.preventDefault();
-    let newPlayback = Number(event.target.value);
-    newPlayback = Number.parseFloat(newPlayback + 0.1).toFixed(2);
-    newPlayback = Number(newPlayback);
-    player.increasePlaybackRate(newPlayback);
-    setPlayerPlaybackRate(newPlayback);
-  };
-  const decreasePlayback = (event) => {
-    event.preventDefault();
-    let newPlayback = Number(event.target.value);
 
-    newPlayback = Number.parseFloat(newPlayback - 0.1).toFixed(2);
-    newPlayback = Number(newPlayback);
-    console.log('type', typeof newPlayback, Number(newPlayback));
-    player.decreasePlaybackRate(newPlayback);
-    setPlayerPlaybackRate(newPlayback);
-  };
+  const changePlaybackRate = (event, newValue) => {
+   setPlayerPlaybackRate(newValue)
+  player.changePlaybackRate(newValue)
+
+  }
 
   const increaseGrain = (event) => {
     let newGrain = Number(event.target.value);
@@ -99,18 +83,14 @@ export default function LayerEditorCopy({ id, player }) {
     newGrain = Number.parseFloat(newGrain + 0.01).toFixed(2);
     newGrain = Number(newGrain);
 
-    console.log('NEWGRAIN', newGrain);
     player.player.grainSize = newGrain;
     setPlayerGrain(newGrain);
   };
 
   const decreaseGrain = (event) => {
     let newGrain = Number(event.target.value);
-
     newGrain = Number.parseFloat(newGrain - 0.01).toFixed(2);
     newGrain = Number(newGrain);
-
-    console.log('NEWGRAIN', newGrain);
     player.player.grainSize = newGrain;
     setPlayerGrain(newGrain);
   };
@@ -118,11 +98,8 @@ export default function LayerEditorCopy({ id, player }) {
   const increaseOverlap = (event) => {
     let newOverlap = Number(event.target.value);
     newOverlap = Number.parseFloat(newOverlap + 0.01).toFixed(2);
-
     newOverlap = Number(newOverlap);
-
     player.player.overlap = newOverlap;
-
     setPlayerOverlap(newOverlap);
   };
 
@@ -206,6 +183,9 @@ export default function LayerEditorCopy({ id, player }) {
             Edit Layer: {player.name}
           </Typography>
           <Typography>
+            Track Duration {Number(player.duration().toFixed(2))}
+          </Typography>
+          <Typography>
             Volume:{' '}
             {volumeSliderValue === 40
               ? 'Max'
@@ -234,37 +214,36 @@ export default function LayerEditorCopy({ id, player }) {
           <Typography>Trim From Start</Typography>
           <Slider
             min={0}
-            max={player.duration() / player.playbackRate}
+            max={Number(player.duration().toFixed(2))}
             value={trimFromStart}
             onChange={trimFromStartTime}
             aria-label='Trim Slider'
             valueLabelDisplay='auto'
+            step={0.1}
           />
           <Typography>Trim From End</Typography>
           <Slider
             min={0}
-            max={player.duration() / player.playbackRate}
+            max={Number(player.duration().toFixed(2))}
             value={trimFromEnd}
             onChange={trimFromEndTime}
             aria-label='Trim Slider'
             valueLabelDisplay='auto'
             track='inverted'
+            step={0.1}
           />
-          <Typography>
-            Playback Rate {Number(playerPlaybackRate).toFixed(2)}
-          </Typography>
-          <Button
-            name='decreasePlayback'
-            onClick={decreasePlayback}
-            value={playerPlaybackRate}>
-            -
-          </Button>
-          <Button
-            name='increasePlayback'
-            onClick={increasePlayback}
-            value={playerPlaybackRate}>
-            +
-          </Button>
+
+          <Typography> Set Track Playback {playerPlaybackRate} </Typography>
+          <Slider
+            min={0.5}
+            max={2}
+            step={0.01}
+            value={playerPlaybackRate}
+            onChange={changePlaybackRate}
+            aria-label='Trim Slider'
+            valueLabelDisplay='auto'
+          />
+
 
           <Typography>Grain Size {playerGrain}</Typography>
 
