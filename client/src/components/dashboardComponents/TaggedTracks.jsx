@@ -11,7 +11,7 @@ export default function TaggedTracks({ tag, tracks, getUserTracks }) {
   return (
     <>
       <Box>
-        <Typography align='center' variant='h6'>Tracks Tagged {props.tag}</Typography>
+        <Typography align='center' variant='h6'>Tracks Tagged {tag}</Typography>
         <Grid container spacing='2'>
           {tracks.map((track, index) => {
             return (
