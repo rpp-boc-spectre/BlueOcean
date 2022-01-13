@@ -152,7 +152,7 @@ export default function LayerPlayer({
   return (
     <>
       <Container sx={{
-        bgcolor: 'background.paper',
+        bgcolor: 'success.light',
         border: 1,
         gridRow: {md: '1'}
       }}>
@@ -161,6 +161,7 @@ export default function LayerPlayer({
       </Container>
       <Divider />
       <Container sx={{
+        bgcolor: 'success.dark',
         border: 1,
         display: 'grid',
         gridRow: {md: '2'}

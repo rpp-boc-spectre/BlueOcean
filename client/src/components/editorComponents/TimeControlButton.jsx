@@ -31,54 +31,46 @@ const SoloFilledIcon = <img src={SoloFilledSVG} height='24' width='24' />;
 const TimeControlButton = (props) => {
   const target = props.button.name;
   let button;
-  if (target === 'Stop') {
-    button = <Button variant='outlined' onClick={props.button.handler}><StopIcon /></Button>
+  const regularButtons = {
+    'Stop': (<StopIcon />),
+    'Play': (<PlayArrowIcon />),
+    'Pause': (<PauseIcon />),
+    'Record': (<FiberManualRecordIcon />),
+    'Beginning': (<FirstPageIcon />),
+    'Rewind': (<FastRewindIcon />),
+    'End': (<LastPageIcon />),
+    'FastForward': (<FastForwardIcon />),
+    'Edit': (<EditIcon />),
+    'Delete': (<DeleteIcon />),
+    'Import': (<ImportExportIcon />),
+    'Upload': (<UploadFileIcon />)
+  };
+
+  const irregularButtons = {
+    'Mute': props.button.value ? (<VolumeOffIcon />) : (<VolumeUpIcon />),
+    'Solo': props.button.value ? (SoloFilledIcon) : (SoloIcon)
   }
-  if (target === 'Play') {
-    button = <Button variant='outlined' onClick={props.button.handler}><PlayArrowIcon /></Button>
+
+  if (Object.keys(regularButtons).includes(target)) {
+    button = <Button
+      variant='outlined'
+      onClick={props.button.handler}
+      sx={{ mb: 2 }}
+    >
+      {regularButtons[target]}
+    </Button>
   }
-  if (target === 'Pause') {
-    button = <Button variant='outlined' onClick={props.button.handler}><PauseIcon /></Button>
+
+  if (Object.keys(irregularButtons).includes(target)) {
+    button = <ToggleButton
+      onClick={props.button.handler}
+      value={props.button.value}
+      sx={{ mb: 2 }}
+    >
+      {irregularButtons[target]}
+    </ToggleButton>
   }
-  if (target === 'Record') {
-    button = <Button variant='outlined' onClick={props.button.handler}><FiberManualRecordIcon /></Button>
-  }
-  if (target === 'Beginning') {
-    button = <Button variant='outlined' onClick={props.button.handler}><FirstPageIcon /></Button>
-  }
-  if (target === 'Rewind') {
-    button = <Button variant='outlined' onClick={props.button.handler}><FastRewindIcon /></Button>
-  }
-  if (target === 'End') {
-    button = <Button variant='outlined' onClick={props.button.handler}><LastPageIcon /></Button>
-  }
-  if (target === 'FastForward') {
-    button = <Button variant='outlined' onClick={props.button.handler}><FastForwardIcon /></Button>
-  }
-  if (target === 'Edit') {
-    button = <Button variant='outlined' onClick={props.button.handler}><EditIcon /></Button>
-  }
-  if (target === 'Delete') {
-    button = <Button variant='outlined' onClick={props.button.handler}><DeleteIcon /></Button>
-  }
-  if (target === 'Import') {
-    button = <Button variant='outlined' onClick={props.button.handler}><ImportExportIcon /></Button>
-  }
-  if (target === 'Upload') {
-    button = <Button variant='outlined' onClick={props.button.handler}><UploadFileIcon /></Button>
-  }
-  if (target === 'Mute' && props.button.value === true) {
-    button = <ToggleButton value={props.button.value} onChange={props.button.handler}><VolumeOffIcon /></ToggleButton>
-  }
-  if (target === 'Mute' && props.button.value === false) {
-    button = <ToggleButton value={props.button.value} onChange={props.button.handler}><VolumeUpIcon /></ToggleButton>
-  }
-  if (target === 'Solo' && props.button.value === true) {
-    button = <ToggleButton value={props.button.value} onChange={props.button.handler}>{SoloFilledIcon}</ToggleButton>
-  }
-  if (target === 'Solo' && props.button.value === false) {
-    button = <ToggleButton value={props.button.value} onChange={props.button.handler}>{SoloIcon}</ToggleButton>
-  }
+
   return (
     <>
       {button}

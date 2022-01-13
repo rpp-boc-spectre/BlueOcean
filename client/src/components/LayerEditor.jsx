@@ -154,20 +154,32 @@ export default function LayerEditorCopy({ id, player }) {
   };
 
   return (
-    <Container>
+    <Container sx={{
+      bgcolor: 'secondary.light',
+      padding: '0px',
+      border: 1
+    }}>
       <Box sx={{
         minHeight: { xs: '13vh', md: '16vh' },
         maxHeight: { xs: '13vh', md: '16vh' },
         border: '2px, solid, black',
         display: 'grid',
-        gridTemplateColumns: '1fr 2fr 3fr'
+        gridTemplateColumns: '2fr 3fr',
+        gridTemplateRows: '1fr 3fr'
       }}>
         <FormControlLabel
-          sx={{ gridRow: '1', gridColumn: '1' }}
+          sx={{ gridRow: '1', gridColumn: '1 / 2' }}
           label={player.name}
           control={<Checkbox defaultChecked />}
         />
-        <Box sx={{ gridRow: '1', gridColumn: '2', maxWidth: '25vh' }}>
+        <Box sx={{
+          gridRow: '2',
+          gridColumn: '1',
+          maxWidth: '25vh',
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr 1fr',
+          gap: 1
+        }}>
           <TimeControlButton
             button={{ name: 'Mute', handler: muteLayer, value: isMuted }}
           />
@@ -178,7 +190,7 @@ export default function LayerEditorCopy({ id, player }) {
             button={{ name: 'Edit', handler: layerEditorOpen }}
           />
         </Box>
-        <Box sx={{ gridRow: '1', gridColumn: '3', maxWidth: '40vh', alignContent: "right" }}>
+        <Box sx={{ gridRow: '2', gridColumn: '2', maxWidth: '40vh', m: 'auto' }}>
           <canvas
             className={'visual-layer' + id}
             width='350'

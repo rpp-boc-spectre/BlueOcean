@@ -105,10 +105,10 @@ export default function Editor() {
 
   return (
     <Container className={'Big-container'} sx={{
-      border: 1,
+      // border: 1,
       maxHeight: '90vh',
       minHeight: { xs: '100%', md: '90vh' },
-      width: { xs: '100%', md: '70%' },
+      width: { xs: '100%', md: '80%' },
       display: 'grid',
       gridTemplateColumns: { xs: '3fr 2fr', md: '1fr' },
       gridTemplateRows: { xs: '5fr 1fr', md: '6fr 1fr' }
