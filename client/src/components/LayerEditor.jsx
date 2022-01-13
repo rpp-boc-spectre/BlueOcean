@@ -4,6 +4,7 @@ import * as Tone from 'tone';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
+import Container from '@mui/material/Container';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Modal from '@mui/material/Modal';
 import Slider from '@mui/material/Slider';
@@ -153,15 +154,14 @@ export default function LayerEditorCopy({ id, player }) {
   };
 
   return (
-    <>
-      <Box
-        sx={{
-          minHeight: { xs: '13vh', md: '16vh' },
-          maxHeight: { xs: '13vh', md: '16vh' },
-          border: '1px, solid, black',
-          display: 'grid',
-          gridTemplateColumns: '1fr 2fr 4fr',
-        }}>
+    <Container>
+      <Box sx={{
+        minHeight: { xs: '13vh', md: '16vh' },
+        maxHeight: { xs: '13vh', md: '16vh' },
+        border: '2px, solid, black',
+        display: 'grid',
+        gridTemplateColumns: '1fr 2fr 3fr'
+      }}>
         <FormControlLabel
           sx={{ gridRow: '1', gridColumn: '1' }}
           label={player.name}
@@ -178,14 +178,13 @@ export default function LayerEditorCopy({ id, player }) {
             button={{ name: 'Edit', handler: layerEditorOpen }}
           />
         </Box>
+        <Box sx={{ gridRow: '1', gridColumn: '3', maxWidth: '40vh', alignContent: "right" }}>
+          <canvas
+            className={'visual-layer' + id}
+            width='350'
+            height='75'></canvas>
+        </Box>
       </Box>
-      <Box sx={{ gridRow: '1', gridColumn: '3', maxWidth: '40vh' }}>
-        <canvas
-          className={'visual-layer' + id}
-          width='350'
-          height='75'></canvas>
-      </Box>
-
       <Modal
         open={editOpen}
         onClose={layerEditClose}
@@ -291,6 +290,6 @@ export default function LayerEditorCopy({ id, player }) {
           </Button>
         </Box>
       </Modal>
-    </>
+    </Container>
   );
 }

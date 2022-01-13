@@ -152,6 +152,7 @@ export default function LayerPlayer({
   return (
     <>
       <Container sx={{
+        bgcolor: 'background.paper',
         border: 1,
         gridRow: {md: '1'}
       }}>
@@ -192,66 +193,56 @@ export default function LayerPlayer({
             updateMetadata={updateMetadata}
           />
         </Container>
-        <Box
-          sx={{
-            bgcolor: 'background.paper',
-            // gridColumn: { xs: '1 / 3', md: '2' },
-            // gridRow: { xs: '1', md: '1 / 3' },
-            // minHeight: '60vh',
-            maxHeight: '80vh',
-            padding: { xs: '0', md: '10px' },
-          }}
-          >
-          <Modal
-            open={editOpen}
-            onClose={layerEditClose}
-            aria-label='modal-edit-title'>
-            <Box
-              sx={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                width: { xs: '95%', md: 400 },
-                bgcolor: 'background.paper',
-                border: '2px solid #000',
-                boxShadow: 24,
-                p: 4,
-              }}>
-              <Typography variant='subtitle2' id='modal-edit-title'>
-                Edit Layer: {'placeholder'}
-              </Typography>
-              <Typography>Volume: {globalVolume === 40 ? "Max" : globalVolume === 0 ? 'Min' : globalVolume}</Typography>
-              <Slider
-                min={0}
-                max={40}
-                value={globalVolume}
-                onChange={changeVolumeValue}
-                aria-label='Volume Slider'
-                valueLabelDisplay='auto'
-              />
-              <Typography> Set Track Pitch {globalPitch} </Typography>
-              <Slider
-                min={-12}
-                max={12}
-                value={globalPitch}
-                onChange={changeDetune}
-                aria-label='Trim Slider'
-                valueLabelDisplay='auto'
-              />
-              <Typography> Set Track Playback {globalPlayback} </Typography>
-              <Slider
-                min={.50}
-                max={2}
-                step={.10}
-                value={globalPlayback}
-                onChange={changePlaybackRate}
-                aria-label='Trim Slider'
-                valueLabelDisplay='auto'
-              />
-            </Box>
-          </Modal>
-        </Box>
+        <Modal
+          open={editOpen}
+          onClose={layerEditClose}
+          aria-label='modal-edit-title'
+        >
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: { xs: '95%', md: 400 },
+              bgcolor: 'background.paper',
+              border: '2px solid #000',
+              boxShadow: 24,
+              p: 4,
+            }}>
+            <Typography variant='subtitle2' id='modal-edit-title'>
+              Edit Layer: {'placeholder'}
+            </Typography>
+            <Typography>Volume: {globalVolume === 40 ? "Max" : globalVolume === 0 ? 'Min' : globalVolume}</Typography>
+            <Slider
+              min={0}
+              max={40}
+              value={globalVolume}
+              onChange={changeVolumeValue}
+              aria-label='Volume Slider'
+              valueLabelDisplay='auto'
+            />
+            <Typography> Set Track Pitch {globalPitch} </Typography>
+            <Slider
+              min={-12}
+              max={12}
+              value={globalPitch}
+              onChange={changeDetune}
+              aria-label='Trim Slider'
+              valueLabelDisplay='auto'
+            />
+            <Typography> Set Track Playback {globalPlayback} </Typography>
+            <Slider
+              min={.50}
+              max={2}
+              step={.10}
+              value={globalPlayback}
+              onChange={changePlaybackRate}
+              aria-label='Trim Slider'
+              valueLabelDisplay='auto'
+            />
+          </Box>
+        </Modal>
       </Container>
     </>
   );

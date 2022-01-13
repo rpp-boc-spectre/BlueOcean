@@ -107,7 +107,7 @@ export default function Editor() {
     <Container className={'Big-container'} sx={{
       border: 1,
       maxHeight: '90vh',
-      minHeight: { xs: '100%', md: '70%' },
+      minHeight: { xs: '100%', md: '90vh' },
       width: { xs: '100%', md: '70%' },
       display: 'grid',
       gridTemplateColumns: { xs: '3fr 2fr', md: '1fr' },
