@@ -23,7 +23,7 @@ export default function App() {
     <UserContext.Provider value={userData}>
       <LayerStoreProvider initialState={initialState} reducer={layerTableReducer}>
         <div className="App">
-          <Paper sx={{ bgcolor: 'info.main' }}>
+          <Paper sx={{ bgcolor: 'grey.900' }}>
             <ResponsiveHeader />
             <Routes>
               <Route path="/" element={<Home />} />
