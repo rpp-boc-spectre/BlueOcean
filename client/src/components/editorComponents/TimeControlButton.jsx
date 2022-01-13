@@ -71,11 +71,7 @@ const TimeControlButton = (props) => {
     </ToggleButton>
   }
 
-  return (
-    <>
-      {button}
-    </>
-  );
+  return button;
 };
 
 export default TimeControlButton;

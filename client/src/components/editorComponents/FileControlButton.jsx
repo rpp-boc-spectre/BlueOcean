@@ -31,6 +31,11 @@ const SoloFilledIcon = <img src={SoloFilledSVG} height='24' width='24' />;
 const FileControlButton = (props) => {
   const target = props.button.name;
   let button;
+  const targets = {
+    'Record': (<FiberManualRecordIcon />),
+    'Import': (<ImportExportIcon />),
+    'Upload': (<UploadFileIcon />)
+  }
   if (target === 'Record') {
     button = <Button variant='outlined' onClick={props.button.handler}><FiberManualRecordIcon /></Button>
   }
@@ -40,7 +45,13 @@ const FileControlButton = (props) => {
   if (target === 'Upload') {
     button = <Button variant='outlined' onClick={props.button.handler}><UploadFileIcon /></Button>
   }
-  return (<>{ button }</>);
+  return (<Button
+    variant='outlined'
+    onClick={props.button.handler}
+    sx={{ mb: 2 }}
+  >
+    {targets[target]}
+  </Button>);
 };
 
 export default FileControlButton;
