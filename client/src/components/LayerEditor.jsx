@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import * as Tone from 'tone';
 import VolumeUp from '@mui/icons-material/VolumeUp';
 import Box from '@mui/material/Box';
-
+import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import Container from '@mui/material/Container';
@@ -11,7 +11,7 @@ import Modal from '@mui/material/Modal';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Box';
 import { useLayerStore } from '../context/LayerContext.js';
-
+import Container from '@mui/material/Container';
 import TimeControlButton from './editorComponents/TimeControlButton.jsx';
 
 export default function LayerEditorCopy({ id, player }) {
