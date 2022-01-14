@@ -210,7 +210,7 @@ export default function LayerEditorCopy({ id, player }) {
             {-Number(Math.abs(trimFromEnd) / playerPlaybackRate).toFixed(2)}
           </Typography>
           <Slider
-            min={-Number(player.duration())}
+            min={-Number(player.duration() )}
             max={Number(player.duration()) - Number(player.duration())}
             value={trimFromEnd}
             onChange={trimFromEndTime}
