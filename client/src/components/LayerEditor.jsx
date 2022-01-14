@@ -230,7 +230,7 @@ export default function LayerEditorCopy({ id, player }) {
           <Slider
             min={0.5}
             max={2}
-            step={0.015}
+            step={0.1}
             value={playerPlaybackRate}
             onChange={changePlaybackRate}
             aria-label='Trim Slider'
