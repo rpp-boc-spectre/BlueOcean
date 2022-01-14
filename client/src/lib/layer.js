@@ -44,13 +44,15 @@ export class Layer {
   }
 
   start() {
+
     this.player.playbackRate <= 0.7
       ? (this.player.grainSize = 0.05)
       : (this.player.grainSize = 0.2);
     this.player.unsync().stop();
     let startTime = this.trimFromStart / this.player.playbackRate;
     let offsetTime = startTime;
-    this.player.sync().start(startTime, offsetTime).stop(this.trimFromEnd);
+    let endTime = this.duration() - Math.abs(this.trimFromEnd)/this.player.playbackRate
+    this.player.sync().start(startTime, offsetTime).stop(endTime);
     this.startWaveform();
   }
   startWaveform() {
@@ -113,7 +115,11 @@ export class Layer {
   changeTrimFromStart(newValue) {
     this.trimFromStart = newValue;
   }
+
+
   changeTrimFromEnd(newValue) {
+
+    // console.log('newBal',newValue)
     this.trimFromEnd = newValue;
   }
 
@@ -125,6 +131,7 @@ export class Layer {
     this.volume.volume.value = newValue;
   }
   changePlaybackRate(newValue) {
+
     this.playbackRate = Number(newValue);
     this.player.playbackRate = Number(newValue);
   }
