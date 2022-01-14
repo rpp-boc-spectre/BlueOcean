@@ -14,20 +14,21 @@ export default function Dashboard() {
   return (
     <>
       <Box
-      mx='auto'
-      my='10px'
-      sx={{
-        p: {xs: '10px', md: '15px'},
-        width: {xs: '100', md: '70vw'},
-        maxWidth: '1000px',
-        maxHeight: {xs: '84vh', md:'87vh'},
-        bgcolor: 'success.light',
-        overflowY: 'scroll',
-        '&::-webkit-scrollbar': {
-            display: 'none'
-        },
-        borderRadius: {xs: '0', md: '5%'}
-      }}>
+        mx='auto'
+        my='10px'
+        sx={{
+          p: {xs: '10px', md: '15px'},
+          width: {xs: '100', md: '70vw'},
+          maxWidth: '1000px',
+          maxHeight: {xs: '84vh', md:'87vh'},
+          bgcolor: 'primary.light',
+          overflowY: 'scroll',
+          '&::-webkit-scrollbar': {
+              display: 'none'
+          },
+          borderRadius: {xs: '0', md: '5%'}
+        }}
+      >
         <Typography variant='h3' align='center'>Welcome {userData.username}</Typography>
         {userData.user && <TrackList userId={userData.user.uid} />}
       </Box>

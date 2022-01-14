@@ -104,15 +104,22 @@ export default function Editor() {
   };
 
   return (
-
     <Container sx={{
-      border: 1,
-      maxHeight: '90vh',
-      minHeight: { xs: '100%', md: '70%' },
-      width: { xs: '100%', md: '70%' },
+      minHeight: { xs: '90vh', md: '90vh' },
       display: 'grid',
-      gridTemplateColumns: { xs: '3fr 2fr', md: '1fr 6fr' },
-      gridTemplateRows: { xs: '5fr 1fr', md: '6fr 1fr' }
+      gridTemplateRows: { xs: '5fr 1fr', md: '6fr 1fr' },
+      mx:'auto',
+      my:'10px',
+      p: {xs: '10px', md: '15px'},
+      width: {xs: '100', md: '70vw'},
+      maxWidth: '1000px',
+      maxHeight: {xs: '84vh', md:'87vh'},
+      bgcolor: 'primary.light',
+      overflowY: 'scroll',
+      '&::-webkit-scrollbar': {
+          display: 'none'
+      },
+      borderRadius: {xs: '0', md: '5%'}
     }}>
       <LayerPlayer
         layers={audioLayers}
@@ -125,7 +132,6 @@ export default function Editor() {
         uploadHandler={uploadHandler}
         trackData={trackData}
       />
-
       <Drawer open={importModalState}>
         <ImportAudio
           userId={userData?.user?.uid}
@@ -163,6 +169,5 @@ export default function Editor() {
         </Box>
       </Modal>
     </Container>
-
   )
 }
