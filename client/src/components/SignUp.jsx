@@ -1,4 +1,4 @@
-import { Button, TextField, Typography, Alert, Stack, Box } from "@mui/material";
+import { Button, TextField, Typography, Alert, Stack, Box, Paper } from "@mui/material";
 import React, { useRef, useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../lib/firebase'
@@ -39,7 +39,24 @@ export default function SignUp({ navigate }) {
 
   return (
     <>
-      <Typography variant="h3">Create an Account</Typography>
+      <Paper
+        sx={{
+          bgcolor: 'primary.light',
+          width: { xs: '80vw', sm: '80vw' },
+          mx: 'auto',
+          pb: 1
+        }}
+      >
+      <Typography
+        sx={{
+          pt: 10,
+          pb: 4,
+          fontSize: { xs: '10vw', sm: '7vw', md: '5vw' }
+        }}
+        textAlign="center"
+      >
+        Create an account
+      </Typography>
       <Stack
         direction="column"
         justifyContent="center"
@@ -54,6 +71,15 @@ export default function SignUp({ navigate }) {
             value={formEmail}
             validators={['required', 'isEmail']}
             errorMessages={['this field is required', 'email is not valid']}
+            sx={{
+              width: { xs: '200px', md: '300px' },
+              height: { xs: '40px', md: '40px' },
+              mt: 1.5,
+              mb: 0.5,
+              bgcolor: "grey.50",
+              borderRadius: 1
+            }}
+            size="small"
           />
           <TextValidator
             label="Username"
@@ -62,6 +88,14 @@ export default function SignUp({ navigate }) {
             value={formUsername}
             validators={['required']}
             errorMessages={['this field is required']}
+            sx={{
+              width: { xs: '200px', md: '300px' },
+              height: { xs: '40px', md: '40px' },
+              mb: 1,
+              bgcolor: "grey.50",
+              borderRadius: 1
+            }}
+            size="small"
           />
           <br />
           <TextValidator
@@ -72,6 +106,15 @@ export default function SignUp({ navigate }) {
             validators={['required']}
             errorMessages={['this field is required']}
             value={formPassword}
+            sx={{
+              width: { xs: '200px', md: '300px' },
+              height: { xs: '40px', md: '40px' },
+              mt: 1.5,
+              mb: 0.5,
+              bgcolor: "grey.50",
+              borderRadius: 1
+            }}
+            size="small"
           />
           <TextValidator
             label="Repeat password"
@@ -81,13 +124,36 @@ export default function SignUp({ navigate }) {
             validators={['isPasswordMatch', 'required']}
             errorMessages={['password mismatch', 'this field is required']}
             value={formRePassword}
+            sx={{
+              width: { xs: '200px', md: '300px' },
+              height: { xs: '40px', md: '40px' },
+              // mb: 1.5,
+              bgcolor: "grey.50",
+              borderRadius: 1
+            }}
+            size="small"
           />
           <br />
           <Box textAlign="center">
-            <Button variant="contained" type="submit">Submit</Button>
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{
+                my: 1,
+                color: 'grey.800',
+                bgcolor: 'secondary.main',
+                ':hover': { bgcolor: 'buttons.submitHover' },
+                border: 1,
+                borderColor: 'buttons.signupBorder',
+                width: { xs: '100px', md: '200px' }
+              }}
+            >
+              Submit
+            </Button>
           </Box>
         </ValidatorForm>
       </Stack>
+      </Paper>
     </>
   )
 }
