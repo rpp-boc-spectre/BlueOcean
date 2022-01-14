@@ -104,13 +104,9 @@ export default function Editor() {
   };
 
   return (
-    <Container className={'Big-container'} sx={{
-      // border: 1,
-      // maxHeight: '90vh',
+    <Container sx={{
       minHeight: { xs: '90vh', md: '90vh' },
-      // width: { xs: '100%', md: '80%' },
       display: 'grid',
-      // gridTemplateColumns: { xs: '1fr', md: '1fr' },
       gridTemplateRows: { xs: '5fr 1fr', md: '6fr 1fr' },
       mx:'auto',
       my:'10px',

@@ -71,7 +71,6 @@ const SettingsList = (props) => {
         color='info'
         variant='outlined'
         onClick={handleDrawerToggle}
-        // sx={{ mb: 2 }}
       >
         <SaveIcon />
       </Button>
