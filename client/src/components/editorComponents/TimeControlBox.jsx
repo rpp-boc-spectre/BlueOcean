@@ -36,23 +36,22 @@ const handleFastForward = () => {
 const TimeControlBox = (props) => {
 
   const buttons = [
-    {name: 'Stop', handler: props.stopAllHandler},
     {name: 'Play', handler: props.playAllHandler},
     {name: 'Pause', handler: props.pauseResumeHandler},
-    {name: 'Record', handler: props.recordingHandler},
-    {name: 'Import', handler: props.importHandler},
-    // {name: 'Beginning', handler: handleBeginning},
-    // {name: 'Rewind', handler: handleRewind},
-    // {name: 'FastForward', handler: handleFastForward},
-    // {name: 'End', handler: handleEnd}
+    {name: 'Stop', handler: props.stopAllHandler},
+    {name: 'Edit', handler: props.editorOpenHandler}
   ];
   return (
     <>
-      <Box sx={{
-        border: 1,
-        gridColumn: {xs: '1', md: '1'},
-        gridRow: {xs: '2', md: '2'}
-      }}>
+      <Box
+        sx={{
+          m: 'auto',
+          display: 'grid',
+          gridTemplateColumns: {xs: '1fr 1fr', md: '1fr 1fr 1fr 1fr'},
+          gridTemplateRows: {xs: '1fr 1fr'},
+          gap: 1
+        }}
+      >
         {buttons.map((button, index) => {
           return <TimeControlButton key={index} button={button} />
         })}

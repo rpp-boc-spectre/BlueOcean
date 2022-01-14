@@ -4,6 +4,7 @@ import * as Tone from 'tone';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
+import Container from '@mui/material/Container';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Modal from '@mui/material/Modal';
 import Slider from '@mui/material/Slider';
@@ -142,21 +143,33 @@ export default function LayerEditorCopy({ id, player }) {
   };
 
   return (
-    <>
-      <Box
-        sx={{
-          minHeight: { xs: '13vh', md: '16vh' },
-          maxHeight: { xs: '13vh', md: '16vh' },
-          border: '1px, solid, black',
-          display: 'grid',
-          gridTemplateColumns: '1fr 2fr 4fr',
-        }}>
+    <Container sx={{
+      bgcolor: 'background.paper',
+      padding: '0px',
+      border: 1,
+      mt: 1
+    }}>
+      <Box sx={{
+        minHeight: { xs: '13vh', md: '16vh' },
+        maxHeight: { xs: '13vh', md: '16vh' },
+        border: '2px, solid, black',
+        display: 'grid',
+        gridTemplateColumns: {xs: '1fr', md: '2fr 3fr'},
+        gridTemplateRows: {xs: '1fr, 3fr, 3fr', md: '1fr 3fr'}
+      }}>
         <FormControlLabel
-          sx={{ gridRow: '1', gridColumn: '1' }}
+          sx={{ gridRow: {xs: '1', md: '1'}, gridColumn: {xs: '1', md: '1 / 2'}}}
           label={player.name}
           control={<Checkbox defaultChecked />}
         />
-        <Box sx={{ gridRow: '1', gridColumn: '2', maxWidth: '25vh' }}>
+        <Box sx={{
+          gridRow: {xs: '2', md: '2'},
+          gridColumn: {xs: '1', md: '1'},
+          maxWidth: '25vh',
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr 1fr',
+          gap: 1
+        }}>
           <TimeControlButton
             button={{ name: 'Mute', handler: muteLayer, value: isMuted }}
           />
@@ -167,14 +180,18 @@ export default function LayerEditorCopy({ id, player }) {
             button={{ name: 'Edit', handler: layerEditorOpen }}
           />
         </Box>
+        <Box sx={{
+          gridRow: {xs: '3', md: '2'},
+          gridColumn: {xs: '1', md: '2'},
+          maxWidth: '40vh',
+          m: 'auto'
+        }}>
+          <canvas
+            className={'visual-layer' + id}
+            width='350'
+            height='75'></canvas>
+        </Box>
       </Box>
-      <Box sx={{ gridRow: '1', gridColumn: '3', maxWidth: '40vh' }}>
-        <canvas
-          className={'visual-layer' + id}
-          width='350'
-          height='75'></canvas>
-      </Box>
-
       <Modal
         open={editOpen}
         onClose={layerEditClose}
@@ -284,6 +301,6 @@ export default function LayerEditorCopy({ id, player }) {
           </Button>
         </Box>
       </Modal>
-    </>
+    </Container>
   );
 }
