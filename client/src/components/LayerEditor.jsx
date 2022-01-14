@@ -45,10 +45,7 @@ export default function LayerEditorCopy({ id, player }) {
     };
   }, [duration]);
 
-  useEffect(() => {
-    setDuration(player.duration());
-    console.log('RERENDER');
-  }, [playerPlaybackRate, trimFromStart,trimFromEnd]);
+
   const changeVolumeValue = (event, newValue) => {
     newValue = Math.round(newValue);
     setVolumeSliderValue(newValue);
@@ -70,7 +67,6 @@ export default function LayerEditorCopy({ id, player }) {
     player.changeTrimFromStart(newValue);
   };
   const trimFromEndTime = (event, newValue) => {
-    console.log('newValue', newValue);
 
     setTrimFromEnd((prevTrimFromEnd) => newValue);
     player.changeTrimFromEnd(newValue);
@@ -165,7 +161,7 @@ export default function LayerEditorCopy({ id, player }) {
           <Typography variant='subtitle2' id='modal-edit-title'>
             Edit Layer: {player.name}
           </Typography>
-          <Typography>Track Duration { player.duration()}</Typography>
+          <Typography>Track Duration { player.duration().toFixed(2)}</Typography>
           <Typography>
             Volume:{' '}
             {volumeSliderValue === 40
@@ -194,7 +190,7 @@ export default function LayerEditorCopy({ id, player }) {
 
           <Typography>
             Trim From Start
-            {Number((trimFromStart / playerPlaybackRate).toFixed(2))}
+            {(trimFromStart / playerPlaybackRate).toFixed(2)}
           </Typography>
           <Slider
             min={0}
@@ -202,41 +198,40 @@ export default function LayerEditorCopy({ id, player }) {
             value={trimFromStart}
             onChange={trimFromStartTime}
             aria-label='Trim Slider'
-            valueLabelDisplay='auto'
-            step={0.1}
+            // valueLabelDisplay='auto'
+            step={0.01}
           />
           <Typography>
             Trim From End
-            {-Number(Math.abs(trimFromEnd) / playerPlaybackRate).toFixed(2)}
+            {Math.abs((trimFromEnd) / playerPlaybackRate).toFixed(2)}
+            {/* {-Number( player.duration() - Math.abs(trimFromEnd) / playerPlaybackRate).toFixed(2)} */}
           </Typography>
           <Slider
-            min={-Number(player.duration() )}
-            max={Number(player.duration()) - Number(player.duration())}
+            min={-Number(player.duration())}
+            max={0}
             value={trimFromEnd}
             onChange={trimFromEndTime}
             aria-label='Trim Slider'
-            valueLabelDisplay='auto'
+            // valueLabelDisplay='auto'
             track='inverted'
-            step={0.1}
+            step={0.01}
           />
           <Typography>
             {' '}
             Track Will Start at{' '}
             {(trimFromStart / playerPlaybackRate).toFixed(2)}
+
             {' '}
             <br></br>
             Track Will End at {' '}
+              { (player.duration() + trimFromEnd).toFixed(2)}
 
-            {(
-           player.duration() -
-              Math.abs(trimFromEnd) / playerPlaybackRate
-            ).toFixed(2)}
           </Typography>
           <Typography> Set Track Playback {playerPlaybackRate} </Typography>
           <Slider
             min={0.5}
             max={2}
-            step={0.01}
+            step={0.015}
             value={playerPlaybackRate}
             onChange={changePlaybackRate}
             aria-label='Trim Slider'

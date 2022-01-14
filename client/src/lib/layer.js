@@ -43,21 +43,25 @@ export class Layer {
     this.player.stop();
   }
 
-  start() {
+  compareTrim() {
+    let preTrimEnd = this.duration() + this.trimFromEnd;
+    let preTrimStart = this.trimFromStart;
+    return preTrimEnd < preTrimStart;
+  }
 
-    console.log(this.trimFromStart , this.trimFromEnd * -1)
+  start() {
     this.player.playbackRate <= 0.7
       ? (this.player.grainSize = 0.05)
       : (this.player.grainSize = 0.2);
     this.player.unsync().stop();
     let startTime = this.trimFromStart / this.player.playbackRate;
     let offsetTime = startTime;
-    let endTime = this.duration() - Math.abs(this.trimFromEnd)/this.player.playbackRate
-    console.log('Start',startTime)
-    console.log('end',endTime)
-    console.log('offset time',offsetTime)
-    endTime < startTime ? this.player.sync().start(0).stop(0):
-    this.player.sync().start(startTime, offsetTime).stop(endTime);
+    let endTime =
+      this.duration() - Math.abs(this.trimFromEnd) / this.player.playbackRate;
+
+    this.compareTrim()
+      ? this.player.sync().start().stop()
+      : this.player.sync().start(startTime, offsetTime).stop(endTime);
     this.startWaveform();
   }
   startWaveform() {
@@ -121,10 +125,8 @@ export class Layer {
     this.trimFromStart = newValue;
   }
 
-
   changeTrimFromEnd(newValue) {
     this.trimFromEnd = newValue;
-
   }
 
   changeDetuneValue(newValue) {
@@ -135,7 +137,6 @@ export class Layer {
     this.volume.volume.value = newValue;
   }
   changePlaybackRate(newValue) {
-
     this.playbackRate = Number(newValue);
     this.player.playbackRate = Number(newValue);
   }
