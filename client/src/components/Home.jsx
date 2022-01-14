@@ -3,7 +3,8 @@ import { getAllPublicTracks } from "../utils/database";
 import { Alert } from '@mui/material'
 import toast from 'react-hot-toast';
 
-import HomeTrackBar from './HomeTrackBar.jsx';
+import Box from '@mui/material/Box';
+import HomeTrackBar from './homeComponents/HomeTrackBar.jsx';
 
 export default function Home() {
   const [tracks, setTracks] = useState([])
@@ -31,7 +32,22 @@ export default function Home() {
   }, [])
 
   return (
-    <div>
+    <Box
+      mx='auto'
+      my='10px'
+      sx={{
+        p: {xs: '10px', md: '15px'},
+        width: {xs: '100', md: '70vw'},
+        maxWidth: '1000px',
+        maxHeight: {xs: '84vh', md:'87vh'},
+        bgcolor: 'primary.light',
+        overflowY: 'scroll',
+        '&::-webkit-scrollbar': {
+            display: 'none'
+        },
+        borderRadius: {xs: '0', md: '5%'}
+      }}
+    >
       {tagTypes.map((tag, idx) => {
         let tempTracks = [];
         if (tag === "General") {
@@ -42,6 +58,6 @@ export default function Home() {
         tempTracks = tempTracks.slice(0, 5); // Only get the first 5 for now
         return (<HomeTrackBar tracks={tempTracks} tag={tag} key={idx} />);
       })}
-    </div>
+    </Box>
   )
 }
