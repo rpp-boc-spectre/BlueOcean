@@ -1,7 +1,7 @@
 import 'regenerator-runtime/runtime'
 import React, { useContext, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Typography, Button, Alert, Container, Stack, Divider, Paper } from '@mui/material'
+import { Typography, Button, Alert, Container, Stack, Divider, Paper, Box } from '@mui/material'
 
 import UserContext from "../context/UserContext.js";
 
@@ -97,13 +97,14 @@ export default function Entry() {
               <UserForm userId={userData.user.uid} />
               :
               <>
-              <Paper
+              <Box
                 sx={{
                   bgcolor: 'primary.light',
-                  width: { xs: '80vw', sm: '80vw' },
-                  mx: 'auto',
-                  pb: 1
+                  width: { xs: '90%', md: '80%' },
+                  pb: 1,
+                  height: { xs: '84vh', md: '87vh' }
                 }}
+                mx='auto'
               >
                 <Typography
                   sx={{
@@ -185,9 +186,8 @@ export default function Entry() {
                     </Typography>
                   </Stack>
                 </>
-                </Paper>
+                </Box>
               </>
-
           }
         </>
       )
