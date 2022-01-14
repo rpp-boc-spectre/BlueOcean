@@ -72,7 +72,7 @@ export class Layer {
         const draw = () => {
           analyser.getByteTimeDomainData(dataArray);
 
-          canvasCtx.fillStyle = '#FFFFFF';
+          canvasCtx.fillStyle = '#FAE9B8';
           canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
           canvasCtx.lineWidth = 2;
           canvasCtx.strokeStyle = '#000000';
