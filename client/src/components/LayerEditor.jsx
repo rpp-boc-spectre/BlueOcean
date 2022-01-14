@@ -2,16 +2,15 @@ import React, { useState, useEffect } from 'react';
 import * as Tone from 'tone';
 import VolumeUp from '@mui/icons-material/VolumeUp';
 import Box from '@mui/material/Box';
-
+import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
-import Container from '@mui/material/Container';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Modal from '@mui/material/Modal';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Box';
 import { useLayerStore } from '../context/LayerContext.js';
-
+import Container from '@mui/material/Container';
 import TimeControlButton from './editorComponents/TimeControlButton.jsx';
 
 export default function LayerEditorCopy({ id, player }) {
@@ -45,10 +44,7 @@ export default function LayerEditorCopy({ id, player }) {
     };
   }, [duration]);
 
-  useEffect(() => {
-    setDuration(player.duration());
-    console.log('RERENDER');
-  }, [playerPlaybackRate, trimFromEnd]);
+
   const changeVolumeValue = (event, newValue) => {
     newValue = Math.round(newValue);
     setVolumeSliderValue(newValue);
@@ -65,13 +61,14 @@ export default function LayerEditorCopy({ id, player }) {
     setIsSolo(player._solo);
   };
   const trimFromStartTime = (event, newValue) => {
-    player.changeTrimFromStart(newValue);
+
     setTrimFromStart((prevTrimFromStart) => newValue);
+    player.changeTrimFromStart(newValue);
   };
   const trimFromEndTime = (event, newValue) => {
-    console.log('newValue', newValue);
-    player.changeTrimFromEnd(newValue);
+
     setTrimFromEnd((prevTrimFromEnd) => newValue);
+    player.changeTrimFromEnd(newValue);
   };
 
   const changePlaybackRate = (event, newValue) => {
@@ -163,7 +160,7 @@ export default function LayerEditorCopy({ id, player }) {
           <Typography variant='subtitle2' id='modal-edit-title'>
             Edit Layer: {player.name}
           </Typography>
-          <Typography>Track Duration {player.duration().toFixed(2)}</Typography>
+          <Typography>Track Duration { player.duration().toFixed(2)}</Typography>
           <Typography>
             Volume:{' '}
             {volumeSliderValue === 40
@@ -192,7 +189,7 @@ export default function LayerEditorCopy({ id, player }) {
 
           <Typography>
             Trim From Start
-            {Number((trimFromStart / playerPlaybackRate).toFixed(2))}
+            {(trimFromStart / playerPlaybackRate).toFixed(2)}
           </Typography>
           <Slider
             min={0}
@@ -201,40 +198,39 @@ export default function LayerEditorCopy({ id, player }) {
             onChange={trimFromStartTime}
             aria-label='Trim Slider'
             // valueLabelDisplay='auto'
-            step={0.1}
+            step={0.01}
           />
           <Typography>
             Trim From End
-            {-Number(Math.abs(trimFromEnd) / playerPlaybackRate).toFixed(2)}
+            {Math.abs((trimFromEnd) / playerPlaybackRate).toFixed(2)}
+            {/* {-Number( player.duration() - Math.abs(trimFromEnd) / playerPlaybackRate).toFixed(2)} */}
           </Typography>
           <Slider
-            min={-Number(duration)}
-            max={Number(duration) - Number(duration)}
+            min={-Number(player.duration())}
+            max={0}
             value={trimFromEnd}
             onChange={trimFromEndTime}
             aria-label='Trim Slider'
             // valueLabelDisplay='auto'
             track='inverted'
-            step={0.1}
+            step={0.01}
           />
           <Typography>
             {' '}
             Track Will Start at{' '}
             {(trimFromStart / playerPlaybackRate).toFixed(2)}
+
             {' '}
             <br></br>
             Track Will End at {' '}
+              { (player.duration() + trimFromEnd).toFixed(2)}
 
-            {(
-              duration -
-              Math.abs(trimFromEnd) / playerPlaybackRate
-            ).toFixed(2)}
           </Typography>
           <Typography> Set Track Playback {playerPlaybackRate} </Typography>
           <Slider
             min={0.5}
             max={2}
-            step={0.01}
+            step={0.015}
             value={playerPlaybackRate}
             onChange={changePlaybackRate}
             aria-label='Trim Slider'
