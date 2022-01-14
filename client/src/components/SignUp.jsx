@@ -44,8 +44,10 @@ export default function SignUp({ navigate }) {
           bgcolor: 'primary.light',
           width: { xs: '80vw', sm: '80vw' },
           mx: 'auto',
-          pb: 1
+          pb: 1,
+          height: { xs: '84vh', md: '87vh' }
         }}
+        mx='auto'
       >
       <Typography
         sx={{
