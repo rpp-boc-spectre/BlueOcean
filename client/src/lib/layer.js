@@ -118,11 +118,8 @@ export class Layer {
 
 
   changeTrimFromEnd(newValue) {
-
-    let test1 =  0 - Math.abs(this.trimFromEnd)/this.player.playbackRate
-    console.log("TEST1", test1, "NEWVALUE",newValue)
     this.trimFromEnd = newValue;
-    // this.trimFromEnd = test
+
   }
 
   changeDetuneValue(newValue) {
