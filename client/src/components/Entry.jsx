@@ -1,7 +1,7 @@
 import 'regenerator-runtime/runtime'
 import React, { useContext, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Typography, Button, Alert, Container, Stack, Divider } from '@mui/material'
+import { Typography, Button, Alert, Container, Stack, Divider, Paper } from '@mui/material'
 
 import UserContext from "../context/UserContext.js";
 
@@ -97,7 +97,24 @@ export default function Entry() {
               <UserForm userId={userData.user.uid} />
               :
               <>
-                <Typography variant='h3'>Welcome Back</Typography>
+              <Paper
+                sx={{
+                  bgcolor: 'primary.light',
+                  width: { xs: '80vw', sm: '80vw' },
+                  mx: 'auto',
+                  pb: 1
+                }}
+              >
+                <Typography
+                  sx={{
+                    pt: 10,
+                    pb: 4,
+                    fontSize: { xs: '10vw', sm: '7vw', md: '5vw' }
+                  }}
+                  textAlign="center"
+                >
+                  Welcome back
+                </Typography>
                 <Stack spacing={{ xs: 1, md: 2 }}>
                   <SignIn navigate={navigate} />
                 </Stack>
@@ -106,16 +123,71 @@ export default function Entry() {
                     direction={{ xs: "column", sm: "row" }}
                     divider={<Divider orientation="vertical" flexItem />}
                     spacing={{ xs: 1, md: 2 }}
+                    justifyContent="center"
+                    width={{ xs: '160px', sm: '450px', md: '600px' }}
+                    mx="auto"
                   >
-                    <Button variant="contained" onClick={handleSignInWithGoogle}>Sign In with Google</Button>
-                    <Button variant="contained" onClick={handleSignInWithFacebook}>Sign In with Facebook</Button>
+                    <Button
+                      variant="outlined"
+                      onClick={handleSignInWithGoogle}
+                      sx={{
+                        color: 'grey.50',
+                        bgcolor: 'buttons.googleFB',
+                        ':hover': {bgcolor: 'buttons.googleFBhover'},
+                        border: 1,
+                        borderColor: 'buttons.googleFBborder',
+                        width: { xs: '150px', sm: '175px', md: '200px' },
+                        fontSize: { xs: 12, sm: 13, md: 14 }
+                      }}
+                    >
+                      Sign In with Google
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      onClick={handleSignInWithFacebook}
+                      sx={{
+                        color: 'grey.50',
+                        bgcolor: 'buttons.googleFB',
+                        ':hover': {bgcolor: 'buttons.googleFBhover'},
+                        border: 1,
+                        borderColor: 'buttons.googleFBborder',
+                        width: { xs: '150px', md: '200px' },
+                        fontSize: { xs: 12, sm: 13, md: 14 }
+                      }}
+                    >
+                      Sign In with Facebook
+                    </Button>
                   </Stack>
+                  <br />
                   <Stack spacing={{ xs: 1, md: 2 }}>
-                    <Typography variant="subtitle2">Don't have an account?</Typography>
-                    <Button variant="outlined" onClick={() => { setSignIn(false) }}>Sign Up</Button>
+                    <Typography
+                      variant="subtitle2"
+                      textAlign="center"
+                    >
+                      Don't have an account?
+                      <br/>
+                      <Button
+                        variant="contained"
+                        onClick={() => { setSignIn(false) }}
+                        sx={{
+                          mt: 1.5,
+                          mb: { xs: 1, md: 3 },
+                          color: 'grey.800',
+                          bgcolor: 'secondary.main',
+                          ':hover': { bgcolor: 'buttons.submitHover' },
+                          border: 1,
+                          borderColor: 'buttons.signupBorder',
+                          width: { xs: '100px', md: '200px' }
+                        }}
+                      >
+                        Sign Up
+                      </Button>
+                    </Typography>
                   </Stack>
                 </>
+                </Paper>
               </>
+
           }
         </>
       )
