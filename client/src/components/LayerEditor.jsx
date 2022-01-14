@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import * as Tone from 'tone';
-
+import VolumeUp from '@mui/icons-material/VolumeUp';
 import Box from '@mui/material/Box';
+
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import Container from '@mui/material/Container';
@@ -27,9 +28,6 @@ export default function LayerEditorCopy({ id, player }) {
   const [playerPlaybackRate, setPlayerPlaybackRate] = useState(
     player.playbackRate
   );
-
-  const [playerGrain, setPlayerGrain] = useState(player.player.grainSize);
-  const [playerOverlap, setPlayerOverlap] = useState(player.player.overlap);
   const [playerDetune, setPlayerDetune] = useState(player.player.detune / 100);
 
   // put page on mousedown listener to get the duration of tracks then immediatly remove it after setting each tracks duration.
@@ -47,6 +45,10 @@ export default function LayerEditorCopy({ id, player }) {
     };
   }, [duration]);
 
+  useEffect(() => {
+    setDuration(player.duration());
+    console.log('RERENDER');
+  }, [playerPlaybackRate, trimFromEnd]);
   const changeVolumeValue = (event, newValue) => {
     newValue = Math.round(newValue);
     setVolumeSliderValue(newValue);
@@ -63,68 +65,18 @@ export default function LayerEditorCopy({ id, player }) {
     setIsSolo(player._solo);
   };
   const trimFromStartTime = (event, newValue) => {
-    setTrimFromStart(newValue);
     player.changeTrimFromStart(newValue);
+    setTrimFromStart((prevTrimFromStart) => newValue);
   };
   const trimFromEndTime = (event, newValue) => {
+    console.log('newValue', newValue);
     player.changeTrimFromEnd(newValue);
-    setTrimFromEnd((prevTrimFromEnd)=>newValue);
-
-  };
-  const increasePlayback = (event, newValue) => {
-    event.preventDefault();
-    let newPlayback = Number(event.target.value);
-    newPlayback = Number.parseFloat(newPlayback + 0.1).toFixed(2);
-    newPlayback = Number(newPlayback);
-    player.increasePlaybackRate(newPlayback);
-    setPlayerPlaybackRate(newPlayback);
-  };
-  const decreasePlayback = (event) => {
-    event.preventDefault();
-    let newPlayback = Number(event.target.value);
-    setDuration(Number((player.duration() / player.playbackRate).toFixed(2)));
-    newPlayback = Number.parseFloat(newPlayback - 0.1).toFixed(2);
-    newPlayback = Number(newPlayback);
-
-    player.decreasePlaybackRate(newPlayback);
-    setPlayerPlaybackRate(newPlayback);
+    setTrimFromEnd((prevTrimFromEnd) => newValue);
   };
 
-  const increaseGrain = (event) => {
-    let newGrain = Number(event.target.value);
-
-    newGrain = Number.parseFloat(newGrain + 0.01).toFixed(2);
-    newGrain = Number(newGrain);
-
-    player.player.grainSize = newGrain;
-    setPlayerGrain(newGrain);
-  };
-
-  const decreaseGrain = (event) => {
-    let newGrain = Number(event.target.value);
-    newGrain = Number.parseFloat(newGrain - 0.01).toFixed(2);
-    newGrain = Number(newGrain);
-    player.player.grainSize = newGrain;
-    setPlayerGrain(newGrain);
-  };
-
-  const increaseOverlap = (event) => {
-    let newOverlap = Number(event.target.value);
-    newOverlap = Number.parseFloat(newOverlap + 0.01).toFixed(2);
-    newOverlap = Number(newOverlap);
-    player.player.overlap = newOverlap;
-    setPlayerOverlap(newOverlap);
-  };
-
-  const decreaseOverlap = (event) => {
-    let newOverlap = Number(event.target.value);
-    newOverlap = Number.parseFloat(newOverlap - 0.01).toFixed(2);
-
-    newOverlap = Number(newOverlap);
-
-    player.player.overlap = newOverlap;
-
-    setPlayerOverlap(newOverlap);
+  const changePlaybackRate = (event, newValue) => {
+    setPlayerPlaybackRate(newValue);
+    player.changePlaybackRate(newValue);
   };
 
   const changeDetune = (event, newValue) => {
@@ -211,9 +163,7 @@ export default function LayerEditorCopy({ id, player }) {
           <Typography variant='subtitle2' id='modal-edit-title'>
             Edit Layer: {player.name}
           </Typography>
-          <Typography>
-            Track Duration {Number(player.duration().toFixed(2))}
-          </Typography>
+          <Typography>Track Duration {player.duration().toFixed(2)}</Typography>
           <Typography>
             Volume:{' '}
             {volumeSliderValue === 40
@@ -228,7 +178,7 @@ export default function LayerEditorCopy({ id, player }) {
             value={volumeSliderValue}
             onChange={changeVolumeValue}
             aria-label='Volume Slider'
-            valueLabelDisplay='auto'
+            // valueLabelDisplay='auto'
           />
           <Typography> Pitch {playerDetune} </Typography>
           <Slider
@@ -237,68 +187,59 @@ export default function LayerEditorCopy({ id, player }) {
             value={playerDetune}
             onChange={changeDetune}
             aria-label='Trim Slider'
-            valueLabelDisplay='auto'
+            // valueLabelDisplay='auto'
           />
 
-          <Typography>Trim From Start</Typography>
+          <Typography>
+            Trim From Start
+            {Number((trimFromStart / playerPlaybackRate).toFixed(2))}
+          </Typography>
           <Slider
             min={0}
-            max={Number(player.duration().toFixed(2))}
+            max={Number(player.duration())}
             value={trimFromStart}
             onChange={trimFromStartTime}
             aria-label='Trim Slider'
-            valueLabelDisplay='auto'
+            // valueLabelDisplay='auto'
             step={0.1}
           />
-          <Typography>Trim From End</Typography>
+          <Typography>
+            Trim From End
+            {-Number(Math.abs(trimFromEnd) / playerPlaybackRate).toFixed(2)}
+          </Typography>
           <Slider
-            min={0}
-            max={Number(player.duration().toFixed(2))}
+            min={-Number(duration)}
+            max={Number(duration) - Number(duration)}
             value={trimFromEnd}
             onChange={trimFromEndTime}
             aria-label='Trim Slider'
-            valueLabelDisplay='auto'
+            // valueLabelDisplay='auto'
             track='inverted'
             step={0.1}
           />
-          <Typography>Playback Rate {playerPlaybackRate}</Typography>
+          <Typography>
+            {' '}
+            Track Will Start at{' '}
+            {(trimFromStart / playerPlaybackRate).toFixed(2)}
+            {' '}
+            <br></br>
+            Track Will End at {' '}
 
-          <Button
-            name='decreasePlayback'
-            onClick={decreasePlayback}
-            value={playerPlaybackRate}>
-            -
-          </Button>
-          <Button
-            name='increasePlayback'
-            onClick={increasePlayback}
-            value={playerPlaybackRate}>
-            +
-          </Button>
-
-          <Typography>Grain Size {playerGrain}</Typography>
-
-          <Button name='testGrain' onClick={decreaseGrain} value={playerGrain}>
-            -GrainSize
-          </Button>
-
-          <Button name='testGrain' onClick={increaseGrain} value={playerGrain}>
-            +GrainSize
-          </Button>
-
-          <Typography>Overlap/Crossfade {playerOverlap}</Typography>
-          <Button
-            name='decreaseOverlap'
-            onClick={decreaseOverlap}
-            value={playerOverlap}>
-            -Overlap Size
-          </Button>
-          <Button
-            name='increaseOverlap'
-            onClick={increaseOverlap}
-            value={playerOverlap}>
-            +Overlap Size
-          </Button>
+            {(
+              duration -
+              Math.abs(trimFromEnd) / playerPlaybackRate
+            ).toFixed(2)}
+          </Typography>
+          <Typography> Set Track Playback {playerPlaybackRate} </Typography>
+          <Slider
+            min={0.5}
+            max={2}
+            step={0.01}
+            value={playerPlaybackRate}
+            onChange={changePlaybackRate}
+            aria-label='Trim Slider'
+            valueLabelDisplay='auto'
+          />
         </Box>
       </Modal>
     </Container>
