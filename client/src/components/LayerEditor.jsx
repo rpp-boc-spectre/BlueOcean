@@ -46,7 +46,8 @@ export default function LayerEditorCopy({ id, player }) {
 
   useEffect(() => {
     setDuration(player.duration());
-  }, [playerPlaybackRate]);
+    console.log('RERENDER');
+  }, [playerPlaybackRate, trimFromEnd]);
   const changeVolumeValue = (event, newValue) => {
     newValue = Math.round(newValue);
     setVolumeSliderValue(newValue);
@@ -68,9 +69,8 @@ export default function LayerEditorCopy({ id, player }) {
   };
   const trimFromEndTime = (event, newValue) => {
     console.log('newValue', newValue);
-    setTrimFromEnd((prevTrimFromEnd) => newValue);
     player.changeTrimFromEnd(newValue);
-
+    setTrimFromEnd((prevTrimFromEnd) => newValue);
   };
 
   const changePlaybackRate = (event, newValue) => {
@@ -161,7 +161,7 @@ export default function LayerEditorCopy({ id, player }) {
             value={volumeSliderValue}
             onChange={changeVolumeValue}
             aria-label='Volume Slider'
-            valueLabelDisplay='auto'
+            // valueLabelDisplay='auto'
           />
           <Typography> Pitch {playerDetune} </Typography>
           <Slider
@@ -170,11 +170,12 @@ export default function LayerEditorCopy({ id, player }) {
             value={playerDetune}
             onChange={changeDetune}
             aria-label='Trim Slider'
-            valueLabelDisplay='auto'
+            // valueLabelDisplay='auto'
           />
 
           <Typography>
-            Trim From Start{Number((trimFromStart/playerPlaybackRate).toFixed(2))}
+            Trim From Start
+            {Number((trimFromStart / playerPlaybackRate).toFixed(2))}
           </Typography>
           <Slider
             min={0}
@@ -185,9 +186,9 @@ export default function LayerEditorCopy({ id, player }) {
             // valueLabelDisplay='auto'
             step={0.1}
           />
-          <Typography value={trimFromEnd}>
+          <Typography>
             Trim From End
-            {-Number(duration - Math.abs(trimFromEnd)/playerPlaybackRate).toFixed(2)}
+            {-Number(Math.abs(trimFromEnd) / playerPlaybackRate).toFixed(2)}
           </Typography>
           <Slider
             min={-Number(duration)}
@@ -199,7 +200,19 @@ export default function LayerEditorCopy({ id, player }) {
             track='inverted'
             step={0.1}
           />
+          <Typography>
+            {' '}
+            Track Will Start at{' '}
+            {(trimFromStart / playerPlaybackRate).toFixed(2)}
+            {' '}
+            <br></br>
+            Track Will End at {' '}
 
+            {(
+              duration -
+              Math.abs(trimFromEnd) / playerPlaybackRate
+            ).toFixed(2)}
+          </Typography>
           <Typography> Set Track Playback {playerPlaybackRate} </Typography>
           <Slider
             min={0.5}
