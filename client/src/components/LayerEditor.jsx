@@ -154,17 +154,17 @@ export default function LayerEditorCopy({ id, player }) {
         maxHeight: { xs: '13vh', md: '16vh' },
         border: '2px, solid, black',
         display: 'grid',
-        gridTemplateColumns: '2fr 3fr',
-        gridTemplateRows: '1fr 3fr'
+        gridTemplateColumns: {xs: '1fr', md: '2fr 3fr'},
+        gridTemplateRows: {xs: '1fr, 3fr, 3fr', md: '1fr 3fr'}
       }}>
         <FormControlLabel
-          sx={{ gridRow: '1', gridColumn: '1 / 2' }}
+          sx={{ gridRow: {xs: '1', md: '1'}, gridColumn: {xs: '1', md: '1 / 2'}}}
           label={player.name}
           control={<Checkbox defaultChecked />}
         />
         <Box sx={{
-          gridRow: '2',
-          gridColumn: '1',
+          gridRow: {xs: '2', md: '2'},
+          gridColumn: {xs: '1', md: '1'},
           maxWidth: '25vh',
           display: 'grid',
           gridTemplateColumns: '1fr 1fr 1fr',
@@ -180,7 +180,12 @@ export default function LayerEditorCopy({ id, player }) {
             button={{ name: 'Edit', handler: layerEditorOpen }}
           />
         </Box>
-        <Box sx={{ gridRow: '2', gridColumn: '2', maxWidth: '40vh', m: 'auto' }}>
+        <Box sx={{
+          gridRow: {xs: '3', md: '2'},
+          gridColumn: {xs: '1', md: '2'},
+          maxWidth: '40vh',
+          m: 'auto'
+        }}>
           <canvas
             className={'visual-layer' + id}
             width='350'

@@ -154,7 +154,7 @@ export default function LayerPlayer({
       <Container sx={{
         bgcolor: 'success.light',
         border: 1,
-        gridRow: {md: '1'}
+        gridRow: {xs: '1', md: '1'}
       }}>
         {(allLayersLoaded && layers) &&
           layers.map((layer, index) => <LayerEditor key={index} id={index} player={layerStore.player.layers[index]} />)}
@@ -164,11 +164,12 @@ export default function LayerPlayer({
         bgcolor: 'success.dark',
         border: 1,
         display: 'grid',
-        gridRow: {md: '2'},
+        gridTemplateColumns: {xs: '2fr 2fr', md: '2fr 1fr 2fr'},
+        gridRow: {xs: '2', md: '2'},
       }}>
         <Container
           sx={{
-            gridColumn: {md: '1'},
+            gridColumn: {xs: '1', md: '1'},
             display: 'flex',
             m: 'auto'
           }}
@@ -182,7 +183,7 @@ export default function LayerPlayer({
         </Container>
         <Container
           sx={{
-            gridColumn: {md: '3'},
+            gridColumn: {xs: '2', md: '3'},
             display: 'flex',
             m: 'auto'
           }}

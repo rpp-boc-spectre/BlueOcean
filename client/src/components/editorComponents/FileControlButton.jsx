@@ -26,8 +26,6 @@ import SoloFilledSVG from './S-Filled.svg';
 const SoloIcon = <img src={SoloSVG} height='24' width='24' />;
 const SoloFilledIcon = <img src={SoloFilledSVG} height='24' width='24' />;
 
-/* attempted to use an object and have the code look up each button name and
-   pick the right icon, but it wasn't working. so I just brute forced it, sorry */
 const FileControlButton = (props) => {
   const target = props.button.name;
   let button;
@@ -36,20 +34,11 @@ const FileControlButton = (props) => {
     'Import': (<ImportExportIcon />),
     'Upload': (<UploadFileIcon />)
   }
-  if (target === 'Record') {
-    button = <Button variant='outlined' onClick={props.button.handler}><FiberManualRecordIcon /></Button>
-  }
-  if (target === 'Import') {
-    button = <Button variant='outlined' onClick={props.button.handler}><ImportExportIcon /></Button>
-  }
-  if (target === 'Upload') {
-    button = <Button variant='outlined' onClick={props.button.handler}><UploadFileIcon /></Button>
-  }
+
   return (<Button
-    color='primary'
+    color='info'
     variant='outlined'
     onClick={props.button.handler}
-    sx={{ mb: 2 }}
   >
     {targets[target]}
   </Button>);

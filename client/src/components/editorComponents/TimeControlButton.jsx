@@ -26,8 +26,6 @@ import SoloFilledSVG from './S-Filled.svg';
 const SoloIcon = <img src={SoloSVG} height='24' width='24' />;
 const SoloFilledIcon = <img src={SoloFilledSVG} height='24' width='24' />;
 
-/* attempted to use an object and have the code look up each button name and
-   pick the right icon, but it wasn't working. so I just brute forced it, sorry */
 const TimeControlButton = (props) => {
   const target = props.button.name;
   let button;
@@ -53,9 +51,9 @@ const TimeControlButton = (props) => {
 
   if (Object.keys(regularButtons).includes(target)) {
     button = <Button
+      color='info'
       variant='outlined'
       onClick={props.button.handler}
-      sx={{ mb: 2 }}
     >
       {regularButtons[target]}
     </Button>
@@ -63,10 +61,10 @@ const TimeControlButton = (props) => {
 
   if (Object.keys(irregularButtons).includes(target)) {
     button = <ToggleButton
-      color='primary'
+      color='info'
+      variant='outlined'
       onClick={props.button.handler}
       value={props.button.value}
-      sx={{ mb: 2 }}
     >
       {irregularButtons[target]}
     </ToggleButton>

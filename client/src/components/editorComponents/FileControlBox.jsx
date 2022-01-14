@@ -16,10 +16,10 @@ const FileControlBox = (props) => {
     <>
       <Box
         sx={{
-          border: 1,
           m: 'auto',
           display: 'grid',
-          gridTemplateColumns: {md: '1fr 1fr 1fr 1fr'},
+          gridTemplateColumns: {xs: '1fr 1fr', md: '1fr 1fr 1fr 1fr'},
+          gridTemplateRows: {xs: '1fr 1fr'},
           gap: 1
         }}
       >

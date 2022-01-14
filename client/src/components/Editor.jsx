@@ -106,12 +106,24 @@ export default function Editor() {
   return (
     <Container className={'Big-container'} sx={{
       // border: 1,
-      maxHeight: '90vh',
-      minHeight: { xs: '100%', md: '90vh' },
-      width: { xs: '100%', md: '80%' },
+      // maxHeight: '90vh',
+      minHeight: { xs: '90vh', md: '90vh' },
+      // width: { xs: '100%', md: '80%' },
       display: 'grid',
-      gridTemplateColumns: { xs: '3fr 2fr', md: '1fr' },
-      gridTemplateRows: { xs: '5fr 1fr', md: '6fr 1fr' }
+      // gridTemplateColumns: { xs: '1fr', md: '1fr' },
+      gridTemplateRows: { xs: '5fr 1fr', md: '6fr 1fr' },
+      mx:'auto',
+      my:'10px',
+      p: {xs: '10px', md: '15px'},
+      width: {xs: '100', md: '70vw'},
+      maxWidth: '1000px',
+      maxHeight: {xs: '84vh', md:'87vh'},
+      bgcolor: 'primary.light',
+      overflowY: 'scroll',
+      '&::-webkit-scrollbar': {
+          display: 'none'
+      },
+      borderRadius: {xs: '0', md: '5%'}
     }}>
       <LayerPlayer
         layers={audioLayers}
@@ -137,14 +149,14 @@ export default function Editor() {
         </IconButton>
       </Drawer>
       <Drawer
-        // sx={{
-        //   width: 400,
-        //   flexShrink: 0,
-        //   '& .MuiDrawer-paper': {
-        //     width: 400,
-        //     boxSizing: 'border-box',
-        //   },
-        // }}
+        sx={{
+          width: 400,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: 400,
+            boxSizing: 'border-box',
+          },
+        }}
         variant="persistent"
         anchor="bottom"
         open={recordingModalState}
@@ -156,8 +168,7 @@ export default function Editor() {
         <Recorder currentList={audioLayers} setAudioLayers={setAudioLayers} />
       </Drawer>
       <Modal open={uploadModalState} onClose={handleUploadClose} >
-        {/* <Box sx={{ backgroundColor: 'white', margin: 'auto', top: 50, }}> */}
-        <Box>
+        <Box sx={{ backgroundColor: 'white', margin: 'auto', top: 50, }}>
           <UploadFile />
         </Box>
       </Modal>
