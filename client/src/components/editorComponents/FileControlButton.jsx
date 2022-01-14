@@ -46,6 +46,7 @@ const FileControlButton = (props) => {
     button = <Button variant='outlined' onClick={props.button.handler}><UploadFileIcon /></Button>
   }
   return (<Button
+    color='primary'
     variant='outlined'
     onClick={props.button.handler}
     sx={{ mb: 2 }}

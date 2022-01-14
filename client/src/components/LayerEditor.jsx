@@ -144,9 +144,10 @@ export default function LayerEditorCopy({ id, player }) {
 
   return (
     <Container sx={{
-      bgcolor: 'secondary.light',
+      bgcolor: 'background.paper',
       padding: '0px',
-      border: 1
+      border: 1,
+      mt: 1
     }}>
       <Box sx={{
         minHeight: { xs: '13vh', md: '16vh' },

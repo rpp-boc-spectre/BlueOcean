@@ -63,6 +63,7 @@ const TimeControlButton = (props) => {
 
   if (Object.keys(irregularButtons).includes(target)) {
     button = <ToggleButton
+      color='primary'
       onClick={props.button.handler}
       value={props.button.value}
       sx={{ mb: 2 }}

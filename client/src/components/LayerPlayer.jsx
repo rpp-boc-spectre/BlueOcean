@@ -165,7 +165,6 @@ export default function LayerPlayer({
         border: 1,
         display: 'grid',
         gridRow: {md: '2'},
-        // m: 'auto'
       }}>
         <Container
           sx={{

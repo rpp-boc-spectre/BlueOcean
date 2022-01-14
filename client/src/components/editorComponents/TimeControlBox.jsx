@@ -46,8 +46,10 @@ const TimeControlBox = (props) => {
       <Box
         sx={{
           border: 1,
-          // gridColumn: {xs: '1', md: '1'},
-        //   gridRow: {xs: '2', md: '2'}
+          m: 'auto',
+          display: 'grid',
+          gridTemplateColumns: {md: '1fr 1fr 1fr 1fr'},
+          gap: 1
         }}
       >
         {buttons.map((button, index) => {
