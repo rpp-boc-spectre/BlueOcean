@@ -40,8 +40,17 @@ export default function SignIn({ navigate }) {
             value={formEmail}
             validators={['required', 'isEmail']}
             errorMessages={['Email is required', 'Email is not valid']}
+            sx={{
+              width: { xs: '200px', md: '300px' },
+              height: { xs: '40px', md: '40px' },
+              mt: 1.5,
+              mb: 0.5,
+              bgcolor: "grey.50",
+              borderRadius: 1
+            }}
+            size="small"
+            // variant="standard"
           />
-          <br />
           <TextValidator
             label="Password"
             type="password"
@@ -50,10 +59,33 @@ export default function SignIn({ navigate }) {
             value={formPassword}
             validators={['required']}
             errorMessages={['Password is required']}
+            sx={{
+              width: { xs: '200px', md: '300px' },
+              height: { xs: '40px', md: '40px' },
+              bgcolor: "grey.50",
+              borderRadius: 1
+            }}
+            size="small"
+            // variant="standard"
           />
           <br />
           <Box textAlign="center">
-            <Button variant="contained" type="submit">Submit</Button>
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{
+                mt: 1,
+                mb: 3,
+                color: 'grey.800',
+                bgcolor: 'secondary.main',
+                ':hover': { bgcolor: 'buttons.submitHover' },
+                border: 1,
+                borderColor: 'buttons.signupBorder',
+                width: { xs: '100px', md: '200px' }
+              }}
+            >
+              Submit
+            </Button>
           </Box>
         </ValidatorForm>
       </Stack>
