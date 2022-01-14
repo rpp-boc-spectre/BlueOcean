@@ -48,7 +48,7 @@ export default function LayerEditorCopy({ id, player }) {
   useEffect(() => {
     setDuration(player.duration());
     console.log('RERENDER');
-  }, [playerPlaybackRate, trimFromEnd]);
+  }, [playerPlaybackRate, trimFromStart,trimFromEnd]);
   const changeVolumeValue = (event, newValue) => {
     newValue = Math.round(newValue);
     setVolumeSliderValue(newValue);
@@ -65,13 +65,15 @@ export default function LayerEditorCopy({ id, player }) {
     setIsSolo(player._solo);
   };
   const trimFromStartTime = (event, newValue) => {
-    player.changeTrimFromStart(newValue);
+
     setTrimFromStart((prevTrimFromStart) => newValue);
+    player.changeTrimFromStart(newValue);
   };
   const trimFromEndTime = (event, newValue) => {
     console.log('newValue', newValue);
-    player.changeTrimFromEnd(newValue);
+
     setTrimFromEnd((prevTrimFromEnd) => newValue);
+    player.changeTrimFromEnd(newValue);
   };
 
   const changePlaybackRate = (event, newValue) => {
@@ -163,7 +165,7 @@ export default function LayerEditorCopy({ id, player }) {
           <Typography variant='subtitle2' id='modal-edit-title'>
             Edit Layer: {player.name}
           </Typography>
-          <Typography>Track Duration {player.duration().toFixed(2)}</Typography>
+          <Typography>Track Duration { player.duration()}</Typography>
           <Typography>
             Volume:{' '}
             {volumeSliderValue === 40
@@ -200,7 +202,7 @@ export default function LayerEditorCopy({ id, player }) {
             value={trimFromStart}
             onChange={trimFromStartTime}
             aria-label='Trim Slider'
-            // valueLabelDisplay='auto'
+            valueLabelDisplay='auto'
             step={0.1}
           />
           <Typography>
@@ -208,12 +210,12 @@ export default function LayerEditorCopy({ id, player }) {
             {-Number(Math.abs(trimFromEnd) / playerPlaybackRate).toFixed(2)}
           </Typography>
           <Slider
-            min={-Number(duration)}
-            max={Number(duration) - Number(duration)}
+            min={-Number(player.duration())}
+            max={Number(player.duration()) - Number(player.duration())}
             value={trimFromEnd}
             onChange={trimFromEndTime}
             aria-label='Trim Slider'
-            // valueLabelDisplay='auto'
+            valueLabelDisplay='auto'
             track='inverted'
             step={0.1}
           />
@@ -226,7 +228,7 @@ export default function LayerEditorCopy({ id, player }) {
             Track Will End at {' '}
 
             {(
-              duration -
+           player.duration() -
               Math.abs(trimFromEnd) / playerPlaybackRate
             ).toFixed(2)}
           </Typography>
