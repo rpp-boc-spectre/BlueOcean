@@ -20,13 +20,14 @@ export default function TrackCard({ trackId, meta, tag }) {
 
   return (
     <Card sx={{
-      height: {xs: '18vh', sm: '150px', md: '200px'},
+      height: {xs: '30vh', sm: '150px', md: '200px'},
       width: {xs: '60vw', sm: '175px', md: '250px'},
       overflowX: 'scroll',
       '&::-webkit-scrollbar': {
         display: 'none'
         },
-      position: 'relative'
+      position: 'relative',
+      bgcolor: "background.paper"
       }}>
       <CardActionArea onClick={handleNavigation} sx={{ p: '2px', height: '300px', maxHeight: '100%' }}>
         <CardContent sx={{position: 'absolute', top: '10px'}}>
@@ -40,7 +41,7 @@ export default function TrackCard({ trackId, meta, tag }) {
           bottom: 0,
           width: '90%'
         }}
-        >
+      >
         <Chip label={tag} />
       </CardActions>
     </Card>

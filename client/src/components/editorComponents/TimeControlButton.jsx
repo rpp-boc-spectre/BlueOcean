@@ -64,7 +64,7 @@ const TimeControlButton = (props) => {
       color="black"
       variant='outlined'
       onClick={props.button.handler}
-      sx={{ maxHeight: '100px' }}
+      sx={{ ...props.sx, maxHeight: '100px' }}
       disabled={checkDisable(target)}
     >
       {regularButtons[target]}
@@ -77,7 +77,7 @@ const TimeControlButton = (props) => {
       variant='outlined'
       onClick={props.button.handler}
       value={props.button.value}
-      sx={{ maxHeight: '100px' }}
+      sx={{ ...props.sx, maxHeight: '100px' }}
     >
       {irregularButtons[target]}
     </ToggleButton>
