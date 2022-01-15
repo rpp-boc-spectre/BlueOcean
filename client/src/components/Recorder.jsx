@@ -91,7 +91,7 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
       setMicRecorder(recorder);
       setUserMic(mic);
       await mic.open();
-      recorder.start();
+     await recorder.start();
       if (playWith && layerStore.player) {
         layerStore.player.start()
       }
@@ -161,10 +161,10 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
         renderWaveform(wave);
       }, time);
     }, "+0.005");
-
+    player.unsync().stop()
     player.sync().start();
     await Tone.loaded();
-    Tone.Transport.start();
+    Tone.Transport.start('+0.005');
   }
 
   const handleUploadClick = async () => {
@@ -243,6 +243,7 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
       // close mic on stop.
       if (userMicRef.current !== null && micRecorderRef.current !== undefined) {
         userMicRef.current.close();
+        console.log('micRecorderRef',micRecorderRef)
       }
     }
   }, [])

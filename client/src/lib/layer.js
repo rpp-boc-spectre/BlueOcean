@@ -22,13 +22,19 @@ export class Layer {
     this.solo = new Tone.Solo().toDestination();
     this.layerData = layerData;
     this.name = getLayerName(this.layerData);
-    this.trimFromEnd = trimFromEnd || Infinity;
+    this.trimFromEnd = 0 || trimFromEnd
     this.trimFromStart = trimFromStart || 0;
     this.playbackRate = playbackRate || 1;
     this._pitch = pitch || 0;
     this._mute = false;
     this._solo = false;
     this._volume = this.volume.volume.value;
+
+     if(this.trimFromEnd === Infinity || this.trimFromEnd === undefined){
+       this.trimFromEnd = 0.00
+     }
+
+
   }
 
   connect() {
