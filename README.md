@@ -15,7 +15,7 @@ Then, the layer can be saved with a name, tag, and publicity status. Any track l
 <p align="center">
   <img 
        src="https://images.unsplash.com/photo-1599148401005-fe6d7497cb5e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8ZmVybnxlbnwwfHwwfHw%3D&w=1000&q=80" 
-       style="width:50%, height:100px"
+       style="width:50%, height:10px"
   />
 </p>
 
@@ -23,25 +23,25 @@ Then, the layer can be saved with a name, tag, and publicity status. Any track l
   <p align="center">
     <img 
          src="https://firebase.google.com/images/brand-guidelines/logo-logomark.png"
-         style="width:50%, height:100px"
+         style="width:50%, height:10px"
     />
   </p>
   <p align="center">
     <img 
          src="https://expressjs.com/images/express-facebook-share.png"
-         style="width:50%, height:100px"
+         style="width:50%, height:10px"
     />
   </p>
   <p align="center">
     <img 
          src="https://brandslogos.com/wp-content/uploads/images/react-logo-vector.svg"
-         style="width:50%, height:100px"
+         style="width:50%, height:10px"
     />
   </p>
   <p align="center">
     <img 
          src="https://cdn.freebiesupply.com/logos/thumbs/2x/nodejs-1-logo.png"
-         style="width:50%, height:100px"
+         style="width:50%, height:10px"
     />
   </p>
 </div>
