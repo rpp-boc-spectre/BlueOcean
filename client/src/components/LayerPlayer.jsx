@@ -5,13 +5,7 @@ import * as Tone from 'tone';
 import toast from 'react-hot-toast';
 import { useLayerStore } from '../context/LayerContext.js';
 
-import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Typography from '@mui/material/Box';
-import Slider from '@mui/material/Slider';
-import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
+import { Alert, Box, Modal, Typography, Slider, Container, Divider } from '@mui/material';
 import { addLayer, removeLayer, setPlayer } from '../lib/layerTableReducer.js';
 import { saveTrackData } from '../utils/database.js';
 import { Player } from '../lib/player.js';
