@@ -19,7 +19,7 @@ Then, the layer can be saved with a name, tag, and publicity status. Any track l
   />
 </p>
 
-<div>
+<div style="display:flex">
   <p align="center">
     <img 
          src="https://firebase.google.com/images/brand-guidelines/logo-logomark.png"
