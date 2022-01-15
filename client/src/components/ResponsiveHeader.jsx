@@ -202,7 +202,15 @@ const ResponsiveHeader = () => {
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <Button variant='contained' onClick={handleOpenUserMenu} sx={{ p: 1 }}>
+              <Button
+                variant='contained'
+                onClick={handleOpenUserMenu}
+                sx={{
+                  p: 1,
+                  bgcolor: 'buttons.submitHover',
+                  ':hover': { bgcolor: 'secondary.dark' }
+                }}
+              >
                 Account
               </Button>
             </Tooltip>
