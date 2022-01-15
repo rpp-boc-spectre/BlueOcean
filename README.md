@@ -1,4 +1,4 @@
-# Welcome to ZAP! ![logo](client/dist/favicon.ico)
+# Welcome to ZAP! ![logo](client/dist/favicon-96x96.png)
 This was a month long project where our team completed an MVP full stack application for an external user.
 
 # What does it do
