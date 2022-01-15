@@ -32,6 +32,9 @@ const theme = createTheme({
       paper: '#FAE9B8',
       default: '#d3d3d3'
     },
+    input: {
+      color: '#F8F8FF'
+    },
     buttons: {
       signupBorder: '#b1871b',
       googleFB: '#76a0ef',
