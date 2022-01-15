@@ -20,7 +20,7 @@ export default function TrackCard({ trackId, meta, tag }) {
 
   return (
     <Card sx={{
-      height: {xs: '18vh', sm: '150px', md: '200px'},
+      height: {xs: '30vh', sm: '150px', md: '200px'},
       width: {xs: '60vw', sm: '175px', md: '250px'},
       overflowX: 'scroll',
       '&::-webkit-scrollbar': {
