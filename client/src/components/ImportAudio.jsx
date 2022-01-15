@@ -144,8 +144,12 @@ export default function ImportAudio({ userId, currentList, originalList, setPare
         :
         audioLayerList ?
           <>
-            <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-              {originalAudioLayerList ? <Typography>Original Layers</Typography> : <></>}
+            <List sx={{
+              width: { xs: '80%', sm: '90%', md:'100%'},
+              maxWidth: 360,
+              bgcolor: 'background.paper'
+            }}>
+              {originalAudioLayerList ? <Typography sx={{ml: 1}}><b>Original Layers</b></Typography> : <></>}
               {originalAudioLayerList.map((item, index) => {
                 const labelId = `checkbox-list-label-${index}`;
                 const disabled = originalChecked.length + checked.length >= layerMax && originalChecked.indexOf(index) === -1
@@ -167,7 +171,7 @@ export default function ImportAudio({ userId, currentList, originalList, setPare
                 )
               })}
               {originalAudioLayerList && audioLayerList ? <Divider /> : <></>}
-              {audioLayerList ? <Typography>Personal Layers</Typography> : <></>}
+              {audioLayerList ? <Typography sx={{mt: 1, ml: 1}}><b>Personal Layers</b></Typography> : <></>}
               {audioLayerList.map((item, index) => {
                 const labelId = `checkbox-list-label-${index}`;
                 const disabled = originalChecked.length + checked.length >= layerMax && checked.indexOf(index) === -1
@@ -189,7 +193,19 @@ export default function ImportAudio({ userId, currentList, originalList, setPare
                 )
               })}
             </List>
-            <Button variant={'outlined'} onClick={handleSubmit}>Import</Button>
+            <Button
+              variant={'outlined'}
+              onClick={handleSubmit}
+              sx={{
+                color: 'grey.50',
+                bgcolor: 'primary.light',
+                ':hover': { bgcolor: 'primary.dark' },
+                mb: 1,
+                width: { xs: '100%', sm: '100%', md: '100%' }
+              }}
+            >
+              Import
+            </Button>
           </>
           :
           <p>No items to show</p>
