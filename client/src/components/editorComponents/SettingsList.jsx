@@ -68,9 +68,10 @@ const SettingsList = (props) => {
   return (
     <>
       <Button
-        color='info'
+        color='black'
         variant='outlined'
         onClick={handleDrawerToggle}
+        disabled={props.isPlaying}
       >
         <SaveIcon />
       </Button>

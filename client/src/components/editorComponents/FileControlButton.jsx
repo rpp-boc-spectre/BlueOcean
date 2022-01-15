@@ -16,9 +16,10 @@ const FileControlButton = (props) => {
   }
 
   return (<Button
-    color='info'
+    color='black'
     variant='outlined'
     onClick={props.button.handler}
+    disabled={props.isPlaying}
   >
     {targets[target]}
   </Button>);

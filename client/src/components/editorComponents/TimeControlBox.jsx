@@ -53,7 +53,7 @@ const TimeControlBox = (props) => {
         }}
       >
         {buttons.map((button, index) => {
-          return <TimeControlButton key={index} button={button} />
+          return <TimeControlButton isPlaying={props.isPlaying} key={index} button={button} />
         })}
       </Box>
     </>
