@@ -157,11 +157,30 @@ export default function LayerEditorCopy({ id, player }) {
             boxShadow: 24,
             p: 4,
           }}>
-          <Typography variant='subtitle2' id='modal-edit-title'>
+          <Typography
+            variant='subtitle2'
+            id='modal-edit-title'
+            sx={{
+              fontFamily: 'Roboto',
+              pb: 1
+            }}
+          >
             Edit Layer: {player.name}
           </Typography>
-          <Typography>Track Duration { player.duration().toFixed(2)}</Typography>
-          <Typography>
+          <Typography
+            sx={{
+              fontFamily: 'Roboto',
+              pb: 1
+            }}
+          >
+            Track Duration { player.duration().toFixed(2)}
+          </Typography>
+          <Typography
+           sx={{
+            fontFamily: 'Roboto',
+            pb: 1
+          }}
+          >
             Volume:{' '}
             {volumeSliderValue === 40
               ? 'Max'
@@ -177,7 +196,10 @@ export default function LayerEditorCopy({ id, player }) {
             aria-label='Volume Slider'
             // valueLabelDisplay='auto'
           />
-          <Typography> Pitch {playerDetune} </Typography>
+          <Typography sx={{
+              fontFamily: 'Roboto',
+              pb: 1
+            }}> Pitch: {playerDetune} </Typography>
           <Slider
             min={-12}
             max={12}
@@ -187,8 +209,11 @@ export default function LayerEditorCopy({ id, player }) {
             // valueLabelDisplay='auto'
           />
 
-          <Typography>
-            Trim From Start
+          <Typography sx={{
+              fontFamily: 'Roboto',
+              pb: 1
+            }}>
+            Trim From Start:
             {(trimFromStart / playerPlaybackRate).toFixed(2)}
           </Typography>
           <Slider
@@ -200,8 +225,11 @@ export default function LayerEditorCopy({ id, player }) {
             // valueLabelDisplay='auto'
             step={0.01}
           />
-          <Typography>
-            Trim From End
+          <Typography sx={{
+              fontFamily: 'Roboto',
+              pb: 1
+            }}>
+            Trim From End:
             {Math.abs((trimFromEnd) / playerPlaybackRate).toFixed(2)}
             {/* {-Number( player.duration() - Math.abs(trimFromEnd) / playerPlaybackRate).toFixed(2)} */}
           </Typography>
@@ -215,22 +243,32 @@ export default function LayerEditorCopy({ id, player }) {
             track='inverted'
             step={0.01}
           />
-          <Typography>
+          <Typography sx={{
+              fontFamily: 'Roboto',
+              pb: 1
+            }}>
             {' '}
-            Track Will Start at{' '}
+            Track Will Start at {' '}
             {(trimFromStart / playerPlaybackRate).toFixed(2)}
 
             {' '}
-            <br></br>
+            {/* <br></br> */}
+            </Typography>
+            <Typography sx={{
+              fontFamily: 'Roboto',
+              pb: 1
+            }}>
             Track Will End at {' '}
               { (player.duration() + trimFromEnd).toFixed(2)}
-
           </Typography>
-          <Typography> Set Track Playback {playerPlaybackRate} </Typography>
+          <Typography sx={{
+              fontFamily: 'Roboto',
+              pb: 1
+            }}> Set Track Playback {playerPlaybackRate} </Typography>
           <Slider
             min={0.5}
             max={2}
-            step={0.015}
+            step={0.1}
             value={playerPlaybackRate}
             onChange={changePlaybackRate}
             aria-label='Trim Slider'
