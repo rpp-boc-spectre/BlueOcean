@@ -23,7 +23,6 @@ export class Layer {
     this.layerData = layerData;
     this.name = getLayerName(this.layerData);
     this.trimFromEnd = 0 || trimFromEnd
-    // this.trimFromEnd = 0 || trimFromEnd
     this.trimFromStart = trimFromStart || 0;
     this.playbackRate = playbackRate || 1;
     this._pitch = pitch || 0;
@@ -31,8 +30,9 @@ export class Layer {
     this._solo = false;
     this._volume = this.volume.volume.value;
 
-    // this.trimFromEnd = -this.trimFromEnd
-
+     if(this.trimFromEnd === Infinity || this.trimFromEnd === undefined){
+       this.trimFromEnd = 0.00
+     }
 
     console.log('TRIM FROM END',this.trimFromEnd,trimFromEnd)
   }
