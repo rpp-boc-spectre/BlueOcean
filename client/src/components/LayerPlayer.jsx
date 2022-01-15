@@ -5,7 +5,7 @@ import * as Tone from 'tone';
 import toast from 'react-hot-toast';
 import { useLayerStore } from '../context/LayerContext.js';
 
-import { Alert, Box, Modal, Typography, Slider, Container, Divider } from '@mui/material';
+import { Alert, Box, Modal, Typography, Slider, Container, Divider, Stack } from '@mui/material';
 import { addLayer, removeLayer, setPlayer } from '../lib/layerTableReducer.js';
 import { saveTrackData } from '../utils/database.js';
 import { Player } from '../lib/player.js';
@@ -156,21 +156,40 @@ export default function LayerPlayer({
         border: 1,
         gridRow: {xs: '1', md: '1'},
         borderRadius: {xs: '0', md: '5% 5% 0% 0%'},
-        width: {xs: '70%', sm: '85%', md: '95%'},
+        width: {xs: '90%', sm: '90%', md: '90%'},
       }}>
         {(allLayersLoaded && layers) &&
           layers.map((layer, index) => <LayerEditor key={index} id={index} player={layerStore.player.layers[index]} />)}
       </Container>
       {/* <Divider /> */}
-      <Container sx={{
-        bgcolor: 'buttons.submitHover',
-        border: 1,
-        display: 'grid',
-        gridTemplateColumns: {xs: '2fr 2fr', md: '2fr 1fr 2fr'},
-        gridRow: {xs: '2', md: '2'},
-        borderRadius: {xs: '0', md: '0% 0% 5% 5%'},
-        width: {xs: '70%', sm: '85%', md: '95%'}
-      }}>
+
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        sx={{
+          bgcolor: 'buttons.submitHover',
+          border: 1,
+          // display: 'grid',
+          // gridTemplateColumns: {xs: '2fr 2fr', md: '2fr 1fr 2fr'},
+          // gridRow: {xs: '2', md: '2'},
+          borderRadius: {xs: '0', md: '0% 0% 5% 5%'},
+          // width: {xs: '70%', sm: '85%', md: '95%'},
+          width: {xs: '90%', sm: '90%', md: '90%'},
+          mx: "auto",
+          gap: 1
+        }}>
+          {/* <Container
+          sx={{
+            bgcolor: 'buttons.submitHover',
+            border: 1,
+            // display: 'grid',
+            // gridTemplateColumns: {xs: '2fr 2fr', md: '2fr 1fr 2fr'},
+            // gridRow: {xs: '2', md: '2'},
+            borderRadius: {xs: '0', md: '0% 0% 5% 5%'},
+            width: {xs: '70%', sm: '85%', md: '95%'},
+            mx:
+          }}>
+          > */}
+
         <Container
           sx={{
             gridColumn: {xs: '1', md: '1'},
@@ -178,6 +197,7 @@ export default function LayerPlayer({
             m: 'auto'
           }}
         >
+
           <TimeControlBox
             isPlaying={currentlyPlaying}
             playAllHandler={playAllLayers}
@@ -203,7 +223,8 @@ export default function LayerPlayer({
             updateMetadata={updateMetadata}
           />
         </Container>
-      </Container>
+        {/* </Container> */}
+        </Stack>
 
       <Modal
         open={editOpen}
@@ -216,7 +237,7 @@ export default function LayerPlayer({
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: { xs: '95%', sm: '75%', md: 400 },
+            width: { xs: '75%', sm: '75%', md: 400 },
             bgcolor: 'background.paper',
             border: '2px solid #000',
             boxShadow: 24,
