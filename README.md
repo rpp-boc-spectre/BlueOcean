@@ -21,12 +21,12 @@ Then, the layer can be saved with a name, tag, and publicity status. Any track l
 
 <p align="center">
   <img 
-       src="https://icon2.cleanpng.com/20180609/ryh/kisspng-firebase-cloud-messaging-google-cloud-messaging-api-as-a-service-5b1bf782ac0ca2.2103995315285594907047.jpg"
+       src="https://www.pngkit.com/png/detail/208-2080867_firebase-logo-firebase-logo-png.png"
        style="width:50%"
   />
 </p>
 
-
+|  ![]("https://www.pngkit.com/png/detail/208-2080867_firebase-logo-firebase-logo-png.png")  |  ![]("https://expressjs.com/images/express-facebook-share.png")  |  ![]("https://brandslogos.com/wp-content/uploads/images/react-logo-vector.svg")  |
 
 
 # Anticipated challenges
