@@ -78,7 +78,7 @@ export default function SignUp({ navigate }) {
               height: { xs: '40px', md: '40px' },
               mt: 1.5,
               mb: 0.5,
-              bgcolor: "grey.50",
+              bgcolor: "input.color",
               borderRadius: 1
             }}
             size="small"
@@ -94,7 +94,7 @@ export default function SignUp({ navigate }) {
               width: { xs: '200px', md: '300px' },
               height: { xs: '40px', md: '40px' },
               mb: 1,
-              bgcolor: "grey.50",
+              bgcolor: "input.color",
               borderRadius: 1
             }}
             size="small"
@@ -113,7 +113,7 @@ export default function SignUp({ navigate }) {
               height: { xs: '40px', md: '40px' },
               mt: 1.5,
               mb: 0.5,
-              bgcolor: "grey.50",
+              bgcolor: "input.color",
               borderRadius: 1
             }}
             size="small"
@@ -130,7 +130,7 @@ export default function SignUp({ navigate }) {
               width: { xs: '200px', md: '300px' },
               height: { xs: '40px', md: '40px' },
               // mb: 1.5,
-              bgcolor: "grey.50",
+              bgcolor: "input.color",
               borderRadius: 1
             }}
             size="small"
@@ -141,7 +141,7 @@ export default function SignUp({ navigate }) {
               variant="contained"
               type="submit"
               sx={{
-                my: 1,
+                my: 2,
                 color: 'grey.800',
                 bgcolor: 'secondary.main',
                 ':hover': { bgcolor: 'buttons.submitHover' },

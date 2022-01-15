@@ -18,7 +18,13 @@ export default function TaggedTracks({ tag, tracks, getTracks, removedTrack }) {
           {tracks.map((track, index) => {
             return (
               <Grid item key={index}>
-                <TrackListItem trackId={track.id} meta={track.meta} index={index} getTracks={getTracks} removedTrack={removedTrack} />
+                <TrackListItem
+                  trackId={track.id}
+                  meta={track.meta}
+                  index={index}
+                  getTracks={getTracks}
+                  removedTrack={removedTrack}
+                />
               </Grid>)
           })}
         </Grid>

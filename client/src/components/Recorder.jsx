@@ -8,12 +8,9 @@ import { useLayerStore } from '../context/LayerContext.js'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import UserContext from '../context/UserContext';
 
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Alert from '@mui/material/Alert'
+import { Typography, Button, Alert, Box, Switch } from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
-import Switch from '@mui/material/Switch';
 
 import toast from 'react-hot-toast';
 import { getLayerUrl } from '../utils/storage';
@@ -55,7 +52,7 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
     const draw = () => {
       analyser.getByteTimeDomainData(dataArray);
 
-      canvasCtx.fillStyle = '#FFFFFF';
+      canvasCtx.fillStyle = '#FAE9B8';
       canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
       canvasCtx.lineWidth = 2;
       canvasCtx.strokeStyle = '#000000';
@@ -255,8 +252,36 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
       <Switch checked={playWith} onChange={() => { setPlayWith((prev) => !prev) }} />
       {(!!micRecorder && !isFinished) && <Typography>{`${Math.abs(timeRemaining - recordingLimit.current).toFixed(2)} / ${recordingLimit.current}:00`}</Typography>}
       {(countDown) && <Typography>{(currentCountDown / 1000).toFixed(2)}</Typography>}
-      <Button variant='outlined' onClick={handleRecordClick} startIcon={<MicIcon />} disabled={isFinished === false && !!micRecorder}>Click to record</Button>
-      <Button variant='outlined' onClick={stopRecorder} endIcon={<StopCircleIcon />} disabled={isFinished === true || !micRecorder}>Click to stop</Button>
+      <Button
+        variant='outlined'
+        onClick={handleRecordClick}
+        startIcon={<MicIcon />}
+        disabled={isFinished === false && !!micRecorder}
+        sx={{
+          color: 'grey.50',
+          bgcolor: 'primary.light',
+          ':hover': { bgcolor: 'primary.dark' },
+          mb: 1,
+          width: { xs: '100%', sm: '100%', md: '100%' }
+        }}
+      >
+        Click to record
+      </Button>
+      <Button
+        variant='outlined'
+        onClick={stopRecorder}
+        endIcon={<StopCircleIcon />}
+        disabled={isFinished === true || !micRecorder}
+        sx={{
+          color: 'grey.50',
+          bgcolor: 'primary.light',
+          ':hover': { bgcolor: 'primary.dark' },
+          mb: 1,
+          width: { xs: '100%', sm: '100%', md: '100%' }
+        }}
+      >
+        Click to stop
+      </Button>
       <ValidatorForm onSubmit={handleUploadClick}>
         <TextValidator
           label="Layer Name"
@@ -265,14 +290,35 @@ export default function RecorderTone({ currentList, setAudioLayers }) {
           value={recordingName}
           validators={['required']}
           errorMessages={['this field is required']}
+          sx={{
+            width: { xs: '200px', sm: '250px', md: '275px' },
+            height: { xs: '40px', md: '40px' },
+            mt: 1.5,
+            mb: 1,
+            bgcolor: "input.color",
+            borderRadius: 1
+          }}
+          size="small"
         />
-        <Button variant="contained" type="submit" disabled={!isFinished}>Upload</Button>
+        <Button
+          variant="contained"
+          type="submit"
+          disabled={!isFinished}
+          sx={{
+            color: 'grey.50',
+            bgcolor: 'buttons.submitHover',
+            ':hover': { bgcolor: 'secondary.dark' },
+            width: { xs: '100px', md: '200px' }
+          }}
+        >
+          Upload
+        </Button>
       </ValidatorForm>
       <br />
-      <br />
-      <br />
-      <audio src={url} onPlay={audioPlayback} controls></audio>
       <canvas className='visual-layer' width='350' height='75'></canvas>
+      <Box sx={{ mx: 'auto' }}>
+        <audio src={url} onPlay={audioPlayback} controls></audio>
+      </Box>
     </>
   );
 }
