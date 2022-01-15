@@ -40,7 +40,7 @@ Then, the layer can be saved with a name, tag, and publicity status. Any track l
   </p>
   <p align="center">
     <img 
-         src="https://www.pngkit.com/png/detail/208-2080867_firebase-logo-firebase-logo-png.png"
+         src="https://cdn.freebiesupply.com/logos/thumbs/2x/nodejs-1-logo.png"
          style="width:50%"
     />
   </p>
