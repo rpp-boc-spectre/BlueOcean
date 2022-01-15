@@ -14,7 +14,7 @@ Then, the layer can be saved with a name, tag, and publicity status. Any track l
 
 <p align="center">
   <img 
-       src="https://icon2.cleanpng.com/20180609/ryh/kisspng-firebase-cloud-messaging-google-cloud-messaging-api-as-a-service-5b1bf782ac0ca2.2103995315285594907047.jpg" 
+       src="https://images.unsplash.com/photo-1599148401005-fe6d7497cb5e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8ZmVybnxlbnwwfHwwfHw%3D&w=1000&q=80" 
        style="width:50%"
   />
 </p>
@@ -22,7 +22,7 @@ Then, the layer can be saved with a name, tag, and publicity status. Any track l
 <div>
   <p align="center">
     <img 
-         src="https://www.pngkit.com/png/detail/208-2080867_firebase-logo-firebase-logo-png.png"
+         src="https://icon2.cleanpng.com/20180402/cae/kisspng-firebase-software-development-kit-application-prog-best-5ac2960b8f3856.0988431215227018355866.jpg"
          style="width:50%"
     />
   </p>
