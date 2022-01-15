@@ -34,7 +34,7 @@ export class Layer {
        this.trimFromEnd = 0.00
      }
 
-    console.log('TRIM FROM END',this.trimFromEnd,trimFromEnd)
+
   }
 
   connect() {
