@@ -45,7 +45,7 @@ export default function SignIn({ navigate }) {
               height: { xs: '40px', md: '40px' },
               mt: 1.5,
               mb: 0.5,
-              bgcolor: "grey.50",
+              bgcolor: "input.color",
               borderRadius: 1
             }}
             size="small"
@@ -62,7 +62,7 @@ export default function SignIn({ navigate }) {
             sx={{
               width: { xs: '200px', md: '300px' },
               height: { xs: '40px', md: '40px' },
-              bgcolor: "grey.50",
+              bgcolor: "input.color",
               borderRadius: 1
             }}
             size="small"
