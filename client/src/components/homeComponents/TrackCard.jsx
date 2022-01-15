@@ -26,7 +26,8 @@ export default function TrackCard({ trackId, meta, tag }) {
       '&::-webkit-scrollbar': {
         display: 'none'
         },
-      position: 'relative'
+      position: 'relative',
+      bgcolor: "secondary.main"
       }}>
       <CardActionArea onClick={handleNavigation} sx={{ p: '2px', height: '300px', maxHeight: '100%' }}>
         <CardContent sx={{position: 'absolute', top: '10px'}}>

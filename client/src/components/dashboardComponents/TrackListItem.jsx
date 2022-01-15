@@ -78,7 +78,7 @@ export default function TrackListItem({ trackId, meta, getTracks, removedTrack, 
           display: 'none'
           },
         position: 'relative',
-        bgcolor: "background.paper"
+        bgcolor: "secondary.main"
         }}
       >
       <CardActionArea onClick={handleNavigation} sx={{ p: '2px', height: '300px', maxHeight: '100%' }}>

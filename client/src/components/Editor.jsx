@@ -104,7 +104,7 @@ export default function Editor() {
       display: 'grid',
       gridTemplateRows: { xs: '5fr 1fr', md: '6fr 1fr' },
       mx:'auto',
-      my:'10px',
+      my:'auto',
       p: {xs: '10px', md: '15px'},
       width: {xs: '80%', md: '70vw'},
       maxWidth: '1000px',

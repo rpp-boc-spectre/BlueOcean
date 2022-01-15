@@ -8,6 +8,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Modal from '@mui/material/Modal';
 import Slider from '@mui/material/Slider';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Box';
 import { useLayerStore } from '../context/LayerContext.js';
 import Container from '@mui/material/Container';
@@ -122,11 +123,24 @@ export default function LayerEditorCopy({ id, player }) {
         <Box sx={{
           gridRow: {xs: '2', md: '2'},
           gridColumn: {xs: '1', md: '1'},
-          maxWidth: '25vh',
+          height: '10px',
+          maxWidth: '25vw',
           display: 'grid',
           gridTemplateColumns: '1fr 1fr 1fr',
           gap: 1
         }}>
+          {/* <Stack
+            direction={{ xs: "column", sm: "row" }}
+            sx={{
+              gridRow: {xs: '2', md: '2'},
+              gridColumn: {xs: '1', md: '1'},
+              height: {xs: '10px', md: '15px'},
+              maxWidth: '25vw',
+              // display: 'grid',
+              // gridTemplateColumns: '1fr 1fr 1fr',
+              gap: 1
+            }}
+          > */}
           <TimeControlButton
             button={{ name: 'Mute', handler: muteLayer, value: isMuted }}
           />
@@ -135,14 +149,20 @@ export default function LayerEditorCopy({ id, player }) {
           />
           <TimeControlButton
             button={{ name: 'Edit', handler: layerEditorOpen }}
+            sx={{ }}
           />
+          {/* </Stack> */}
         </Box>
-        <Box sx={{
+        <Box
+          sx={{
           gridRow: {xs: '3', md: '2'},
           gridColumn: {xs: '1', md: '2'},
           maxWidth: '40vh',
-          m: 'auto'
-        }}>
+          m: 'auto',
+          // overflow-y: "auto",
+          display: {xs: 'none', md: 'block'}
+          }}
+        >
           <canvas
             className={'visual-layer' + id}
             width='350'
