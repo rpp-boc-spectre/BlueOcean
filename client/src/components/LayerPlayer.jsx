@@ -155,19 +155,21 @@ export default function LayerPlayer({
         bgcolor: 'secondary.light',
         border: 1,
         gridRow: {xs: '1', md: '1'},
-        borderRadius: {xs: '0', md: '5% 5% 0% 0%'}
+        borderRadius: {xs: '0', md: '5% 5% 0% 0%'},
+        width: {xs: '70%', sm: '85%', md: '95%'},
       }}>
         {(allLayersLoaded && layers) &&
           layers.map((layer, index) => <LayerEditor key={index} id={index} player={layerStore.player.layers[index]} />)}
       </Container>
-      <Divider />
+      {/* <Divider /> */}
       <Container sx={{
-        bgcolor: 'secondary.dark',
+        bgcolor: 'buttons.submitHover',
         border: 1,
         display: 'grid',
         gridTemplateColumns: {xs: '2fr 2fr', md: '2fr 1fr 2fr'},
         gridRow: {xs: '2', md: '2'},
-        borderRadius: {xs: '0', md: '0% 0% 5% 5%'}
+        borderRadius: {xs: '0', md: '0% 0% 5% 5%'},
+        width: {xs: '70%', sm: '85%', md: '95%'}
       }}>
         <Container
           sx={{

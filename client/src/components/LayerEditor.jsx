@@ -97,10 +97,11 @@ export default function LayerEditorCopy({ id, player }) {
       border: 1,
       mt: 1,
       pt: 1,
-      pb: 1
+      pb: 1,
+      // width: {xs: '65%', sm: '70%', md: '60%'}
     }}>
       <Box sx={{
-        minHeight: { xs: '13vh', md: '16vh' },
+        minHeight: { xs: '22vh', sm: '22vh', md: '16vh' },
         maxHeight: { xs: '13vh', md: '16vh' },
         border: '2px, solid, black',
         display: 'grid',
