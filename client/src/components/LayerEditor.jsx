@@ -94,9 +94,10 @@ export default function LayerEditorCopy({ id, player }) {
   return (
     <Container sx={{
       bgcolor: 'background.paper',
-      padding: '0px',
       border: 1,
-      mt: 1
+      mt: 1,
+      pt: 1,
+      pb: 1
     }}>
       <Box sx={{
         minHeight: { xs: '13vh', md: '16vh' },
@@ -106,11 +107,17 @@ export default function LayerEditorCopy({ id, player }) {
         gridTemplateColumns: {xs: '1fr', md: '2fr 3fr'},
         gridTemplateRows: {xs: '1fr, 3fr, 3fr', md: '1fr 3fr'}
       }}>
-        <FormControlLabel
-          sx={{ gridRow: {xs: '1', md: '1'}, gridColumn: {xs: '1', md: '1 / 2'}}}
-          label={player.name}
-          control={<Checkbox defaultChecked />}
-        />
+        <Typography
+          variant='h1'
+          sx={{
+            gridRow: {xs: '1', md: '1'},
+            gridColumn: {xs: '1', md: '1 / 2'},
+            fontFamily: 'Roboto',
+            pb: 1
+          }}
+        >
+          {player.name}
+        </Typography>
         <Box sx={{
           gridRow: {xs: '2', md: '2'},
           gridColumn: {xs: '1', md: '1'},
@@ -209,10 +216,12 @@ export default function LayerEditorCopy({ id, player }) {
             // valueLabelDisplay='auto'
           />
 
-          <Typography sx={{
+          <Typography
+            sx={{
               fontFamily: 'Roboto',
               pb: 1
-            }}>
+            }}
+          >
             Trim From Start:
             {(trimFromStart / playerPlaybackRate).toFixed(2)}
           </Typography>
@@ -225,10 +234,12 @@ export default function LayerEditorCopy({ id, player }) {
             // valueLabelDisplay='auto'
             step={0.01}
           />
-          <Typography sx={{
+          <Typography
+            sx={{
               fontFamily: 'Roboto',
               pb: 1
-            }}>
+            }}
+          >
             Trim From End:
             {Math.abs((trimFromEnd) / playerPlaybackRate).toFixed(2)}
             {/* {-Number( player.duration() - Math.abs(trimFromEnd) / playerPlaybackRate).toFixed(2)} */}
@@ -243,10 +254,12 @@ export default function LayerEditorCopy({ id, player }) {
             track='inverted'
             step={0.01}
           />
-          <Typography sx={{
+          <Typography
+            sx={{
               fontFamily: 'Roboto',
               pb: 1
-            }}>
+            }}
+          >
             {' '}
             Track Will Start at {' '}
             {(trimFromStart / playerPlaybackRate).toFixed(2)}
@@ -254,17 +267,23 @@ export default function LayerEditorCopy({ id, player }) {
             {' '}
             {/* <br></br> */}
             </Typography>
-            <Typography sx={{
-              fontFamily: 'Roboto',
-              pb: 1
-            }}>
-            Track Will End at {' '}
+            <Typography
+              sx={{
+                fontFamily: 'Roboto',
+                pb: 1
+              }}
+            >
+              Track Will End at {' '}
               { (player.duration() + trimFromEnd).toFixed(2)}
           </Typography>
-          <Typography sx={{
+          <Typography
+            sx={{
               fontFamily: 'Roboto',
               pb: 1
-            }}> Set Track Playback {playerPlaybackRate} </Typography>
+            }}
+          >
+            Set Track Playback {playerPlaybackRate}
+          </Typography>
           <Slider
             min={0.5}
             max={2}

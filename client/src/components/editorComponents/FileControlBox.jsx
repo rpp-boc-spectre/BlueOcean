@@ -24,9 +24,10 @@ const FileControlBox = (props) => {
         }}
       >
         {buttons.map((button, index) => {
-          return <FileControlButton key={index} button={button} />
+          return <FileControlButton isPlaying={props.isPlaying} key={index} button={button} />
         })}
         <SettingsList
+          isPlaying={props.isPlaying}
           saveHandler={props.saveHandler}
           metadata={props.metadata}
           updateMetadata={props.updateMetadata}
