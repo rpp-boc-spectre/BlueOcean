@@ -15,7 +15,7 @@ Then, the layer can be saved with a name, tag, and publicity status. Any track l
 <p align="center">
   <img 
        src="https://images.unsplash.com/photo-1599148401005-fe6d7497cb5e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8ZmVybnxlbnwwfHwwfHw%3D&w=1000&q=80" 
-       style="width:50%;height:100px"
+       style="width:30%"
   />
 </p>
 
