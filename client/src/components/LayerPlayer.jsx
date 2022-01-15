@@ -156,7 +156,7 @@ export default function LayerPlayer({
         border: 1,
         gridRow: {xs: '1', md: '1'},
         borderRadius: {xs: '0', md: '5% 5% 0% 0%'},
-        width: {xs: '70%', sm: '85%', md: '95%'},
+        width: {xs: '90%', sm: '90%', md: '90%'},
       }}>
         {(allLayersLoaded && layers) &&
           layers.map((layer, index) => <LayerEditor key={index} id={index} player={layerStore.player.layers[index]} />)}
@@ -172,7 +172,8 @@ export default function LayerPlayer({
           // gridTemplateColumns: {xs: '2fr 2fr', md: '2fr 1fr 2fr'},
           // gridRow: {xs: '2', md: '2'},
           borderRadius: {xs: '0', md: '0% 0% 5% 5%'},
-          width: {xs: '70%', sm: '85%', md: '95%'},
+          // width: {xs: '70%', sm: '85%', md: '95%'},
+          width: {xs: '90%', sm: '90%', md: '90%'},
           mx: "auto",
           gap: 1
         }}>

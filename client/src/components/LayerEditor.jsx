@@ -99,7 +99,12 @@ export default function LayerEditorCopy({ id, player }) {
       mt: 1,
       pt: 1,
       pb: 1,
-      // width: {xs: '65%', sm: '70%', md: '60%'}
+      width: {xs: '95%', md: '95%'},
+      overflowY: 'scroll',
+      '&::-webkit-scrollbar': {
+          display: 'none'
+      },
+      maxHeight: {xs: '60vh', md: '80vh'}
     }}>
       <Box sx={{
         minHeight: { xs: '22vh', sm: '22vh', md: '16vh' },
@@ -107,7 +112,11 @@ export default function LayerEditorCopy({ id, player }) {
         border: '2px, solid, black',
         display: 'grid',
         gridTemplateColumns: {xs: '1fr', md: '2fr 3fr'},
-        gridTemplateRows: {xs: '1fr, 3fr, 3fr', md: '1fr 3fr'}
+        gridTemplateRows: {xs: '1fr, 3fr, 3fr', md: '1fr 3fr'},
+        overflowY: 'scroll',
+          '&::-webkit-scrollbar': {
+              display: 'none'
+          },
       }}>
         <Typography
           variant='h1'

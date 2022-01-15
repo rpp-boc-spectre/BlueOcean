@@ -27,7 +27,7 @@ export default function TrackCard({ trackId, meta, tag }) {
         display: 'none'
         },
       position: 'relative',
-      bgcolor: "secondary.main"
+      bgcolor: "background.paper"
       }}>
       <CardActionArea onClick={handleNavigation} sx={{ p: '2px', height: '300px', maxHeight: '100%' }}>
         <CardContent sx={{position: 'absolute', top: '10px'}}>
@@ -41,7 +41,7 @@ export default function TrackCard({ trackId, meta, tag }) {
           bottom: 0,
           width: '90%'
         }}
-        >
+      >
         <Chip label={tag} />
       </CardActions>
     </Card>

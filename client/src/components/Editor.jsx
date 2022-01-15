@@ -106,7 +106,7 @@ export default function Editor() {
       mx:'auto',
       my:'auto',
       p: {xs: '10px', md: '15px'},
-      width: {xs: '80%', md: '70vw'},
+      width: {xs: '100%', md: '70vw'},
       maxWidth: '1000px',
       maxHeight: {xs: '84vh', md:'87vh'},
       bgcolor: 'primary.light',
