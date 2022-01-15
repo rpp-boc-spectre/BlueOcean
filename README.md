@@ -22,7 +22,7 @@ Then, the layer can be saved with a name, tag, and publicity status. Any track l
 <div>
   <p align="center">
     <img 
-         src="https://icon2.cleanpng.com/20180402/cae/kisspng-firebase-software-development-kit-application-prog-best-5ac2960b8f3856.0988431215227018355866.jpg"
+         src="https://firebase.google.com/images/brand-guidelines/logo-logomark.png"
          style="width:50%"
     />
   </p>
