@@ -92,9 +92,8 @@ export default function LayerEditorCopy({ id, player }) {
   };
 
   return (
-    <Container className={'BOY-HOWDY'} sx={{
+    <Container sx={{
       bgcolor: 'background.paper',
-      // padding: '0px',
       border: 1,
       mt: 1,
       pt: 1,

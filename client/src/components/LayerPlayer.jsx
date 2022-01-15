@@ -223,9 +223,9 @@ export default function LayerPlayer({
             boxShadow: 24,
             p: 4,
           }}>
-          {/* <Typography variant='subtitle2' id='modal-edit-title'>
-            Edit Layer: {'placeholder'}
-          </Typography> */}
+          <Typography variant='subtitle2' id='modal-edit-title'>
+            Edit for all layers
+          </Typography>
           <Typography>Volume: {globalVolume === 40 ? "Max" : globalVolume === 0 ? 'Min' : globalVolume}</Typography>
           <Slider
             min={0}
