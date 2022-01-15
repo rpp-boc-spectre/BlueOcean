@@ -139,6 +139,7 @@ export default function Editor() {
           <ArrowBack />
         </IconButton>
       </Drawer>
+
       <Drawer
         sx={{
           width: { xs: '65%', sm: '75%', md: '500px' },
