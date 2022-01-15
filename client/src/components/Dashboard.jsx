@@ -29,7 +29,7 @@ export default function Dashboard() {
           borderRadius: {xs: '0', md: '5%'}
         }}
       >
-        <Typography variant='h3' align='center'>Welcome {userData.username}</Typography>
+        <Typography variant='h3' align='center' sx={{ mt: 5, mb: 2 }}>Welcome {userData.username}</Typography>
         {userData.user && <TrackList userId={userData.user.uid} />}
       </Box>
     </>
