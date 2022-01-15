@@ -26,7 +26,9 @@ Then, the layer can be saved with a name, tag, and publicity status. Any track l
   />
 </p>
 
-|  ![Hi]("https://www.pngkit.com/png/detail/208-2080867_firebase-logo-firebase-logo-png.png")  |  ![Hi]("https://expressjs.com/images/express-facebook-share.png")  |  ![Hi]("https://brandslogos.com/wp-content/uploads/images/react-logo-vector.svg")  |
+![Hi]("https://www.pngkit.com/png/detail/208-2080867_firebase-logo-firebase-logo-png.png")
+![Hi]("https://expressjs.com/images/express-facebook-share.png")
+![Hi]("https://brandslogos.com/wp-content/uploads/images/react-logo-vector.svg")
 
 
 # Anticipated challenges
