@@ -1,6 +1,7 @@
 <p align="center">
   <img src="client/dist/favicon-96x96.png" />
 </p>
+
 # Welcome to ZAP!
 This was a month long project where our team completed an MVP full stack application for an external user.
 
