@@ -100,7 +100,7 @@ export default function Entry() {
               <Box
                 sx={{
                   bgcolor: 'primary.light',
-                  width: { xs: '90%', md: '80%' },
+                  width: { xs: '90%', sm: '85%', md: '80%' },
                   pb: 1,
                   height: { xs: '84vh', md: '87vh' }
                 }}
@@ -127,6 +127,8 @@ export default function Entry() {
                     justifyContent="center"
                     width={{ xs: '160px', sm: '450px', md: '600px' }}
                     mx="auto"
+                    // mt="2"
+                    sx={{ mt: 2, mb: 3 }}
                   >
                     <Button
                       variant="outlined"

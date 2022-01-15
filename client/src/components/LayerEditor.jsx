@@ -94,23 +94,31 @@ export default function LayerEditorCopy({ id, player }) {
   return (
     <Container sx={{
       bgcolor: 'background.paper',
-      padding: '0px',
       border: 1,
-      mt: 1
+      mt: 1,
+      pt: 1,
+      pb: 1,
+      // width: {xs: '65%', sm: '70%', md: '60%'}
     }}>
       <Box sx={{
-        minHeight: { xs: '13vh', md: '16vh' },
+        minHeight: { xs: '22vh', sm: '22vh', md: '16vh' },
         maxHeight: { xs: '13vh', md: '16vh' },
         border: '2px, solid, black',
         display: 'grid',
         gridTemplateColumns: {xs: '1fr', md: '2fr 3fr'},
         gridTemplateRows: {xs: '1fr, 3fr, 3fr', md: '1fr 3fr'}
       }}>
-        <FormControlLabel
-          sx={{ gridRow: {xs: '1', md: '1'}, gridColumn: {xs: '1', md: '1 / 2'}}}
-          label={player.name}
-          control={<Checkbox defaultChecked />}
-        />
+        <Typography
+          variant='h1'
+          sx={{
+            gridRow: {xs: '1', md: '1'},
+            gridColumn: {xs: '1', md: '1 / 2'},
+            fontFamily: 'Roboto',
+            pb: 1
+          }}
+        >
+          {player.name}
+        </Typography>
         <Box sx={{
           gridRow: {xs: '2', md: '2'},
           gridColumn: {xs: '1', md: '1'},
@@ -157,11 +165,30 @@ export default function LayerEditorCopy({ id, player }) {
             boxShadow: 24,
             p: 4,
           }}>
-          <Typography variant='subtitle2' id='modal-edit-title'>
+          <Typography
+            variant='subtitle2'
+            id='modal-edit-title'
+            sx={{
+              fontFamily: 'Roboto',
+              pb: 1
+            }}
+          >
             Edit Layer: {player.name}
           </Typography>
-          <Typography>Track Duration { player.duration().toFixed(2)}</Typography>
-          <Typography>
+          <Typography
+            sx={{
+              fontFamily: 'Roboto',
+              pb: 1
+            }}
+          >
+            Track Duration { player.duration().toFixed(2)}
+          </Typography>
+          <Typography
+           sx={{
+            fontFamily: 'Roboto',
+            pb: 1
+          }}
+          >
             Volume:{' '}
             {volumeSliderValue === 40
               ? 'Max'
@@ -177,7 +204,10 @@ export default function LayerEditorCopy({ id, player }) {
             aria-label='Volume Slider'
             // valueLabelDisplay='auto'
           />
-          <Typography> Pitch {playerDetune} </Typography>
+          <Typography sx={{
+              fontFamily: 'Roboto',
+              pb: 1
+            }}> Pitch: {playerDetune} </Typography>
           <Slider
             min={-12}
             max={12}
@@ -187,8 +217,13 @@ export default function LayerEditorCopy({ id, player }) {
             // valueLabelDisplay='auto'
           />
 
-          <Typography>
-            Trim From Start
+          <Typography
+            sx={{
+              fontFamily: 'Roboto',
+              pb: 1
+            }}
+          >
+            Trim From Start:
             {(trimFromStart / playerPlaybackRate).toFixed(2)}
           </Typography>
           <Slider
@@ -200,8 +235,13 @@ export default function LayerEditorCopy({ id, player }) {
             // valueLabelDisplay='auto'
             step={0.01}
           />
-          <Typography>
-            Trim From End
+          <Typography
+            sx={{
+              fontFamily: 'Roboto',
+              pb: 1
+            }}
+          >
+            Trim From End:
             {Math.abs((trimFromEnd) / playerPlaybackRate).toFixed(2)}
             {/* {-Number( player.duration() - Math.abs(trimFromEnd) / playerPlaybackRate).toFixed(2)} */}
           </Typography>
@@ -215,18 +255,36 @@ export default function LayerEditorCopy({ id, player }) {
             track='inverted'
             step={0.01}
           />
-          <Typography>
+          <Typography
+            sx={{
+              fontFamily: 'Roboto',
+              pb: 1
+            }}
+          >
             {' '}
-            Track Will Start at{' '}
+            Track Will Start at {' '}
             {(trimFromStart / playerPlaybackRate).toFixed(2)}
 
             {' '}
-            <br></br>
-            Track Will End at {' '}
+            {/* <br></br> */}
+            </Typography>
+            <Typography
+              sx={{
+                fontFamily: 'Roboto',
+                pb: 1
+              }}
+            >
+              Track Will End at {' '}
               { (player.duration() + trimFromEnd).toFixed(2)}
-
           </Typography>
-          <Typography> Set Track Playback {playerPlaybackRate} </Typography>
+          <Typography
+            sx={{
+              fontFamily: 'Roboto',
+              pb: 1
+            }}
+          >
+            Set Track Playback {playerPlaybackRate}
+          </Typography>
           <Slider
             min={0.5}
             max={2}

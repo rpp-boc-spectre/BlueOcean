@@ -1,12 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { useParams } from 'react-router-dom';
 
-import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Modal from "@mui/material/Modal";
-import Drawer from "@mui/material/Drawer";
-import Divider from "@mui/material/Divider";
+import { Alert, Box, Container, Modal, Drawer, Divider } from '@mui/material'
 import IconButton from "@mui/material/IconButton";
 import ArrowDownward from '@mui/icons-material/ArrowDownward';
 import ArrowBack from '@mui/icons-material/ArrowBack';
@@ -111,7 +106,7 @@ export default function Editor() {
       mx:'auto',
       my:'10px',
       p: {xs: '10px', md: '15px'},
-      width: {xs: '100', md: '70vw'},
+      width: {xs: '80%', md: '70vw'},
       maxWidth: '1000px',
       maxHeight: {xs: '84vh', md:'87vh'},
       bgcolor: 'primary.light',
@@ -144,14 +139,17 @@ export default function Editor() {
           <ArrowBack />
         </IconButton>
       </Drawer>
+
       <Drawer
         sx={{
-          width: 400,
+          width: { xs: '65%', sm: '75%', md: '500px' },
           flexShrink: 0,
           '& .MuiDrawer-paper': {
-            width: 400,
+            width: { xs: '65%', sm: '75%', md: '500px' },
             boxSizing: 'border-box',
+            mx: "auto"
           },
+          mx: "auto"
         }}
         variant="persistent"
         anchor="bottom"
@@ -163,11 +161,42 @@ export default function Editor() {
         <Divider />
         <Recorder currentList={audioLayers} setAudioLayers={setAudioLayers} />
       </Drawer>
-      <Modal open={uploadModalState} onClose={handleUploadClose} >
-        <Box sx={{ backgroundColor: 'white', margin: 'auto', top: 50, }}>
+
+      <Drawer
+        sx={{
+          width: { xs: '65%', sm: '75%', md: '500px' },
+          height: { xs: '15vh', sm: '21vh', md: '25vh' },
+          // flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: { xs: '65%', sm: '75%', md: '500px' },
+            height: { xs: '20vh', sm: '23vh', md: '27vh' },
+            boxSizing: 'border-box',
+            mx: "auto"
+          },
+          mx: "auto",
+        }}
+        variant="persistent"
+        anchor="bottom"
+        open={uploadModalState}
+      >
+        <IconButton onClick={handleUploadClose}>
+          <ArrowDownward />
+        </IconButton>
+        <UploadFile />
+      </Drawer>
+      {/* <Modal open={uploadModalState} onClose={handleUploadClose}>
+        <Box
+          sx={{
+            backgroundColor: 'secondary.light',
+            mx: 'auto',
+            my: 'auto',
+            width: { xs: '85%', sm: '85%', md: '75%' },
+            height: { xs: '15vh', sm: '17vh', md: '20vh' }
+          }}
+        >
           <UploadFile />
         </Box>
-      </Modal>
+      </Modal> */}
     </Container>
   )
 }

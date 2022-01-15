@@ -33,15 +33,12 @@ const TimeControlButton = (props) => {
     'Stop': (<StopIcon />),
     'Play': (<PlayArrowIcon />),
     'Pause': (<PauseIcon />),
-    'Record': (<FiberManualRecordIcon />),
     'Beginning': (<FirstPageIcon />),
     'Rewind': (<FastRewindIcon />),
     'End': (<LastPageIcon />),
     'FastForward': (<FastForwardIcon />),
     'Edit': (<EditIcon />),
     'Delete': (<DeleteIcon />),
-    'Import': (<ImportExportIcon />),
-    'Upload': (<UploadFileIcon />)
   };
 
   const irregularButtons = {
@@ -49,11 +46,26 @@ const TimeControlButton = (props) => {
     'Solo': props.button.value ? (SoloFilledIcon) : (SoloIcon)
   }
 
+  const checkDisable = (target) => {
+    if (target === "Edit") {
+      // Editor button is never disabled
+      return false;
+    }
+    if (target === "Play") {
+      // Play disabled if playing
+      return props.isPlaying;
+    }
+    // Pause & Stop disabled if not playing
+    return !props.isPlaying;
+  }
+
   if (Object.keys(regularButtons).includes(target)) {
     button = <Button
-      color='info'
+      color="black"
       variant='outlined'
       onClick={props.button.handler}
+      sx={{ maxHeight: '100px' }}
+      disabled={checkDisable(target)}
     >
       {regularButtons[target]}
     </Button>
@@ -61,10 +73,11 @@ const TimeControlButton = (props) => {
 
   if (Object.keys(irregularButtons).includes(target)) {
     button = <ToggleButton
-      color='info'
+      color='black'
       variant='outlined'
       onClick={props.button.handler}
       value={props.button.value}
+      sx={{ maxHeight: '100px' }}
     >
       {irregularButtons[target]}
     </ToggleButton>

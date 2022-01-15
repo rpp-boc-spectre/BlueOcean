@@ -5,13 +5,7 @@ import * as Tone from 'tone';
 import toast from 'react-hot-toast';
 import { useLayerStore } from '../context/LayerContext.js';
 
-import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Typography from '@mui/material/Box';
-import Slider from '@mui/material/Slider';
-import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
+import { Alert, Box, Modal, Typography, Slider, Container, Divider } from '@mui/material';
 import { addLayer, removeLayer, setPlayer } from '../lib/layerTableReducer.js';
 import { saveTrackData } from '../utils/database.js';
 import { Player } from '../lib/player.js';
@@ -40,23 +34,29 @@ export default function LayerPlayer({
   const [globalPitch, setGlobalPitch] = useState(0);
   const [globalVolume, setGlobalVolume] = useState(20)
   const [globalPlayback, setGlobalPlayback] = useState(1)
+  const [trackName, setTrackName] = useState('');
+  const [currentlyPlaying, setCurrentlyPlaying] = useState(false)
 
   const playAllLayers = async () => {
     if (layerStore.player) {
       console.log('LAYERPLAYER', layerStore.player);
       layerStore.player.start();
+      setTrackName(layerStore.player.meta.trackName);
+      setCurrentlyPlaying(true);
     }
   };
 
   const stopAllLayers = () => {
     if (layerStore.player) {
       layerStore.player.stop();
+      setCurrentlyPlaying(false);
     }
   };
 
   const pauseResumeAllLayers = () => {
     if (layerStore.player) {
       layerStore.player.pause();
+      setCurrentlyPlaying(false);
     }
   };
 
@@ -152,20 +152,24 @@ export default function LayerPlayer({
   return (
     <>
       <Container sx={{
-        bgcolor: 'success.light',
+        bgcolor: 'secondary.light',
         border: 1,
-        gridRow: {xs: '1', md: '1'}
+        gridRow: {xs: '1', md: '1'},
+        borderRadius: {xs: '0', md: '5% 5% 0% 0%'},
+        width: {xs: '70%', sm: '85%', md: '95%'},
       }}>
         {(allLayersLoaded && layers) &&
           layers.map((layer, index) => <LayerEditor key={index} id={index} player={layerStore.player.layers[index]} />)}
       </Container>
-      <Divider />
+      {/* <Divider /> */}
       <Container sx={{
-        bgcolor: 'success.dark',
+        bgcolor: 'buttons.submitHover',
         border: 1,
         display: 'grid',
         gridTemplateColumns: {xs: '2fr 2fr', md: '2fr 1fr 2fr'},
         gridRow: {xs: '2', md: '2'},
+        borderRadius: {xs: '0', md: '0% 0% 5% 5%'},
+        width: {xs: '70%', sm: '85%', md: '95%'}
       }}>
         <Container
           sx={{
@@ -175,6 +179,7 @@ export default function LayerPlayer({
           }}
         >
           <TimeControlBox
+            isPlaying={currentlyPlaying}
             playAllHandler={playAllLayers}
             stopAllHandler={stopAllLayers}
             pauseResumeHandler={pauseResumeAllLayers}
@@ -189,6 +194,7 @@ export default function LayerPlayer({
           }}
         >
           <FileControlBox
+            isPlaying={currentlyPlaying}
             recordingHandler={recordingHandler}
             importHandler={importHandler}
             uploadHandler={uploadHandler}
@@ -198,6 +204,7 @@ export default function LayerPlayer({
           />
         </Container>
       </Container>
+
       <Modal
         open={editOpen}
         onClose={layerEditClose}
@@ -209,16 +216,34 @@ export default function LayerPlayer({
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: { xs: '95%', md: 400 },
+            width: { xs: '95%', sm: '75%', md: 400 },
             bgcolor: 'background.paper',
             border: '2px solid #000',
             boxShadow: 24,
             p: 4,
-          }}>
-          <Typography variant='subtitle2' id='modal-edit-title'>
-            Edit Layer: {'placeholder'}
+          }}
+        >
+          <Typography
+           variant='subtitle2'
+           id='modal-edit-title'
+           sx={{
+            fontFamily: 'Roboto',
+            pb: 1
+           }}
+          >
+            <b>Edit Track </b>{trackName ? trackName : ''}
           </Typography>
-          <Typography>Volume: {globalVolume === 40 ? "Max" : globalVolume === 0 ? 'Min' : globalVolume}</Typography>
+          {/* <Typography variant='subtitle2' id='modal-edit-title'>
+            Edit for all layers
+          </Typography> */}
+          <Typography
+            sx={{
+              fontFamily: 'Roboto',
+              pb: 1
+            }}
+          >
+            <b>Volume</b>: {globalVolume === 40 ? "Max" : globalVolume === 0 ? 'Min' : globalVolume}
+          </Typography>
           <Slider
             min={0}
             max={40}
@@ -227,7 +252,14 @@ export default function LayerPlayer({
             aria-label='Volume Slider'
             valueLabelDisplay='auto'
           />
-          <Typography> Set Track Pitch {globalPitch} </Typography>
+          <Typography
+            sx={{
+              fontFamily: 'Roboto',
+              pb: 1
+            }}
+          >
+            <b>Set Track Pitch</b>: {globalPitch}
+          </Typography>
           <Slider
             min={-12}
             max={12}
@@ -236,7 +268,14 @@ export default function LayerPlayer({
             aria-label='Trim Slider'
             valueLabelDisplay='auto'
           />
-          <Typography> Set Track Playback {globalPlayback} </Typography>
+          <Typography
+            sx={{
+              fontFamily: 'Roboto',
+              pb: 1
+            }}
+          >
+            <b>Set Track Playback</b>: {globalPlayback}
+          </Typography>
           <Slider
             min={.50}
             max={2}

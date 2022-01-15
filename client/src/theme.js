@@ -28,9 +28,18 @@ const theme = createTheme({
       800: '#3a3a3a',
       900: '#242424'
     },
+    greyLight: {
+      main: '#e9e9e9'
+    },
+    black: {
+      main: '#242424'
+    },
     background: {
       paper: '#FAE9B8',
       default: '#d3d3d3'
+    },
+    input: {
+      color: '#F8F8FF'
     },
     buttons: {
       signupBorder: '#b1871b',

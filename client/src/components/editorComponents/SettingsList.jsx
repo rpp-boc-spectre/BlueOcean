@@ -68,39 +68,78 @@ const SettingsList = (props) => {
   return (
     <>
       <Button
-        color='info'
+        color='black'
         variant='outlined'
         onClick={handleDrawerToggle}
+        disabled={props.isPlaying}
       >
         <SaveIcon />
       </Button>
-      <Drawer container={container}
+      <Drawer
+        container={container}
         variant="temporary"
+        anchor="bottom"
         open={mobileOpen}
         onClose={handleDrawerToggle}
         ModalProps={{
           keepMounted: true, // Better open performance on mobile.
         }}
+        // sx={{
+        //   border: 1,
+        //   mx: 'auto',
+        //   '& .MuiDrawer-paper': {
+        //     boxSizing: 'border-box',
+        //     width: { xs: '90%', sm: '75%', md: '50%' },
+        //     height: { xs: '40%', sm: '35%', md: '30%' },
+        //     mx: 'auto',
+        //   }
+        // }}
+        // mx="auto"
+
         sx={{
-          border: 1,
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: '100%', maxHeight: '80%' }
-        }}>
-        <Typography variant='subtitle1'>Settings List</Typography>
+          width: { xs: '65%', sm: '75%', md: '500px' },
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: { xs: '65%', sm: '55%', md: '400px' },
+            height: { xs: '40%', sm: '36%', md: '33%' },
+            boxSizing: 'border-box',
+            mx: "auto"
+          },
+          mx: "auto"
+        }}
+      >
+        <Typography variant='subtitle2'><b>Settings List</b></Typography>
+
         <TextField
           id="track-name"
           label="Track Name"
           variant="outlined"
           value={props.metadata.trackName || ""}
           onChange={handleTrackNameChange}
+          sx={{
+            mt: 1.5,
+            mb: 1.5,
+            bgcolor: "input.color",
+            borderRadius: 1,
+            width: { xs: '80%', sm: '70%', md: '60%' },
+            mx: 'auto'
+          }}
         />
-        <FormControl fullWidth>
-          <InputLabel id="tag-select-label">Tag</InputLabel>
+        <FormControl variant="filled" fullWidth>
+          <InputLabel id="tag-select-label" >Tag</InputLabel>
           <Select
             labelId="tag-select-label"
             id="track-tag-select"
             value={props.metadata.tag || "General"}
             onChange={handleTagChange}
             label="Tag"
+            // sx={{
+            //   borderRadius: 1,
+            //   width: { xs: '80%', sm: '70%', md: '60%' },
+            //   height: { xs: '35px', md: '35px' },
+            //   mx: 'auto',
+            //   pb: 0.5
+            // }}
           >
             {tagsList.map((tag, idx) => <MenuItem value={tag} key={idx}>{tag}</MenuItem>)}
           </Select>
@@ -109,9 +148,27 @@ const SettingsList = (props) => {
           id="track-publicity"
           control={<Switch checked={publicChecked} onChange={handlePublicToggle}/>}
           label={publicChecked ? "Public" : "Private"}
+          sx={{ my: 1 }}
         />
         {settingsArray.map((setting, index) => {
-          return (<Button variant='outlined' key={index} onClick={setting.handler}>{setting.name}</Button>);
+          return (
+            <Button
+              variant='outlined'
+              key={index}
+              onClick={setting.handler}
+              sx={{
+                color: 'grey.50',
+                bgcolor: 'buttons.submitHover',
+                ':hover': { bgcolor: 'secondary.dark' },
+                my: 1,
+                width: { xs: '65%', sm: '70%', md: '75%' },
+                mx: "auto"
+              }}
+              mx="auto"
+            >
+              {setting.name}
+            </Button>
+          );
         })}
       </Drawer>
     </>
