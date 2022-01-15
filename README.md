@@ -23,25 +23,25 @@ Then, the layer can be saved with a name, tag, and publicity status. Any track l
   <p align="center">
     <img 
          src="https://firebase.google.com/images/brand-guidelines/logo-logomark.png"
-         style="width:50%;height:100px"
+         style="width:30%"
     />
   </p>
   <p align="center">
     <img 
          src="https://expressjs.com/images/express-facebook-share.png"
-         style="width:50%;height:100px"
+         style="width:30%"
     />
   </p>
   <p align="center">
     <img 
          src="https://brandslogos.com/wp-content/uploads/images/react-logo-vector.svg"
-         style="width:50%;height:100px"
+         style="width:30%"
     />
   </p>
   <p align="center">
     <img 
          src="https://cdn.freebiesupply.com/logos/thumbs/2x/nodejs-1-logo.png"
-         style="width:50%;height:100px"
+         style="width:30%"
     />
   </p>
 </div>
