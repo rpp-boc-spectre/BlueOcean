@@ -40,11 +40,13 @@ export default function LayerPlayer({
   const [globalPitch, setGlobalPitch] = useState(0);
   const [globalVolume, setGlobalVolume] = useState(20)
   const [globalPlayback, setGlobalPlayback] = useState(1)
+  const [trackName, setTrackName] = useState('');
 
   const playAllLayers = async () => {
     if (layerStore.player) {
       console.log('LAYERPLAYER', layerStore.player);
       layerStore.player.start();
+      setTrackName(layerStore.player.meta.trackName);
     }
   };
 
@@ -209,16 +211,28 @@ export default function LayerPlayer({
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: { xs: '95%', md: 400 },
+            width: { xs: '95%', sm: '75%', md: 400 },
             bgcolor: 'background.paper',
             border: '2px solid #000',
             boxShadow: 24,
             p: 4,
           }}>
-          <Typography variant='subtitle2' id='modal-edit-title'>
-            Edit Layer: {'placeholder'}
+          <Typography
+           variant='subtitle2'
+           id='modal-edit-title'
+           sx={{
+            fontFamily: 'Roboto',
+            pb: 1
+           }}
+          >
+            Edit Track <b>{trackName ? trackName : ''}</b>
           </Typography>
-          <Typography>Volume: {globalVolume === 40 ? "Max" : globalVolume === 0 ? 'Min' : globalVolume}</Typography>
+          <Typography
+            sx={{
+              fontFamily: 'Roboto',
+              pb: 1
+            }}
+          >Volume: <b>{globalVolume === 40 ? "Max" : globalVolume === 0 ? 'Min' : globalVolume}</b></Typography>
           <Slider
             min={0}
             max={40}
@@ -227,7 +241,12 @@ export default function LayerPlayer({
             aria-label='Volume Slider'
             valueLabelDisplay='auto'
           />
-          <Typography> Set Track Pitch {globalPitch} </Typography>
+          <Typography
+            sx={{
+              fontFamily: 'Roboto',
+              pb: 1
+            }}
+          > Set Track Pitch: <b>{globalPitch}</b> </Typography>
           <Slider
             min={-12}
             max={12}
@@ -236,7 +255,12 @@ export default function LayerPlayer({
             aria-label='Trim Slider'
             valueLabelDisplay='auto'
           />
-          <Typography> Set Track Playback {globalPlayback} </Typography>
+          <Typography
+            sx={{
+              fontFamily: 'Roboto',
+              pb: 1
+            }}
+          > Set Track Playback: <b>{globalPlayback}</b> </Typography>
           <Slider
             min={.50}
             max={2}
