@@ -164,7 +164,15 @@ export default function Editor() {
         <Recorder currentList={audioLayers} setAudioLayers={setAudioLayers} />
       </Drawer>
       <Modal open={uploadModalState} onClose={handleUploadClose} >
-        <Box sx={{ backgroundColor: 'white', margin: 'auto', top: 50, }}>
+        <Box
+          sx={{
+            backgroundColor: 'secondary.light',
+            mx: 'auto',
+            my: 'auto',
+            width: { xs: '85%', sm: '85%', md: '75%' },
+            height: { xs: '15vh', sm: '17vh', md: '20vh' }
+          }}
+        >
           <UploadFile />
         </Box>
       </Modal>

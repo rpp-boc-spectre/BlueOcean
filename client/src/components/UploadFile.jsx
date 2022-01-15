@@ -1,6 +1,5 @@
 import React, { useContext, useRef, useState } from 'react'
-import Button from '@mui/material/Button'
-import Alert from '@mui/material/Alert'
+import { Button, Alert, Typography } from '@mui/material'
 import toast from 'react-hot-toast';
 import { uploadFile } from '../utils/storage'
 import UserContext from '../context/UserContext'
@@ -42,6 +41,13 @@ export default function UploadFile() {
       <Button
         variant="contained"
         component="label"
+        sx={{
+          color: 'grey.50',
+          bgcolor: 'primary.light',
+          ':hover': { bgcolor: 'primary.dark' },
+          my: 1,
+          mx: 1,
+        }}
       >
         Upload File
         <input
@@ -53,11 +59,18 @@ export default function UploadFile() {
           onChange={checkFileSize}
         />
       </Button>
-      <h3>{inputFileName}</h3>
+      <Typography sx={{fontFamily: 'Roboto'}}>{inputFileName}</Typography>
       <Button
         variant='contained'
         disabled={(fileError || inputFileName.length < 1)}
         onClick={handleFileUpload}
+        sx={{
+          color: 'grey.50',
+          bgcolor: 'buttons.submitHover',
+          ':hover': { bgcolor: 'secondary.dark' },
+          my: 1,
+          mx: 1,
+        }}
       >
         Submit
       </Button>
