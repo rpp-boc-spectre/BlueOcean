@@ -141,7 +141,7 @@ export default function SignUp({ navigate }) {
               variant="contained"
               type="submit"
               sx={{
-                my: 1,
+                my: 2,
                 color: 'grey.800',
                 bgcolor: 'secondary.main',
                 ':hover': { bgcolor: 'buttons.submitHover' },

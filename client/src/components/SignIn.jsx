@@ -43,7 +43,7 @@ export default function SignIn({ navigate }) {
             sx={{
               width: { xs: '200px', md: '300px' },
               height: { xs: '40px', md: '40px' },
-              mt: 1.5,
+              mt: 2,
               mb: 0.5,
               bgcolor: "input.color",
               borderRadius: 1
@@ -75,7 +75,7 @@ export default function SignIn({ navigate }) {
               type="submit"
               sx={{
                 mt: 1,
-                mb: 3,
+                mb: 5,
                 color: 'grey.800',
                 bgcolor: 'secondary.main',
                 ':hover': { bgcolor: 'buttons.submitHover' },
