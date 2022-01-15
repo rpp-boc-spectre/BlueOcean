@@ -40,23 +40,27 @@ export default function LayerPlayer({
   const [globalPitch, setGlobalPitch] = useState(0);
   const [globalVolume, setGlobalVolume] = useState(20)
   const [globalPlayback, setGlobalPlayback] = useState(1)
+  const [currentlyPlaying, setCurrentlyPlaying] = useState(false)
 
   const playAllLayers = async () => {
     if (layerStore.player) {
       console.log('LAYERPLAYER', layerStore.player);
       layerStore.player.start();
+      setCurrentlyPlaying(true);
     }
   };
 
   const stopAllLayers = () => {
     if (layerStore.player) {
       layerStore.player.stop();
+      setCurrentlyPlaying(false);
     }
   };
 
   const pauseResumeAllLayers = () => {
     if (layerStore.player) {
       layerStore.player.pause();
+      setCurrentlyPlaying(false);
     }
   };
 
@@ -152,20 +156,22 @@ export default function LayerPlayer({
   return (
     <>
       <Container sx={{
-        bgcolor: 'success.light',
+        bgcolor: 'secondary.light',
         border: 1,
-        gridRow: {xs: '1', md: '1'}
+        gridRow: {xs: '1', md: '1'},
+        borderRadius: {xs: '0', md: '5% 5% 0% 0%'}
       }}>
         {(allLayersLoaded && layers) &&
           layers.map((layer, index) => <LayerEditor key={index} id={index} player={layerStore.player.layers[index]} />)}
       </Container>
       <Divider />
       <Container sx={{
-        bgcolor: 'success.dark',
+        bgcolor: 'secondary.dark',
         border: 1,
         display: 'grid',
         gridTemplateColumns: {xs: '2fr 2fr', md: '2fr 1fr 2fr'},
         gridRow: {xs: '2', md: '2'},
+        borderRadius: {xs: '0', md: '0% 0% 5% 5%'}
       }}>
         <Container
           sx={{
@@ -175,6 +181,7 @@ export default function LayerPlayer({
           }}
         >
           <TimeControlBox
+            isPlaying={currentlyPlaying}
             playAllHandler={playAllLayers}
             stopAllHandler={stopAllLayers}
             pauseResumeHandler={pauseResumeAllLayers}
@@ -189,6 +196,7 @@ export default function LayerPlayer({
           }}
         >
           <FileControlBox
+            isPlaying={currentlyPlaying}
             recordingHandler={recordingHandler}
             importHandler={importHandler}
             uploadHandler={uploadHandler}
@@ -216,7 +224,7 @@ export default function LayerPlayer({
             p: 4,
           }}>
           <Typography variant='subtitle2' id='modal-edit-title'>
-            Edit Layer: {'placeholder'}
+            Edit for all layers
           </Typography>
           <Typography>Volume: {globalVolume === 40 ? "Max" : globalVolume === 0 ? 'Min' : globalVolume}</Typography>
           <Slider

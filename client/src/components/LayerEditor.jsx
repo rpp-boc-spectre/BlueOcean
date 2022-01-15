@@ -94,9 +94,10 @@ export default function LayerEditorCopy({ id, player }) {
   return (
     <Container sx={{
       bgcolor: 'background.paper',
-      padding: '0px',
       border: 1,
-      mt: 1
+      mt: 1,
+      pt: 1,
+      pb: 1
     }}>
       <Box sx={{
         minHeight: { xs: '13vh', md: '16vh' },
@@ -106,11 +107,9 @@ export default function LayerEditorCopy({ id, player }) {
         gridTemplateColumns: {xs: '1fr', md: '2fr 3fr'},
         gridTemplateRows: {xs: '1fr, 3fr, 3fr', md: '1fr 3fr'}
       }}>
-        <FormControlLabel
-          sx={{ gridRow: {xs: '1', md: '1'}, gridColumn: {xs: '1', md: '1 / 2'}}}
-          label={player.name}
-          control={<Checkbox defaultChecked />}
-        />
+        <Typography variant='h1' sx={{ gridRow: {xs: '1', md: '1'}, gridColumn: {xs: '1', md: '1 / 2'}}}>
+            {player.name}
+        </Typography>
         <Box sx={{
           gridRow: {xs: '2', md: '2'},
           gridColumn: {xs: '1', md: '1'},
